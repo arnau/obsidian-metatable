@@ -1,0 +1,43 @@
+.markdown-preview-view .metatable {
+  font-size: var(--font-small);
+  width: 100%;
+}
+
+.markdown-preview-view .metatable th {
+  background-color: var(--background-primary-alt);
+  max-width: 20vw;
+  min-width: 5vw;
+  padding: 0.2rem 0.4rem;
+  width: 10vw;
+}
+
+.markdown-preview-view .metatable td,
+.markdown-preview-view .metatable th,
+.markdown-preview-view .metatable tr:last-child td {
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.markdown-preview-view .metatable td,
+.markdown-preview-view .metatable th,
+.markdown-preview-view .metatable tr:first-child td {
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.markdown-preview-view .metatable .metatable {
+  margin: 0.8rem;
+}
+
+.markdown-preview-view .metatable ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.markdown-preview-view .metatable li {
+  display: block;
+  list-style: none;
+}
+
+.markdown-preview-view .metatable ul > li:not(.task-list-item)::before {
+    content: none;
+}
