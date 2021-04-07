@@ -2,6 +2,8 @@
 
 A plugin to display the full frontmatter instead of just the list of tags.
 
+![](screenshot.png)
+
 ## Installation
 
 From source:
