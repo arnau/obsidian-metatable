@@ -1,0 +1,99 @@
+:host {
+  --metatable-border: var(--background-modifier-border);
+  --metatable-background-primary: var(--background-primary-alt);
+  --metatable-background-secondary: var(--background-primary);
+  --metatable-background-hover: var(--interactive-hover);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+table {
+  border-collapse: separate;
+  font-size: var(--font-small);
+  width: 100%;
+}
+
+th {
+  background-color: var(--metatable-background-primary);
+  max-width: 20vw;
+  min-width: 10vw;
+  text-align: left;
+  vertical-align: top;
+  width: 10vw;
+  white-space: nowrap;
+}
+
+th {
+  border-right: 2px solid var(--metatable-border);
+}
+
+td, th {
+  padding: 0.4rem;
+}
+
+/* td:hover { */
+/*   background-color: var(--text-highlight-bg); */
+/* } */
+
+table table {
+  margin-bottom: 0.8rem;
+  width: 98%;
+}
+
+li > table {
+  margin-bottom: 0.8rem;
+}
+
+li:last-child > table {
+  margin-bottom: 0;
+}
+
+
+table ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+table li {
+  display: block;
+  list-style: none;
+}
+
+.toggle {
+  background-color: var(--metatable-background-secondary);
+  border: 0;
+  cursor: pointer;
+  line-height: 0.4rem;
+  margin-left: 0.2rem;
+  padding: 0.2rem;
+
+  display: inline-block;
+}
+
+.toggle:hover {
+  background-color: var(--metatable-background-hover);
+}
+
+[aria-hidden=true] {
+  display: none;
+}
+
+.tag {
+  background-color: var(--background-secondary-alt);
+  border-radius: 0.8rem;
+  border: 1px solid transparent;
+  color: var(--text-normal);
+  display: inline-block;
+  font-size: 0.9em;
+  padding: 0.1rem 0.8rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.tag:hover {
+  background-color: var(--background-secondary);
+  border-color: var(--background-modifier-border);
+}

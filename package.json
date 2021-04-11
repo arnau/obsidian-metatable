@@ -7,7 +7,9 @@
     "dev": "rollup --config rollup.config.js -w",
     "build": "rollup --config rollup.config.js --environment BUILD:production"
   },
-  "keywords": ["obsidian"],
+  "keywords": [
+    "obsidian"
+  ],
   "author": "Arnau Siches",
   "license": "MIT",
   "devDependencies": {
@@ -19,5 +21,8 @@
     "rollup": "^2.32.1",
     "tslib": "^2.0.3",
     "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "rollup-plugin-import-css": "^2.0.1"
   }
 }

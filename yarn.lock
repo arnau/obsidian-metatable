@@ -246,6 +246,13 @@ resolve@^1.17.0:
     is-core-module "^2.2.0"
     path-parse "^1.0.6"
 
+rollup-plugin-import-css@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-import-css/-/rollup-plugin-import-css-2.0.1.tgz#73a0b53ecd76c2af418dafd7cef2a72d389dc454"
+  integrity sha512-aY8VsOVHAB8RVyNmZP6Np4NeZvMeNc0U7nBMl1q5QX2QIAHSn0veQaW2T1JyzqLY+rLjICb3oEhmHWScZmbd2Q==
+  dependencies:
+    "@rollup/pluginutils" "^3.1.0"
+
 rollup@^2.32.1:
   version "2.44.0"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.44.0.tgz#8da324d1c4fd12beef9ae6e12f4068265b6d95eb"
