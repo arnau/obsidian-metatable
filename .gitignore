@@ -4,3 +4,7 @@ node_modules
 # build
 main.js
 *.js.map
+
+# dist
+dist
+test_vault

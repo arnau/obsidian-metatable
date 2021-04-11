@@ -146,7 +146,7 @@ function metarow(pair: [string, unknown]): string {
   const label = pair[0]
   const data = pair[1]
   const value = metanode(data, label)
-  const toggle = isLeaf(data)
+  const toggle = isLeaf(data) || label == 'tags'
     ? ``
     : ` <button
           class="toggle"
@@ -154,7 +154,7 @@ function metarow(pair: [string, unknown]): string {
           aria-label="Toggle ${label}"
           aria-expanded="true"
           aria-controls="${label}-value">-</button>`
-  const idAttr = isLeaf(data)
+  const idAttr = isLeaf(data) || label == 'tags'
     ? ``
     : ` id="${label}-value"`
 

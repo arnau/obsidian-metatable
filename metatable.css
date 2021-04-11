@@ -1,8 +1,8 @@
 :host {
   --metatable-border: var(--background-modifier-border);
   --metatable-background-primary: var(--background-primary-alt);
-  --metatable-background-secondary: var(--background-primary);
-  --metatable-background-hover: var(--interactive-hover);
+  --metatable-background-secondary-alt: var(--background-secondary-alt);
+  --metatable-background-secondary: var(--background-secondary);
 }
 
 * {
@@ -52,29 +52,32 @@ li:last-child > table {
 
 
 table ul {
-  list-style: none;
+  /* list-style: none; */
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 2rem;
 }
 
-table li {
-  display: block;
-  list-style: none;
-}
+/* table li { */
+/*   display: block; */
+/*   list-style: none; */
+/* } */
 
 .toggle {
-  background-color: var(--metatable-background-secondary);
+  background-color: var(--metatable-background-secondary-alt);
   border: 0;
+  border: 1px solid transparent;
+  color: var(--text-normal);
   cursor: pointer;
+  display: inline-block;
   line-height: 0.4rem;
   margin-left: 0.2rem;
+  outline: none;
   padding: 0.2rem;
-
-  display: inline-block;
 }
 
 .toggle:hover {
-  background-color: var(--metatable-background-hover);
+  background-color: var(--metatable-background-secondary);
+  border-color: var(--metatable-border);
 }
 
 [aria-hidden=true] {
@@ -82,7 +85,7 @@ table li {
 }
 
 .tag {
-  background-color: var(--background-secondary-alt);
+  background-color: var(--metatable-background-secondary-alt);
   border-radius: 0.8rem;
   border: 1px solid transparent;
   color: var(--text-normal);
@@ -94,6 +97,6 @@ table li {
 }
 
 .tag:hover {
-  background-color: var(--background-secondary);
-  border-color: var(--background-modifier-border);
+  background-color: var(--metatable-background-secondary);
+  border-color: var(--metatable-border);
 }
