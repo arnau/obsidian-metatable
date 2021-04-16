@@ -6,7 +6,12 @@ import styles from './metatable.css'
  * A metatable [web component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
  */
 class Metatable extends HTMLElement {
+  // The raw frontmatter data
   private raw?: object
+  // The observer for changes in frontmatter children (i.e. code.is-loaded)
+  private observer?: MutationObserver
+  // The frontmatter element
+  private frontmatter?: HTMLElement
 
   constructor() {
     super()
@@ -30,24 +35,45 @@ class Metatable extends HTMLElement {
       <div id="metatable-wrapper"></div>
     `
 
+    this.frontmatter = document.querySelector('.frontmatter')
     this.render()
+
   }
 
   render() {
     const { shadowRoot } = this
-    const frontmatter = document.querySelector('.frontmatter.language-yaml > code')
-    if (frontmatter !== null) {
-      this.data = parseYaml(frontmatter.textContent)
-    } else {
-      console.log("metatable: No `.frontmatter.language-yaml` found. Skipping.")
+    this.fetchData()
+
+    const callback = (mutationsList, observer) => {
+      for (const mutation of mutationsList) {
+        const {target} = mutation
+
+        if (target.nodeName === 'CODE' && target.hasClass('is-loaded')) {
+          this.data = parseYaml(target.textContent)
+        }
+      }
     }
 
+    this.observer = new MutationObserver(callback)
+    this.observer.observe(this.frontmatter, { attributeFilter: ['class'], subtree: true })
+
     shadowRoot.querySelector('#metatable-wrapper').addEventListener('click', this.toggleHandler)
+  }
+
+  /**
+   * Takes the frontmatter from the code element and stores it as plain YAML.
+   */
+  fetchData() {
+    const code = this.frontmatter.querySelector('code')
+    if (code !== null) {
+      this.data = parseYaml(code.textContent)
+    }
   }
 
   disconnectedCallback() {
     const { shadowRoot } = this
 
+    this.observer?.disconnect()
     shadowRoot.querySelector('#metatable-wrapper').removeEventListener('click', this.toggleHandler)
   }
 
@@ -181,10 +207,8 @@ async function frontmatterProcessor(el: HTMLElement, ctx: MarkdownPostProcessorC
   const frontmatter = await el.querySelector('.frontmatter')
 
   if (frontmatter !== null) {
-    const target = await el.querySelector('.frontmatter-container')
+    const target = el.querySelector('.frontmatter-container')
     target.innerHTML = `<obsidian-metatable />`
-    // XXX: A nasty hack to pass the frontmatter data without re-serialising
-    target.firstElementChild.data = ctx.frontmatter
   }
 }
 
