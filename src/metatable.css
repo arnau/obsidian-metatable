@@ -69,6 +69,7 @@ table ul {
   color: var(--text-normal);
   cursor: pointer;
   display: inline-block;
+  font-size: 0.8em;
   line-height: 0.4rem;
   margin-left: 0.2rem;
   outline: none;
@@ -99,4 +100,13 @@ table ul {
 .tag:hover {
   background-color: var(--metatable-background-secondary);
   border-color: var(--metatable-border);
+}
+
+summary {
+  cursor: pointer;
+  margin-bottom: 0.4rem;
+}
+
+summary:focus {
+  outline: 1px solid var(--metatable-border);
 }

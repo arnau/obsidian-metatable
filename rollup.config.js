@@ -24,9 +24,9 @@ export default {
   },
   external: ['obsidian'],
   plugins: [
+    css(),
     typescript(),
     nodeResolve({browser: true}),
     commonjs(),
-    css(),
   ]
 };
