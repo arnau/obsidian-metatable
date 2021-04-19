@@ -34,7 +34,7 @@ For more details, either use the Inspector tool in Obsidian or check out the [`m
 - [x] Basic takeover from the default plugin.
 - [x] Use a [Web Component] for better isolation.
 - [x] Add setting for expansion level.
-- [ ] Cut releases with Github Actions.
+- [x] Cut releases with Github Actions.
 - [ ] Adjust styles to work better with the default light theme.
 - [ ] Adjust styles to work better with the default dark theme.
 - [ ] Add setting for filtering top level keys.
