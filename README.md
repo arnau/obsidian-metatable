@@ -12,16 +12,27 @@ It has been mostly tested using the [Minimal theme](https://github.com/kepano/ob
 By enabling the plugin in the “Community plugins” section you'll be all set. To see the effects you'll need to open a new document or restart the vault.
 
 
-### Options
+### Settings
 
 - **Expansion level** let's you choose whether you want the metatable fully collapsed, collapse only leafs or fully expanded.
 - **Debug mode** helps with the development of this plugin. Ignore otherwise.
+
+### CSS Custom properties
+
+Use [CSS custom properties] to tweak the styles defined for the `<obsidian-metatable>` [Web Component].
+
+- `--metatable-border`: Defined in terms of `--background-modifier-border`.
+- `--metatable-background-primary`: Defined in terms of `--background-primary-alt`.
+- `--metatable-background-secondary-alt`: Defined in terms of `--background-secondary-alt`.
+- `--metatable-background-secondary`: Defined in terms of `--background-secondary`.
+
+For more details, either use the Inspector tool in Obsidian or check out the [`metatable.css`](src/metatable.css).
 
 
 ## Roadmap
 
 - [x] Basic takeover from the default plugin.
-- [x] Use a [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components) for better isolation.
+- [x] Use a [Web Component] for better isolation.
 - [x] Add setting for expansion level.
 - [ ] Cut releases with Github Actions.
 - [ ] Adjust styles to work better with the default light theme.
@@ -34,7 +45,7 @@ By enabling the plugin in the “Community plugins” section you'll be all set.
 
 From source:
 
-- Clone the [source repository](https://github.com/arnau/obsidian-metatable).
+- Clone the [source repository].
 - Run `yarn install`.
 - Run `yarn build`.
 - Create a `obsidian-metatable` under your vault's `.obsidian/plugins/` directory.
@@ -44,3 +55,8 @@ From source:
 ## Licence
 
 Arnau Siches under the [MIT License](./LICENCE)
+
+
+[CSS custom properties]: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
+[Web Component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
+[source repository]: https://github.com/arnau/obsidian-metatable
