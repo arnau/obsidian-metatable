@@ -10,14 +10,14 @@ function metatag(value: string[]): string {
 /**
  * Dispatches the transformation to HTML for each type of data value.
  */
-function metanode(data: any, label?: string, hideLeaf: boolean): string {
+function metanode(data: any, hideLeaf: boolean, label?: string): string {
   let value
 
   if (Array.isArray(data)) {
     value = label == 'tags'
       ? data.map(metatag).join(' ')
       : `<ul aria-hidden=${hideLeaf}>
-          ${data.map(item => `<li>${metanode(item)}</li>`).join('\n')}
+          ${data.map(item => `<li>${metanode(item, hideLeaf)}</li>`).join('\n')}
          </ul>
          <div aria-hidden=${!hideLeaf} class="collapsedMark">…</div>`
 
@@ -43,10 +43,10 @@ function isExpanded(value: string): boolean {
 /**
  * Composes a table row.
  */
-function metarow(pair: [string, unknown], hideLeaf): string {
+function metarow(pair: [string, unknown], hideLeaf: boolean): string {
   const label = pair[0]
   const data = pair[1]
-  const value = metanode(data, label, hideLeaf)
+  const value = metanode(data, hideLeaf, label)
   const toggle = isLeaf(data) || label == 'tags'
     ? ``
     : ` ${button(label, !hideLeaf)}`
