@@ -28,7 +28,11 @@ export default class MetatablePlugin extends Plugin {
 
   async onload() {
     await this.loadSettings();
-    customElements.define('obsidian-metatable', Metatable)
+
+    if (customElements.get('obsidian-metatable') === undefined) {
+      customElements.define('obsidian-metatable', Metatable)
+    }
+
     this.registerMarkdownPostProcessor(frontmatterProcessor.bind(this))
     this.addSettingTab(new MetatableSettingTab(this.app, this));
 
