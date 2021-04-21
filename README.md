@@ -2,8 +2,6 @@
 
 A plugin to display the full frontmatter block instead of just the list of tags.
 
-It has been mostly tested using the [Minimal theme](https://github.com/kepano/obsidian-minimal). At this time the default theme doesn't look as good.
-
 ![](screenshot.png)
 
 
@@ -15,16 +13,18 @@ By enabling the plugin in the “Community plugins” section you'll be all set.
 ### Settings
 
 - **Expansion level** let's you choose whether you want the metatable fully collapsed, collapse only leafs or fully expanded.
-- **Debug mode** helps with the development of this plugin. Ignore otherwise.
+
 
 ### CSS Custom properties
 
-Use [CSS custom properties] to tweak the styles defined for the `<obsidian-metatable>` [Web Component].
+Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metatable` [Web Component] shadow DOM.
 
 - `--metatable-border`: Defined in terms of `--background-modifier-border`.
 - `--metatable-background-primary`: Defined in terms of `--background-primary-alt`.
 - `--metatable-background-secondary-alt`: Defined in terms of `--background-secondary-alt`.
 - `--metatable-background-secondary`: Defined in terms of `--background-secondary`.
+- `--metatable-font-size`.
+- `--metatable-toggle`.
 
 For more details, either use the Inspector tool in Obsidian or check out the [`metatable.css`](src/metatable.css).
 
@@ -35,8 +35,8 @@ For more details, either use the Inspector tool in Obsidian or check out the [`m
 - [x] Use a [Web Component] for better isolation.
 - [x] Add setting for expansion level.
 - [x] Cut releases with Github Actions.
-- [ ] Adjust styles to work better with the default light theme.
-- [ ] Adjust styles to work better with the default dark theme.
+- [x] Adjust styles to work better with the default light theme.
+- [x] Adjust styles to work better with the default dark theme.
 - [ ] Add setting for filtering top level keys.
 - [ ] Add setting for adding custom mapping functions.
 
