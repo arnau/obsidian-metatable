@@ -9,7 +9,6 @@ function log(msg: string) {
 }
 
 const DEFAULT_SETTINGS: MetatableSettings = {
-  debugMode: false,
   expansionMode: 'expanded',
 }
 

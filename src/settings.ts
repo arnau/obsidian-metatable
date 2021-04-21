@@ -8,7 +8,6 @@ import MetatablePlugin from './plugin'
 
 
 export interface MetatableSettings {
-  debugMode: boolean,
   expansionMode: string,
 }
 
@@ -39,15 +38,5 @@ export class MetatableSettingTab extends PluginSettingTab {
                      plugin.settings.expansionMode = value
                      await plugin.saveSettings()
                    }))
-
-    new Setting(containerEl)
-      .setName('Debug mode')
-      .setDesc('Increase the logging output')
-      .addToggle(toggle => toggle
-                 .setValue(plugin.settings.debugMode)
-                 .onChange(async (value) => {
-                   plugin.settings.debugMode = value
-                   await plugin.saveSettings()
-                 }))
   }
 }
