@@ -31,6 +31,7 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
   if (frontmatter !== null) {
     const target = el.querySelector('.frontmatter-container') as HTMLElement
     target.removeClass('is-collapsed')
+    target.removeClass('frontmatter-container')
     target.empty()
 
     createMetatable(target, ctx.frontmatter, plugin.settings)
