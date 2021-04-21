@@ -17,7 +17,13 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     const { expansionMode, debugMode } = plugin.settings
     const target = el.querySelector('.frontmatter-container')
     target.removeClass('is-collapsed')
-    target.innerHTML = `<obsidian-metatable id=${ctx.docId} expanded=${expansionMode} debug=${debugMode} />`
+
+    const mtEl = document.createElement('obsidian-metatable')
+    mtEl.setAttribute('id', ctx.docId)
+    mtEl.setAttribute('expanded', expansionMode)
+    mtEl.setAttribute('debug', debugMode)
+    target.replaceChildren(mtEl)
+
     const mt = target.querySelector('obsidian-metatable') as Metatable
     mt.data = ctx.frontmatter
   }
