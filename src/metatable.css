@@ -92,6 +92,7 @@ table ul {
   color: var(--text-normal);
   display: inline-block;
   font-size: 0.9em;
+  margin-right: 0.2rem;
   padding: 0.1rem 0.8rem;
   text-decoration: none;
   white-space: nowrap;
