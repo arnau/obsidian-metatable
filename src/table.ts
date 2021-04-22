@@ -119,7 +119,22 @@ function button(label: string, expanded: boolean): HTMLElement {
   return button
 }
 
-function table(data: [string, unknown][], hideLeaf?: boolean): DocumentFragment {
+function table(data: [string, unknown][], hideLeaf: boolean): DocumentFragment {
+  const fragment = new DocumentFragment()
+  const table = document.createElement('table')
+  const tmark = mark(hideLeaf)
+  fragment.append(tmark)
+
+  data.forEach(item => {
+    table.append(metarow(item, hideLeaf))
+  })
+
+  fragment.append(table)
+
+  return fragment
+}
+
+function toptable(data: [string, unknown][], hideLeaf: boolean): DocumentFragment {
   const fragment = new DocumentFragment()
   const table = document.createElement('table')
 
@@ -128,11 +143,6 @@ function table(data: [string, unknown][], hideLeaf?: boolean): DocumentFragment 
   })
 
   fragment.append(table)
-
-  if (hideLeaf !== undefined) {
-    const tmark = mark(hideLeaf)
-    fragment.append(tmark)
-  }
 
   return fragment
 }
@@ -198,7 +208,7 @@ export default function metatable(data: [string, unknown][], expanded: string): 
   const summary = document.createElement('summary')
   summary.append('Metadata')
 
-  const tableEl = table(data)
+  const tableEl = toptable(data, hideLeaf)
 
   details.append(summary)
   details.append(tableEl)
