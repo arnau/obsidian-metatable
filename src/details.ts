@@ -22,8 +22,6 @@ function toggle(trigger: HTMLElement) {
 function clickHandler(event: Event) {
   const trigger: HTMLElement = event.target as HTMLElement
 
-//   console.log(event)
-
   if (trigger?.hasAttribute('aria-expanded')) {
     event.stopPropagation();
     toggle(trigger)
@@ -76,9 +74,9 @@ function isOpen(mode: string, depth: number): boolean {
  * A set member with a scalar value.
  */
 function leafMember(label: string, data: string): HTMLElement {
-  const root = document.createElement('tr')
-  const key = document.createElement('th')
-  const value = document.createElement('td')
+  const root = document.createElement('div')
+  const key = document.createElement('strong')
+  const value = document.createElement('span')
 
   key.addClass('key')
   key.append(label)
@@ -117,7 +115,7 @@ function member(label: string, value: any, settings: Settings): HTMLElement {
  * A set of members.
  */
 function set(data: object, settings: Settings): HTMLElement {
-  const root = document.createElement('table')
+  const root = document.createElement('div')
   const { depth } = settings
   const valueSettings = { ...settings, depth: depth + 1 }
 
@@ -179,15 +177,13 @@ function list(data: any[], settings: Settings, labelledBy?: string): HTMLElement
  * A collapsible group.
  */
 function details(label: string, data: any, settings: Settings): HTMLElement {
-  const root = document.createElement('tr')
-  const key = document.createElement('th')
-  const value = document.createElement('td')
+  const root = document.createElement('div')
+  const key = document.createElement('strong')
   const marker = document.createElement('div')
-
   const { depth, mode } = settings
   const valueSettings = { ...settings, depth: depth + 1 }
   const valueId = `${label}-${depth}`
-  let valueInner
+  let value
 
   key.addClass('key')
   key.addClass('toggle')
@@ -199,18 +195,16 @@ function details(label: string, data: any, settings: Settings): HTMLElement {
 
   root.append(key)
 
-  valueInner = Array.isArray(data)
+  value = Array.isArray(data)
     ? list(data, valueSettings, label)
     : set(data, valueSettings)
-
   value.addClass('value')
   value.setAttribute('id', valueId)
 
-  value.append(valueInner)
   root.append(value)
 
   marker.addClass('marker')
-  value.append(marker)
+  root.append(marker)
 
   return root
 }

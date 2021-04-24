@@ -1,6 +1,7 @@
 import { MarkdownPostProcessorContext, Plugin } from 'obsidian'
 import { MetatableSettings, MetatableSettingTab } from './settings'
 import metatable from './table'
+// import metatable from './details'
 // @ts-ignore
 import styles from './metatable.css'
 
@@ -20,7 +21,7 @@ function createMetatable(el: HTMLElement, data: object, settings: MetatableSetti
 
   const fragment = new DocumentFragment()
   fragment.createEl('style', {text: styles})
-  fragment.append(metatable(Object.entries(data), expansionMode))
+  fragment.append(metatable(data, expansionMode))
   wrapper.shadowRoot.append(fragment)
 }
 
@@ -34,6 +35,10 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     target.empty()
 
     createMetatable(target, ctx.frontmatter, plugin.settings)
+
+    el.addEventListener('click', (e) => {
+      console.log(e)
+    })
   }
 }
 

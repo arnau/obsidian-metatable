@@ -1,113 +1,160 @@
-:host {
-  --metatable-background-primary: var(--background-primary-alt);
-  --metatable-background-secondary-alt: var(--background-secondary-alt);
-  --metatable-background-secondary: var(--background-secondary);
-  --metatable-border: var(--background-modifier-border);
-  --metatable-font-size: 0.9em;
-  --metatable-toggle: transparent;
+:host-context(.theme-light) {
+  --metatable-foreground: var(--text-muted, darkslategrey);
+  --metatable-key-background: var(--background-primary-alt, #f3f3f3);
+  --metatable-key-border-color: var(--background-modifier-border, lightgrey);
+  --metatable-key-border-color-focus: orange;
+  --metatable-key-focus: var(--background-match-highlight, lightyellow);
+  --metatable-tag-background: var(--background-primary-alt, #f3f3f3);
 }
+
+:host-context(.theme-dark) {
+  --metatable-foreground: var(--text-muted, #999);
+  --metatable-key-background: var(--background-primary-alt, #111);
+  --metatable-key-border-color: var(--background-modifier-border, #333);
+  --metatable-key-border-color-focus: orange;
+  --metatable-key-focus: black;
+  --metatable-tag-background: var(--background-primary-alt, #111);
+}
+
+:host {
+  --metatable-collapsed-symbol: "▶︎";
+  --metatable-expanded-symbol: "▼";
+  --metatable-font-family: var(--text, sans-serif);
+  --metatable-font-size: var(--font-small, 13px);
+  --metatable-key-border-width: 2px;
+  --metatable-mark-symbol: "…";
+  --metatable-value-background: transparent;
+  --metatable-background: transparent;
+}
+
 
 * {
   box-sizing: border-box;
 }
 
-:host > details {
-  border-bottom: 1px solid var(--metatable-border);
-  color: var(--text-muted);
+details {
+  background-color: var(--metatable-background);
+  color: var(--metatable-foreground);
+  font-family: var(--metatable-font-family);
   font-size: var(--metatable-font-size);
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-}
-
-table {
-  border-collapse: separate;
-  width: 100%;
-}
-
-th {
-  background-color: var(--metatable-background-primary);
-  max-width: 20vw;
-  min-width: 10vw;
-  text-align: left;
-  vertical-align: top;
-  width: 10vw;
-  white-space: nowrap;
-}
-
-th {
-  border-right: 2px solid var(--metatable-border);
-}
-
-td, th {
-  padding: 0.4rem;
-}
-
-table table {
-  margin-bottom: 0.8rem;
-  width: 98%;
-}
-
-li > table {
-  margin-bottom: 0.8rem;
-}
-
-li:last-child > table {
-  margin-bottom: 0;
-}
-
-
-table ul {
-  margin: 0;
-  padding: 0 0 0 2rem;
-}
-
-
-.toggle {
-  background-color: var(--metatable-toggle);
-  border: 0;
-  border: 1px solid transparent;
-  color: var(--text-normal);
-  cursor: pointer;
-  display: inline-block;
-  font-size: 0.8em;
-  line-height: 0.4rem;
-  margin-left: 0.2rem;
-  outline: none;
-  padding: 0.2rem;
-}
-
-.toggle:hover {
-  background-color: var(--metatable-background-secondary);
-  border-color: var(--metatable-border);
-}
-
-[aria-hidden=true] {
-  display: none;
-}
-
-.tag {
-  background-color: var(--metatable-background-secondary-alt);
-  border-radius: 0.8rem;
-  border: 1px solid transparent;
-  color: var(--text-normal);
-  display: inline-block;
-  font-size: 0.9em;
-  margin-right: 0.2rem;
-  padding: 0.1rem 0.8rem;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.tag:hover {
-  background-color: var(--metatable-background-secondary);
-  border-color: var(--metatable-border);
 }
 
 summary {
   cursor: pointer;
-  margin-bottom: 0.4rem;
 }
 
 summary:focus {
-  outline: 1px solid var(--metatable-border);
+  outline: none;
+}
+
+summary:focus-visible {
+  outline: none;
+  background-color: var(--metatable-key-focus)
+}
+
+.set {
+  background-color: var(--metatable-background);
+  display: grid;
+  grid-gap: 2px;
+  margin-top: 0.4rem;
+}
+
+.member {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-areas: "key value";
+  grid-gap: 2px;
+}
+
+.key[role=button] {
+  cursor: pointer;
+}
+
+.member .key {
+  background-color: var(--metatable-key-background);
+  border-right: var(--metatable-key-border-width) solid var(--metatable-key-border-color);
+  display: block;
+  font-weight: bold;
+  grid-area: key;
+  padding: 0.4rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.member .value {
+  background-color: var(--metatable-value-background);
+  grid-area: value;
+  margin: 0;
+  padding: 0.4rem;
+}
+
+.member .key:focus {
+  outline: none;
+}
+
+.member .key:focus-visible {
+  outline: none;
+  border-right-color: var(--metatable-key-border-color-focus);
+  background-color: var(--metatable-key-focus);
+}
+
+.value ul {
+  margin: 0;
+  padding: 0;
+}
+
+.value li {
+  margin-left: 1rem;
+}
+
+.key[aria-expanded]::before {
+  margin-right: 0.3rem;
+  font-size: 0.6rem;
+}
+
+.key[aria-expanded=true]::before {
+  content: var(--metatable-expanded-symbol);
+}
+
+.key[aria-expanded=false]::before {
+  content: var(--metatable-collapsed-symbol);
+}
+
+.key[aria-expanded=false] + .value > :first-child {
+  display: none;
+}
+
+.key[aria-expanded=false] + .value > .marker::after {
+  content: var(--metatable-mark-symbol);
+  display: block;
+  padding: 0.4rem;
+}
+
+/* Mappers */
+
+.tag-list li {
+  display: inline-block;
+  margin: 0 0.4rem 0 0;
+}
+
+.tag {
+  background-color: var(--metatable-tag-background);
+  border-radius: 1rem;
+  color: var(--metatable-foreground);
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  text-decoration: none;
+}
+
+.tag:hover {
+  filter: brightness(0.8);
+}
+
+.tag:focus {
+  outline: none;
+}
+
+.tag:focus-visible {
+  outline: none;
+  background-color: var(--metatable-key-focus)
 }

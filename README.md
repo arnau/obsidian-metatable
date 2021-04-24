@@ -19,12 +19,43 @@ By enabling the plugin in the “Community plugins” section you'll be all set.
 
 Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metatable` [Web Component] shadow DOM.
 
-- `--metatable-border`: Defined in terms of `--background-modifier-border`.
-- `--metatable-background-primary`: Defined in terms of `--background-primary-alt`.
-- `--metatable-background-secondary-alt`: Defined in terms of `--background-secondary-alt`.
-- `--metatable-background-secondary`: Defined in terms of `--background-secondary`.
-- `--metatable-font-size`.
-- `--metatable-toggle`.
+- `--metatable-background`
+- `--metatable-collapsed-symbol`
+- `--metatable-expanded-symbol`
+- `--metatable-font-family`
+- `--metatable-font-size`
+- `--metatable-foreground`
+- `--metatable-key-background`
+- `--metatable-key-border-color-focus`
+- `--metatable-key-border-color`
+- `--metatable-key-border-width`
+- `--metatable-key-focus`
+- `--metatable-mark-symbol`
+- `--metatable-value-background`
+- `--metatable-tag-background`
+
+
+### Example
+
+Say you want your metadata to have a custom palette of pinks and arrows is not your thing.
+
+First, create a directory `<vault>/.obsidian/snippets` and a file `metatable.css` inside.
+
+Then, in Obsidian, open `Settings`, go to `Appearance`, enable `CSS snippets` and enable the `metatable` snippet. Note that you might have to reload the snippets by hand using the button at the top-right hand side of the section.
+
+Finally, add your custom CSS inside the file you just created:
+
+```css
+/* .obsidian/snippets/metatable.css */
+.theme-light .obsidian-metatable {
+  --metatable-key-background: mistyrose;
+  --metatable-key-border-color: pink;
+  --metatable-foreground: dimgrey;
+  --metatable-value-background: snow;
+  --metatable-collapsed-symbol: "😶";
+  --metatable-expanded-symbol: "😎";
+}
+```
 
 For more details, either use the Inspector tool in Obsidian or check out the [`metatable.css`](src/metatable.css).
 
