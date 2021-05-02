@@ -1,7 +1,6 @@
 import { MarkdownPostProcessorContext, Plugin, fuzzySearch, prepareQuery } from 'obsidian'
 import { MetatableSettings, MetatableSettingTab } from './settings'
 import metatable from './table'
-// import metatable from './details'
 // @ts-ignore
 import styles from './metatable.css'
 
