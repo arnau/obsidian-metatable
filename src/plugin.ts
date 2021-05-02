@@ -1,4 +1,4 @@
-import { MarkdownPostProcessorContext, Plugin } from 'obsidian'
+import { MarkdownPostProcessorContext, Plugin, fuzzySearch, prepareQuery } from 'obsidian'
 import { MetatableSettings, MetatableSettingTab } from './settings'
 import metatable from './table'
 // import metatable from './details'
@@ -11,6 +11,7 @@ function log(msg: string) {
 
 const DEFAULT_SETTINGS: MetatableSettings = {
   expansionMode: 'expanded',
+  searchFn: null,
 }
 
 function createMetatable(el: HTMLElement, data: object, settings: MetatableSettings) {
@@ -21,7 +22,7 @@ function createMetatable(el: HTMLElement, data: object, settings: MetatableSetti
 
   const fragment = new DocumentFragment()
   fragment.createEl('style', {text: styles})
-  fragment.append(metatable(data, expansionMode))
+  fragment.append(metatable(data, settings))
   wrapper.shadowRoot.append(fragment)
 }
 
@@ -33,12 +34,11 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     const target = el.querySelector('.frontmatter-container') as HTMLElement
     target.removeAttribute('class')
     target.empty()
+    // @ts-ignore
+    const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)
+    const settings = { ...plugin.settings, searchFn }
 
-    createMetatable(target, ctx.frontmatter, plugin.settings)
-
-    el.addEventListener('click', (e) => {
-      console.log(e)
-    })
+    createMetatable(target, ctx.frontmatter, settings)
   }
 }
 
@@ -50,6 +50,10 @@ export default class MetatablePlugin extends Plugin {
 
     this.registerMarkdownPostProcessor(frontmatterProcessor.bind(this))
     this.addSettingTab(new MetatableSettingTab(this.app, this));
+
+    document.addEventListener('test', (e) => {
+      console.log(e)
+    })
 
     log('loaded')
   }

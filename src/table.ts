@@ -1,3 +1,5 @@
+import { MetatableSettings } from './settings'
+
 // A map between known keys and their mapping function.
 interface Keymap {
   [key: string]: string;
@@ -19,14 +21,22 @@ function toggle(trigger: HTMLElement) {
   trigger.setAttribute('aria-expanded', String(!isExpanded))
 }
 
-function clickHandler(event: Event) {
+function clickHandler(event: Event, searchFn: (query: string) => void) {
   const trigger: HTMLElement = event.target as HTMLElement
-
-//   console.log(event)
 
   if (trigger?.hasAttribute('aria-expanded')) {
     event.stopPropagation();
     toggle(trigger)
+    return;
+  }
+
+  if (trigger?.hasAttribute('href')) {
+    event.stopPropagation();
+    const href = trigger.getAttribute('href')
+
+    if (href.startsWith('#')) {
+      searchFn(`tag:${href}`)
+    }
   }
 }
 
@@ -215,8 +225,9 @@ function details(label: string, data: any, settings: Settings): HTMLElement {
   return root
 }
 
-export default function metatable(data: object, mode: string): DocumentFragment {
+export default function metatable(data: object, pluginSettings: MetatableSettings): DocumentFragment {
   const fragment = new DocumentFragment()
+  const { expansionMode: mode, searchFn } = pluginSettings
   const settings = {
     mode,
     depth: 0,
@@ -225,7 +236,7 @@ export default function metatable(data: object, mode: string): DocumentFragment 
     },
     keymap: {
       tags: 'autotag',
-    }
+    },
   }
   const root = document.createElement('details')
   const summary = document.createElement('summary')
@@ -239,7 +250,7 @@ export default function metatable(data: object, mode: string): DocumentFragment 
   root.addClass('metatable')
   root.append(summary)
   root.append(value)
-  root.addEventListener('click', clickHandler)
+  root.addEventListener('click', (e) => clickHandler(e, searchFn))
   root.addEventListener('keydown', keyHandler)
   fragment.append(root)
 

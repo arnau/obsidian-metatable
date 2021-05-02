@@ -9,6 +9,7 @@ import MetatablePlugin from './plugin'
 
 export interface MetatableSettings {
   expansionMode: string,
+  searchFn: (query: string) => void,
 }
 
 export class MetatableSettingTab extends PluginSettingTab {
