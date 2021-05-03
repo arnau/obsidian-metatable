@@ -225,6 +225,17 @@ function details(label: string, data: any, settings: Settings): HTMLElement {
   return root
 }
 
+/**
+ * Normalises a list of tags as an array of strings.
+ */
+function normaliseTags(data: null | string | string[]): string[] {
+  if (typeof data == 'string') {
+    return data.split(',').map(x => x.trim())
+  }
+
+  return data
+}
+
 export default function metatable(data: object, pluginSettings: MetatableSettings): DocumentFragment {
   const fragment = new DocumentFragment()
   const { expansionMode: mode, searchFn } = pluginSettings
@@ -240,7 +251,9 @@ export default function metatable(data: object, pluginSettings: MetatableSetting
   }
   const root = document.createElement('details')
   const summary = document.createElement('summary')
-  const value = set(data, settings)
+  // @ts-ignore
+  const { tags } = data
+  const value = set({ ...data, tags: normaliseTags(tags) }, settings)
 
   if (isOpen(mode, 0)) {
     root.setAttribute('open', '')
