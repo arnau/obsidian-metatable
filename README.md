@@ -71,8 +71,27 @@ For more details, either use the Inspector tool in Obsidian or check out the [`m
 - [ ] Add setting for filtering top level keys.
 - [ ] Add setting for adding custom mapping functions.
 
+Check the [decision log](./decision_log) for the rationale behind the main design choices.
+
 
 ## Installation
+
+From Obsidian:
+
+- Ensure Community Plugins are enabled.
+- Browse community plugins searching for **metatable**.
+- Click install.
+- Enable plugin in the “Community Plugins” Settings section.
+- Open a file (notice that previously opened files won't get the effects of the plugin until reopened or changed).
+
+From release:
+
+- Download the `obsidian-metatable-{version}.zip` file from the chosen release, for example the [latest release].
+- Ensure “Community Plugins” are enabled in Settings.
+- Ensure the `.obsidian/plugins/` directory exists in your vault directory.
+- Expand the zip file into the `.obsidian/plugins/` directory such that an `obsidian-metatable` directory is a direct child of `plugins`.
+- Enable plugin in the “Community Plugins” Settings section.
+- Open a file (notice that previously opened files won't get the effects of the plugin until reopened or changed).
 
 From source:
 
@@ -81,6 +100,8 @@ From source:
 - Run `yarn build`.
 - Create a `obsidian-metatable` under your vault's `.obsidian/plugins/` directory.
 - Copy over `main.js`, `versions.json` and `manifest.json`.
+- Enable plugin in the “Community Plugins” Settings section.
+- Open a file (notice that previously opened files won't get the effects of the plugin until reopened or changed).
 
 
 ## Licence
@@ -91,3 +112,4 @@ Arnau Siches under the [MIT License](./LICENCE)
 [CSS custom properties]: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
 [Web Component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [source repository]: https://github.com/arnau/obsidian-metatable
+[latest release]: https://github.com/arnau/obsidian-metatable/releases/latest
