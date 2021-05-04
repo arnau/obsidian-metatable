@@ -32,6 +32,8 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
   if (frontmatter !== null) {
     const target = el.querySelector('.frontmatter-container') as HTMLElement
     target.removeAttribute('class')
+    // Prevents an undesired `display: none` if `tags` is not present.
+    target.removeAttribute('style')
     target.empty()
     // @ts-ignore
     const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)

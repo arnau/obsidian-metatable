@@ -85,7 +85,7 @@ function isOpen(mode: string, depth: number): boolean {
 /**
  * A set member with a scalar value.
  */
-function leafMember(label: string, data: string): HTMLElement {
+function leafMember(label: string, data?: string): HTMLElement {
   const root = document.createElement('tr')
   const key = document.createElement('th')
   const value = document.createElement('td')
@@ -93,7 +93,7 @@ function leafMember(label: string, data: string): HTMLElement {
   key.addClass('key')
   key.append(label)
   value.addClass('value')
-  value.append(data)
+  value.append(data == null ? '' : data)
 
   root.addClass('member')
   root.append(key)
@@ -116,7 +116,7 @@ function nodeMember(label: string, value: any, settings: Settings): HTMLElement 
  * A set member.
  */
 function member(label: string, value: any, settings: Settings): HTMLElement {
-  if (typeof value == 'object') {
+  if (typeof value == 'object' && value != null) {
     return nodeMember(label, value, settings)
   }
 
@@ -132,7 +132,6 @@ function set(data: object, settings: Settings): HTMLElement {
   const valueSettings = { ...settings, depth: depth + 1 }
 
   root.addClass('set')
-
   Object.entries(data).forEach(([label, value]: [string, unknown]) => {
     root.append(member(label, value, valueSettings))
   })
@@ -253,7 +252,9 @@ export default function metatable(data: object, pluginSettings: MetatableSetting
   const summary = document.createElement('summary')
   // @ts-ignore
   const { tags } = data
-  const value = set({ ...data, tags: normaliseTags(tags) }, settings)
+  const ndata = tags ? { ...data, tags: normaliseTags(tags) } : data
+  console.log(ndata)
+  const value = set(ndata, settings)
 
   if (isOpen(mode, 0)) {
     root.setAttribute('open', '')
