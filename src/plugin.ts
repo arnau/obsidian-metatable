@@ -40,7 +40,9 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)
     const settings = { ...plugin.settings, searchFn }
 
-    createMetatable(target, ctx.frontmatter, settings)
+    if (ctx.frontmatter) {
+      createMetatable(target, ctx.frontmatter, settings)
+    }
   }
 }
 
@@ -52,10 +54,6 @@ export default class MetatablePlugin extends Plugin {
 
     this.registerMarkdownPostProcessor(frontmatterProcessor.bind(this))
     this.addSettingTab(new MetatableSettingTab(this.app, this));
-
-    document.addEventListener('test', (e) => {
-      console.log(e)
-    })
 
     log('loaded')
   }

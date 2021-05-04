@@ -11,6 +11,7 @@ interface Mappers {
 
 interface Settings {
   mode: string; // expansionMode
+  nullValue: string;
   depth: number;
   mappers: Mappers;
   keymap: Keymap;
@@ -62,6 +63,17 @@ function tag(value: string): HTMLElement {
   return a
 }
 
+function url(value: string): HTMLElement {
+  const a = document.createElement('a')
+  a.addClass('external-link')
+  a.setAttribute('target', '_blank')
+  a.setAttribute('rel', 'noopener')
+  a.setAttribute('href', value)
+  a.append(value)
+
+  return a
+}
+
 
 function isExpanded(value: string): boolean {
   return value == 'expanded'
@@ -81,6 +93,27 @@ function isOpen(mode: string, depth: number): boolean {
   return false
 }
 
+function isUrl(value: string): boolean {
+  const allowedProtocols = ['http:', 'https:']
+
+  try {
+    const url = new URL(value)
+
+    return allowedProtocols.some(protocol => url.protocol == protocol)
+  } catch(_) {
+    return false
+  }
+}
+
+function enrichValue(value: string): string | HTMLElement {
+  // Link URLs
+  if (isUrl(value)) {
+    return url(value)
+  }
+
+  return value
+}
+
 
 /**
  * A set member with a scalar value.
@@ -93,7 +126,7 @@ function leafMember(label: string, data?: string): HTMLElement {
   key.addClass('key')
   key.append(label)
   value.addClass('value')
-  value.append(data)
+  value.append(enrichValue(data))
 
   root.addClass('member')
   root.append(key)
