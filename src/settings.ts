@@ -9,6 +9,7 @@ import MetatablePlugin from './plugin'
 
 export interface MetatableSettings {
   expansionMode: string,
+  nullValue: string,
   searchFn: (query: string) => void,
 }
 
@@ -39,5 +40,16 @@ export class MetatableSettingTab extends PluginSettingTab {
                      plugin.settings.expansionMode = value
                      await plugin.saveSettings()
                    }))
+
+    new Setting(containerEl)
+      .setName('Null value')
+      .setDesc('Text to show when a key has no value. Defaults to nothing')
+      .addText(text => text
+               .setValue(plugin.settings.nullValue)
+               .onChange(async (value) => {
+                 plugin.settings.nullValue = value
+                 await plugin.saveSettings()
+               }))
+
   }
 }

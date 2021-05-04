@@ -93,7 +93,7 @@ function leafMember(label: string, data?: string): HTMLElement {
   key.addClass('key')
   key.append(label)
   value.addClass('value')
-  value.append(data == null ? '' : data)
+  value.append(data)
 
   root.addClass('member')
   root.append(key)
@@ -116,11 +116,14 @@ function nodeMember(label: string, value: any, settings: Settings): HTMLElement 
  * A set member.
  */
 function member(label: string, value: any, settings: Settings): HTMLElement {
-  if (typeof value == 'object' && value != null) {
+  const patchedValue = value == null ? settings.nullValue : value
+
+  if (typeof patchedValue == 'object') {
     return nodeMember(label, value, settings)
   }
 
-  return leafMember(label, value)
+
+  return leafMember(label, patchedValue)
 }
 
 /**
@@ -237,9 +240,10 @@ function normaliseTags(data: null | string | string[]): string[] {
 
 export default function metatable(data: object, pluginSettings: MetatableSettings): DocumentFragment {
   const fragment = new DocumentFragment()
-  const { expansionMode: mode, searchFn } = pluginSettings
+  const { expansionMode: mode, searchFn, nullValue } = pluginSettings
   const settings = {
     mode,
+    nullValue,
     depth: 0,
     mappers: {
       autotag: tag,
@@ -253,7 +257,6 @@ export default function metatable(data: object, pluginSettings: MetatableSetting
   // @ts-ignore
   const { tags } = data
   const ndata = tags ? { ...data, tags: normaliseTags(tags) } : data
-  console.log(ndata)
   const value = set(ndata, settings)
 
   if (isOpen(mode, 0)) {
