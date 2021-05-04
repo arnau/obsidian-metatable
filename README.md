@@ -4,6 +4,14 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ![](screenshot.png)
 
+## Changelog
+
+- **0.5.2**:
+  - Handle null values.
+  - Add null value setting.
+  - Autolink external links (http, https).
+- **0.5.1**:
+  - Link comma-separated tags.
 
 ## Configuration
 
@@ -33,6 +41,8 @@ Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metat
 - `--metatable-mark-symbol`
 - `--metatable-value-background`
 - `--metatable-tag-background`
+- `--metatable-external-link-color`
+- `--metatable-external-link-color-hover`
 
 
 ### Example
