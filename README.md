@@ -6,6 +6,9 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **0.5.3**:
+  - Add skip key to avoid displaying the metatable for a document.
+  - Add ignored key list to not display any of these keys in the metatable.
 - **0.5.2**:
   - Handle null values.
   - Add null value setting.
@@ -20,7 +23,10 @@ By enabling the plugin in the “Community plugins” section you'll be all set.
 
 ### Settings
 
-- **Expansion level** let's you choose whether you want the metatable fully collapsed, collapse only leafs or fully expanded.
+- **Expansion level** lets you choose whether you want the metatable fully collapsed, collapse only leafs or fully expanded.
+- **Null value** lets you define a string to display when a value is `null`.
+- **Skip key** lets you define a key that when `true` will not display the metatable for that document.
+- **Ignored keys** lets you define the list of keys that should not be displayed in the metatable.
 
 
 ### CSS Custom properties
@@ -78,7 +84,7 @@ For more details, either use the Inspector tool in Obsidian or check out the [`m
 - [x] Cut releases with Github Actions.
 - [x] Adjust styles to work better with the default light theme.
 - [x] Adjust styles to work better with the default dark theme.
-- [ ] Add setting for filtering top level keys.
+- [x] Add setting for filtering top level keys.
 - [ ] Add setting for adding custom mapping functions.
 
 Check the [decision log](./decision_log) for the rationale behind the main design choices.
