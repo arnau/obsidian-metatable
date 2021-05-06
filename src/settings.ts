@@ -3,6 +3,7 @@ import {
   Plugin,
   PluginSettingTab,
   Setting,
+  Vault,
 } from 'obsidian'
 import MetatablePlugin from './plugin'
 
@@ -20,6 +21,9 @@ export interface MetatableSettings {
   // The key to look for to not render the metatable.
   skipKey: string;
   ignoredKeys: string[];
+  autolinks: boolean;
+  // A reference to the current vault.
+  vault: Vault;
 }
 
 export class MetatableSettingTab extends PluginSettingTab {
@@ -93,6 +97,16 @@ export class MetatableSettingTab extends PluginSettingTab {
                  await plugin.saveSettings()
                }))
 
+    containerEl.createEl('h3', {text: 'Experimental'})
 
+    new Setting(containerEl)
+      .setName('Autolink')
+      .setDesc('Enables autolinks for wikilinks `[[target]]`, frontmatter links `%target%` and local links `./deep/target`')
+      .addToggle(setting => setting
+                 .setValue(plugin.settings.autolinks)
+                 .onChange(async (value) => {
+                   plugin.settings.autolinks = value
+                   await plugin.saveSettings()
+                 }))
   }
 }

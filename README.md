@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **0.7.0**:
+  - Add autolinking (under a feature flag).
 - **0.6.1**:
   - Fix opening external links.
 - **0.6.0**:
@@ -57,7 +59,6 @@ Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metat
 - `--metatable-tag-background`
 - `--metatable-value-background`
 
-
 ### Example
 
 Say you want your metadata to have a custom palette of pinks and arrows is not your thing.
@@ -81,6 +82,52 @@ Finally, add your custom CSS inside the file you just created:
 ```
 
 For more details, either use the Inspector tool in Obsidian or check out the [`metatable.css`](src/metatable.css).
+
+### Autolinks
+
+#### URL
+
+Any value that is a valid HTTP or HTTPS [URL] such as `https://www.seachess.net`.
+
+#### Tags
+
+Any value in the `tags` key is linked as a tag. Mimics the default Obsidian behaviour.
+
+#### Obsidian
+
+Any value that is a valid Obsidian URL such as `obsidian://open?vault=my_vault&file=my_file`.
+
+
+#### Local
+
+**(requires "autolinks" enabled)**
+
+Any value starting with `./` is considered a local link. E.g. `./projects/obsidian-metatable` will link to the `obsidian-metatable.md` under the `projects` folder.
+
+#### Wiki
+
+**(requires "autolinks" enabled)**
+
+Any value starting with `[[` and ending with `]]` is considered a wiki link. The behaviour should be the same with any other wikilink you would write in Markdown.
+
+**Warning**: Square brackets `[]` in YAML are reserved for defining arrays so
+in order to actually use wikilinks you have to tell YAML that it's a string.
+For example,
+
+```yaml
+quoted: "[[basic-alt]]"
+long-string: >-
+  [[target]]
+```
+
+#### Frontmatter
+
+**(requires "autolinks" enabled)**
+
+Any value starting and ending with `%` is considered a frontmatter link. The behaviour is the same as per wiki links.
+
+**Warning**: This format is non-standard. But it's more convenient than wiki links.
+
 
 
 ## Roadmap
@@ -136,3 +183,4 @@ Arnau Siches under the [MIT License](./LICENCE)
 [Web Component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [source repository]: https://github.com/arnau/obsidian-metatable
 [latest release]: https://github.com/arnau/obsidian-metatable/releases/latest
+[URL]: https://developer.mozilla.org/en-US/docs/Web/API/URL

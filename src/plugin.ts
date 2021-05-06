@@ -15,6 +15,8 @@ const DEFAULT_SETTINGS: MetatableSettings = {
   searchFn: null,
   skipKey: 'metatable',
   ignoredKeys: ['metatable', 'frontmatter'],
+  autolinks: false,
+  vault: null,
 }
 
 function createMetatable(el: HTMLElement, data: object, settings: MetatableSettings) {
@@ -41,7 +43,7 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     target.empty()
     // @ts-ignore
     const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)
-    const settings = { ...plugin.settings, searchFn }
+    const settings = { ...plugin.settings, searchFn, vault: this.app.vault }
 
     if (ctx.frontmatter) {
       createMetatable(target, ctx.frontmatter, settings)

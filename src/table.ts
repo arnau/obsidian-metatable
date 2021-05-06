@@ -1,4 +1,5 @@
 import { MetatableSettings } from './settings'
+import { MarkdownRenderer, getLinkpath, Vault } from 'obsidian'
 
 // A map between known keys and their mapping function.
 interface Keymap {
@@ -27,6 +28,8 @@ interface Settings {
   depth: number;
   ignoredKeys: string[];
   members: Member[];
+  autolinks: boolean;
+  vault: Vault;
 }
 
 function toggle(trigger: HTMLElement) {
@@ -99,7 +102,7 @@ function taglist(data: string[], member: Member, settings: Settings): HTMLElemen
 }
 
 
-function url(value: string): HTMLElement {
+function externalLink(value: string): HTMLElement {
   const a = document.createElement('a')
   a.addClass('external-link')
   a.setAttribute('target', '_blank')
@@ -110,6 +113,59 @@ function url(value: string): HTMLElement {
   return a
 }
 
+function obsidianUrl(vaultName: string, fileName: string): string {
+  return `obsidian://open?vault=${vaultName}&file=${encodeURI(getLinkpath(fileName))}`
+}
+
+
+function internalLink(url: URL): HTMLElement {
+  const a = document.createElement('a')
+  const value = url.toString()
+  const label = url.searchParams.get('file')
+
+  a.dataset.href = value
+  a.setAttribute('href', value)
+  a.addClass('internal-link')
+  a.setAttribute('target', '_blank')
+  a.setAttribute('rel', 'noopener')
+  a.append(label)
+
+  return a
+}
+
+/**
+/* Creates a link for internal links from a string of the form `[[text]]`.
+ */
+function wikiLink(value: string, vault: Vault): HTMLElement {
+  const vaultName = vault.getName()
+  const cleanValue = value.slice(2, -2)
+  const url = new URL(`obsidian://open?vault=${vaultName}&file=${encodeURI(getLinkpath(cleanValue))}`)
+
+  return internalLink(url)
+}
+
+/**
+/* Creates a link for internal links from a string of the form `%text%`.
+ */
+function frontmatterLink(value: string, vault: Vault): HTMLElement {
+  const vaultName = vault.getName()
+  const cleanValue = value.slice(1, -1)
+  const url = new URL(`obsidian://open?vault=${vaultName}&file=${encodeURI(getLinkpath(cleanValue))}`)
+
+  return internalLink(url)
+}
+
+
+/**
+ * Creates a link for local paths.
+ */
+function localLink(value: string, vault: Vault): HTMLElement {
+  const vaultName = vault.getName()
+  // const cleanValue = value.slice(2, -2)
+  const url = new URL(`obsidian://open?vault=${vaultName}&file=${encodeURI(getLinkpath(value))}`)
+
+  return internalLink(url)
+}
 
 function isExpanded(value: string): boolean {
   return value == 'expanded'
@@ -129,22 +185,62 @@ function isOpen(mode: string, depth: number): boolean {
   return false
 }
 
-function isUrl(value: string): boolean {
+function isObsidianUrl(url: URL | string): boolean {
+  return (url instanceof URL && url.protocol == 'obsidian:')
+}
+
+function isUrl(url: URL | string): boolean {
   const allowedProtocols = ['http:', 'https:']
 
-  try {
-    const url = new URL(value)
+  return (url instanceof URL && allowedProtocols.some(protocol => url.protocol == protocol))
+}
 
-    return allowedProtocols.some(protocol => url.protocol == protocol)
+function isLocalLink(value: string): boolean {
+  return value.startsWith('./')
+}
+
+function tryUrl(value: string): URL | string {
+  try {
+    return new URL(value)
   } catch(_) {
-    return false
+    value
   }
 }
 
-function enrichValue(value: string): string | HTMLElement {
-  // Link URLs
-  if (isUrl(value)) {
-    return url(value)
+function isWikiLink(value: string): boolean {
+  return (value.startsWith('[[') && value.endsWith(']]'))
+}
+
+function isFrontmatterLink(value: string): boolean {
+  return (value.startsWith('%') && value.endsWith('%'))
+}
+
+function enrichValue(value: string, settings: Settings): string | HTMLElement {
+  const cleanValue = value.trim()
+  const { autolinks } = settings
+
+  if (autolinks) {
+    if (isWikiLink(cleanValue)) {
+      return wikiLink(cleanValue, settings.vault)
+    }
+
+    if (isFrontmatterLink(cleanValue)) {
+      return frontmatterLink(cleanValue, settings.vault)
+    }
+
+    if (isLocalLink(value)) {
+      return localLink(cleanValue, settings.vault)
+    }
+  }
+
+  const url = tryUrl(cleanValue)
+
+  if (isObsidianUrl(url)) {
+    return internalLink(url as URL)
+  }
+
+  if (isUrl(url)) {
+    return externalLink(cleanValue)
   }
 
   return value
@@ -160,7 +256,7 @@ function leafMember(label: string, data: string | null, settings: Settings): HTM
   const key = document.createElement('th')
   const value = document.createElement('td')
   const special = members.find(m => m.key == label)
-  const datum = special ? special.mapper(data, special, settings) : enrichValue(data)
+  const datum = special ? special.mapper(data, special, settings) : enrichValue(data, settings)
 
   key.addClass('key')
   key.append(label)
@@ -234,7 +330,7 @@ function list(data: any[], settings: Settings): HTMLElement {
     } else if (typeof item == 'object') {
       value = set(item , valueSettings)
     } else {
-      value = item
+      value = enrichValue(item, valueSettings)
     }
 
     li.append(value)
@@ -326,18 +422,29 @@ function sheath(data: object, settings: Settings): HTMLElement {
 
 export default function metatable(data: object, pluginSettings: MetatableSettings): DocumentFragment {
   const fragment = new DocumentFragment()
-  const { expansionMode: mode, searchFn, nullValue, skipKey, ignoredKeys, ignoreNulls } = pluginSettings
+  const {
+    expansionMode: mode,
+    searchFn,
+    nullValue,
+    skipKey,
+    ignoredKeys,
+    ignoreNulls,
+    autolinks,
+    vault,
+  } = pluginSettings
   const settings = {
     mode,
     ignoreNulls,
     nullValue,
     ignoredKeys,
+    autolinks,
     depth: 0,
     members: [{
       key: 'tags',
       mapper: taglist,
       foldable: false,
     }],
+    vault,
   }
 
   // @ts-ignore
