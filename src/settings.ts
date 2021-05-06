@@ -8,9 +8,15 @@ import MetatablePlugin from './plugin'
 
 
 export interface MetatableSettings {
+  // The level of expansion of the metatable tree
   expansionMode: string,
+  // The value to display for null values
   nullValue: string,
+  // The function to use to search. Used right now to mimic the default
+  // behaviour when clicking a tag link.
   searchFn: (query: string) => void,
+  // The key to look for to not render the metatable.
+  skipKey: string,
 }
 
 export class MetatableSettingTab extends PluginSettingTab {
@@ -48,6 +54,16 @@ export class MetatableSettingTab extends PluginSettingTab {
                .setValue(plugin.settings.nullValue)
                .onChange(async (value) => {
                  plugin.settings.nullValue = value
+                 await plugin.saveSettings()
+               }))
+
+    new Setting(containerEl)
+      .setName('Skip key')
+      .setDesc('When this key is found and `true`, the metatable will not be displayed')
+      .addText(text => text
+               .setValue(plugin.settings.skipKey)
+               .onChange(async (value) => {
+                 plugin.settings.skipKey = value
                  await plugin.saveSettings()
                }))
 

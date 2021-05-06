@@ -12,6 +12,7 @@ const DEFAULT_SETTINGS: MetatableSettings = {
   expansionMode: 'expanded',
   nullValue: '',
   searchFn: null,
+  skipKey: 'metatable',
 }
 
 function createMetatable(el: HTMLElement, data: object, settings: MetatableSettings) {

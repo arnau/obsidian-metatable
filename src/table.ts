@@ -271,9 +271,29 @@ function normaliseTags(data: null | string | string[]): string[] {
   return data
 }
 
+function sheath(data: object, settings: Settings): HTMLElement {
+  const root = document.createElement('details')
+  const summary = document.createElement('summary')
+  // @ts-ignore
+  const { tags } = data
+  const ndata = tags ? { ...data, tags: normaliseTags(tags) } : data
+  const value = set(ndata, settings)
+
+  if (isOpen(settings.mode, 0)) {
+    root.setAttribute('open', '')
+  }
+
+  summary.append('Metadata')
+  root.addClass('metatable')
+  root.append(summary)
+  root.append(value)
+
+  return root
+}
+
 export default function metatable(data: object, pluginSettings: MetatableSettings): DocumentFragment {
   const fragment = new DocumentFragment()
-  const { expansionMode: mode, searchFn, nullValue } = pluginSettings
+  const { expansionMode: mode, searchFn, nullValue, skipKey } = pluginSettings
   const settings = {
     mode,
     nullValue,
@@ -285,21 +305,15 @@ export default function metatable(data: object, pluginSettings: MetatableSetting
       tags: 'autotag',
     },
   }
-  const root = document.createElement('details')
-  const summary = document.createElement('summary')
-  // @ts-ignore
-  const { tags } = data
-  const ndata = tags ? { ...data, tags: normaliseTags(tags) } : data
-  const value = set(ndata, settings)
 
-  if (isOpen(mode, 0)) {
-    root.setAttribute('open', '')
+  // @ts-ignore
+  const skip = data[skipKey]
+
+  if (skip) {
+    return fragment
   }
 
-  summary.append('Metadata')
-  root.addClass('metatable')
-  root.append(summary)
-  root.append(value)
+  const root = sheath(data, settings)
   root.addEventListener('click', (e) => clickHandler(e, searchFn))
   root.addEventListener('keydown', keyHandler)
   fragment.append(root)
