@@ -15,6 +15,7 @@ interface Settings {
   depth: number;
   mappers: Mappers;
   keymap: Keymap;
+  ignoredKeys: string[];
 }
 
 function toggle(trigger: HTMLElement) {
@@ -164,11 +165,14 @@ function member(label: string, value: any, settings: Settings): HTMLElement {
  */
 function set(data: object, settings: Settings): HTMLElement {
   const root = document.createElement('table')
-  const { depth } = settings
+  const { depth, ignoredKeys } = settings
   const valueSettings = { ...settings, depth: depth + 1 }
 
   root.addClass('set')
   Object.entries(data).forEach(([label, value]: [string, unknown]) => {
+    if (ignoredKeys.some(key => key == label)) {
+      return;
+    }
     root.append(member(label, value, valueSettings))
   })
 
@@ -293,10 +297,11 @@ function sheath(data: object, settings: Settings): HTMLElement {
 
 export default function metatable(data: object, pluginSettings: MetatableSettings): DocumentFragment {
   const fragment = new DocumentFragment()
-  const { expansionMode: mode, searchFn, nullValue, skipKey } = pluginSettings
+  const { expansionMode: mode, searchFn, nullValue, skipKey, ignoredKeys } = pluginSettings
   const settings = {
     mode,
     nullValue,
+    ignoredKeys,
     depth: 0,
     mappers: {
       autotag: tag,

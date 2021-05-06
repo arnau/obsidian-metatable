@@ -13,6 +13,7 @@ const DEFAULT_SETTINGS: MetatableSettings = {
   nullValue: '',
   searchFn: null,
   skipKey: 'metatable',
+  ignoredKeys: ['metatable', 'frontmatter'],
 }
 
 function createMetatable(el: HTMLElement, data: object, settings: MetatableSettings) {

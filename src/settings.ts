@@ -17,6 +17,7 @@ export interface MetatableSettings {
   searchFn: (query: string) => void,
   // The key to look for to not render the metatable.
   skipKey: string,
+  ignoredKeys: string[],
 }
 
 export class MetatableSettingTab extends PluginSettingTab {
@@ -66,6 +67,17 @@ export class MetatableSettingTab extends PluginSettingTab {
                  plugin.settings.skipKey = value
                  await plugin.saveSettings()
                }))
+
+    new Setting(containerEl)
+      .setName('Ignored keys')
+      .setDesc('Any key found in this comma-separated list will be ignored whilst displaying the metatable')
+      .addText(text => text
+               .setValue(plugin.settings.ignoredKeys.join(', '))
+               .onChange(async (value) => {
+                 plugin.settings.ignoredKeys = value.split(',').map(v => v.trim())
+                 await plugin.saveSettings()
+               }))
+
 
   }
 }
