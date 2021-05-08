@@ -39,12 +39,14 @@ function clickHandler(event: Event, searchFn: (query: string) => void) {
 
   if (trigger?.hasAttribute('aria-expanded')) {
     event.stopPropagation();
+    event.preventDefault();
     toggle(trigger)
     return;
   }
 
   if (trigger?.hasAttribute('href')) {
     event.stopPropagation();
+    event.preventDefault();
     const href = trigger.getAttribute('href')
 
     if (href.startsWith('#')) {
