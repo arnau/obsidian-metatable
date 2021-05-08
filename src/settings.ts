@@ -9,15 +9,17 @@ import MetatablePlugin from './plugin'
 
 export interface MetatableSettings {
   // The level of expansion of the metatable tree
-  expansionMode: string,
+  expansionMode: string;
+  // Whether to ignore null values
+  ignoreNulls: boolean;
   // The value to display for null values
-  nullValue: string,
+  nullValue: string;
   // The function to use to search. Used right now to mimic the default
   // behaviour when clicking a tag link.
-  searchFn: (query: string) => void,
+  searchFn: (query: string) => void;
   // The key to look for to not render the metatable.
-  skipKey: string,
-  ignoredKeys: string[],
+  skipKey: string;
+  ignoredKeys: string[];
 }
 
 export class MetatableSettingTab extends PluginSettingTab {
@@ -49,14 +51,27 @@ export class MetatableSettingTab extends PluginSettingTab {
                    }))
 
     new Setting(containerEl)
-      .setName('Null value')
-      .setDesc('Text to show when a key has no value. Defaults to nothing')
-      .addText(text => text
-               .setValue(plugin.settings.nullValue)
+      .setName('Ignore null values')
+      .setDesc('Ignore any member with a null value.')
+      .addToggle(setting => setting
+               .setValue(plugin.settings.ignoreNulls)
                .onChange(async (value) => {
-                 plugin.settings.nullValue = value
+                 plugin.settings.ignoreNulls = value
                  await plugin.saveSettings()
+                 this.display()
                }))
+
+    if (!plugin.settings.ignoreNulls) {
+      new Setting(containerEl)
+        .setName('Null value')
+        .setDesc('Text to show when a key has no value. Defaults to nothing')
+        .addText(text => text
+                 .setValue(plugin.settings.nullValue)
+                 .onChange(async (value) => {
+                   plugin.settings.nullValue = value
+                   await plugin.saveSettings()
+                 }))
+    }
 
     new Setting(containerEl)
       .setName('Skip key')

@@ -10,6 +10,7 @@ function log(msg: string) {
 
 const DEFAULT_SETTINGS: MetatableSettings = {
   expansionMode: 'expanded',
+  ignoreNulls: false,
   nullValue: '',
   searchFn: null,
   skipKey: 'metatable',

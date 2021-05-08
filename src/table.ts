@@ -22,6 +22,7 @@ interface Member {
 
 interface Settings {
   mode: string; // expansionMode
+  ignoreNulls: boolean;
   nullValue: string;
   depth: number;
   ignoredKeys: string[];
@@ -199,14 +200,14 @@ function member(label: string, value: any, settings: Settings): HTMLElement {
  */
 function set(data: object, settings: Settings): HTMLElement {
   const root = document.createElement('table')
-  const { depth, ignoredKeys } = settings
+  const { depth, ignoredKeys, ignoreNulls } = settings
   const valueSettings = { ...settings, depth: depth + 1 }
 
   root.addClass('set')
   Object.entries(data).forEach(([label, value]: [string, unknown]) => {
-    if (ignoredKeys.some(key => key == label)) {
-      return;
-    }
+    if (ignoreNulls && value == null) return;
+    if (ignoredKeys.some(key => key == label)) return;
+
     root.append(member(label, value, valueSettings))
   })
 
@@ -275,8 +276,6 @@ function details(label: string, data: any, settings: Settings): HTMLElement {
   root.append(value)
 
   if (special == undefined || special.foldable) {
-    console.log(special)
-    console.log(members)
     const marker = document.createElement('div')
 
     key.addClass('toggle')
@@ -325,9 +324,10 @@ function sheath(data: object, settings: Settings): HTMLElement {
 
 export default function metatable(data: object, pluginSettings: MetatableSettings): DocumentFragment {
   const fragment = new DocumentFragment()
-  const { expansionMode: mode, searchFn, nullValue, skipKey, ignoredKeys } = pluginSettings
+  const { expansionMode: mode, searchFn, nullValue, skipKey, ignoredKeys, ignoreNulls } = pluginSettings
   const settings = {
     mode,
+    ignoreNulls,
     nullValue,
     ignoredKeys,
     depth: 0,
