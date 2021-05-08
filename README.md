@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **next**:
+  - Make tags non-foldable.
 - **0.5.3**:
   - Add skip key to avoid displaying the metatable for a document.
   - Add ignored key list to not display any of these keys in the metatable.

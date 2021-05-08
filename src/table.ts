@@ -9,13 +9,23 @@ interface Mappers {
   [key: string]: (value: string) => HTMLElement;
 }
 
+/**
+ * A function to map from a frontmatter node into an HTML element.
+ */
+type Mapper = (value: any, member: Member, settings: Settings) => HTMLElement;
+
+interface Member {
+  key: string;
+  mapper: Mapper;
+  foldable: boolean;
+}
+
 interface Settings {
   mode: string; // expansionMode
   nullValue: string;
   depth: number;
-  mappers: Mappers;
-  keymap: Keymap;
   ignoredKeys: string[];
+  members: Member[];
 }
 
 function toggle(trigger: HTMLElement) {
@@ -63,6 +73,28 @@ function tag(value: string): HTMLElement {
 
   return a
 }
+
+/**
+ * A list of tags.
+ */
+function taglist(data: string[], member: Member, settings: Settings): HTMLElement {
+  const root = document.createElement('ul')
+  const { depth } = settings
+  const { mapper } = member
+
+  root.addClass('tag-list')
+
+  data.forEach((item: string) => {
+    const li = document.createElement('li')
+    const value = tag(item)
+
+    li.append(value)
+    root.append(li)
+  })
+
+  return root
+}
+
 
 function url(value: string): HTMLElement {
   const a = document.createElement('a')
@@ -119,15 +151,18 @@ function enrichValue(value: string): string | HTMLElement {
 /**
  * A set member with a scalar value.
  */
-function leafMember(label: string, data?: string): HTMLElement {
+function leafMember(label: string, data: string | null, settings: Settings): HTMLElement {
+  const { members } = settings
   const root = document.createElement('tr')
   const key = document.createElement('th')
   const value = document.createElement('td')
+  const special = members.find(m => m.key == label)
+  const datum = special ? special.mapper(data, special, settings) : enrichValue(data)
 
   key.addClass('key')
   key.append(label)
   value.addClass('value')
-  value.append(enrichValue(data))
+  value.append(datum)
 
   root.addClass('member')
   root.append(key)
@@ -156,8 +191,7 @@ function member(label: string, value: any, settings: Settings): HTMLElement {
     return nodeMember(label, value, settings)
   }
 
-
-  return leafMember(label, patchedValue)
+  return leafMember(label, patchedValue, settings)
 }
 
 /**
@@ -179,30 +213,14 @@ function set(data: object, settings: Settings): HTMLElement {
   return root
 }
 
-function mapWith(value: string, settings: Settings, labelledBy?: string): string | HTMLElement {
-  const { mappers, keymap } = settings
-  const ref = keymap[labelledBy]
-  const fn = mappers[ref]
-
-  if (fn === undefined) {
-    return value
-  }
-
-  return fn(value)
-}
 
 /**
  * A list of members.
  */
-function list(data: any[], settings: Settings, labelledBy?: string): HTMLElement {
+function list(data: any[], settings: Settings): HTMLElement {
   const root = document.createElement('ul')
   const { depth } = settings
   const valueSettings = { ...settings, depth: depth + 1 }
-
-  // TODO: Generalise
-  if (labelledBy == 'tags') {
-    root.addClass('tag-list')
-  }
 
   data.forEach((item: any) => {
     let value
@@ -213,7 +231,7 @@ function list(data: any[], settings: Settings, labelledBy?: string): HTMLElement
     } else if (typeof item == 'object') {
       value = set(item , valueSettings)
     } else {
-      value = mapWith(item, settings, labelledBy)
+      value = item
     }
 
     li.append(value)
@@ -224,6 +242,13 @@ function list(data: any[], settings: Settings, labelledBy?: string): HTMLElement
   return root
 }
 
+
+function ordinaryValue(data: any, settings: Settings): HTMLElement {
+  return Array.isArray(data)
+    ? list(data, settings)
+    : set(data, settings)
+}
+
 /**
  * A collapsible group.
  */
@@ -231,35 +256,38 @@ function details(label: string, data: any, settings: Settings): HTMLElement {
   const root = document.createElement('tr')
   const key = document.createElement('th')
   const value = document.createElement('td')
-  const marker = document.createElement('div')
 
-  const { depth, mode } = settings
+  const { depth, mode, members } = settings
+  const special = members.find(m => m.key == label)
   const valueSettings = { ...settings, depth: depth + 1 }
   const valueId = `${label}-${depth}`
-  let valueInner
+  const datum = special
+    ? special.mapper(data, special, settings)
+    : ordinaryValue(data, valueSettings)
 
   key.addClass('key')
-  key.addClass('toggle')
-  key.setAttribute('role', 'button')
-  key.setAttribute('aria-expanded', String(isOpen(mode, depth)))
-  key.setAttribute('aria-controls', valueId)
-  key.setAttribute('tabindex', '0')
   key.append(label)
-
   root.append(key)
-
-  valueInner = Array.isArray(data)
-    ? list(data, valueSettings, label)
-    : set(data, valueSettings)
 
   value.addClass('value')
   value.setAttribute('id', valueId)
-
-  value.append(valueInner)
+  value.append(datum)
   root.append(value)
 
-  marker.addClass('marker')
-  value.append(marker)
+  if (special == undefined || special.foldable) {
+    console.log(special)
+    console.log(members)
+    const marker = document.createElement('div')
+
+    key.addClass('toggle')
+    key.setAttribute('role', 'button')
+    key.setAttribute('aria-expanded', String(isOpen(mode, depth)))
+    key.setAttribute('aria-controls', valueId)
+    key.setAttribute('tabindex', '0')
+
+    marker.addClass('marker')
+    value.append(marker)
+  }
 
   return root
 }
@@ -303,12 +331,11 @@ export default function metatable(data: object, pluginSettings: MetatableSetting
     nullValue,
     ignoredKeys,
     depth: 0,
-    mappers: {
-      autotag: tag,
-    },
-    keymap: {
-      tags: 'autotag',
-    },
+    members: [{
+      key: 'tags',
+      mapper: taglist,
+      foldable: false,
+    }],
   }
 
   // @ts-ignore
