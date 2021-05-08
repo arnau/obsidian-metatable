@@ -6,7 +6,7 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
-- **next**:
+- **0.6.0**:
   - Make tags non-foldable.
   - Add toggle to ignore members with null values.
 - **0.5.3**:
