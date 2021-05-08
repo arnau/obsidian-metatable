@@ -39,6 +39,8 @@ Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metat
 - `--metatable-background`
 - `--metatable-collapsed-symbol`
 - `--metatable-expanded-symbol`
+- `--metatable-external-link-color-hover`
+- `--metatable-external-link-color`
 - `--metatable-font-family`
 - `--metatable-font-size`
 - `--metatable-foreground`
@@ -47,11 +49,10 @@ Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metat
 - `--metatable-key-border-color`
 - `--metatable-key-border-width`
 - `--metatable-key-focus`
+- `--metatable-key-min-width`
 - `--metatable-mark-symbol`
-- `--metatable-value-background`
 - `--metatable-tag-background`
-- `--metatable-external-link-color`
-- `--metatable-external-link-color-hover`
+- `--metatable-value-background`
 
 
 ### Example

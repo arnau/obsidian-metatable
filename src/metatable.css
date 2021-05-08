@@ -26,6 +26,7 @@
   --metatable-font-family: var(--text, sans-serif);
   --metatable-font-size: var(--font-small, 13px);
   --metatable-key-border-width: 2px;
+  --metatable-key-min-width: 130px;
   --metatable-mark-symbol: "…";
   --metatable-value-background: transparent;
   --metatable-background: transparent;
@@ -66,9 +67,9 @@ summary:focus-visible {
 
 .member {
   display: grid;
-  grid-template-columns: 1fr 4fr;
-  grid-template-areas: "key value";
   grid-gap: 2px;
+  grid-template-columns: minmax(0, 1fr) 4fr;
+  grid-template-areas: "key value";
 }
 
 .key[role=button] {
@@ -84,6 +85,9 @@ summary:focus-visible {
   padding: 0.4rem;
   text-align: left;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: var(--metatable-key-min-width);
 }
 
 .member .value {
@@ -167,7 +171,12 @@ summary:focus-visible {
 .external-link {
   color: var(--metatable-external-link-color);
   display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 500px;
+  white-space: nowrap;
 }
+
 .external-link::after {
   content: var(--metatable-external-link-icon);
   display: inline-block;
