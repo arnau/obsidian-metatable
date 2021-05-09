@@ -46,10 +46,10 @@ function clickHandler(event: Event, searchFn: (query: string) => void) {
 
   if (trigger?.hasAttribute('href')) {
     event.stopPropagation();
-    event.preventDefault();
     const href = trigger.getAttribute('href')
 
-    if (href.startsWith('#')) {
+    if (trigger.hasClass('tag')) {
+      event.preventDefault();
       searchFn(`tag:${href}`)
     }
   }
