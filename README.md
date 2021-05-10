@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **0.7.2**:
+  - Fix internal link styles (`--metatable-internal-link-icon`, `--metatable-internal-link-color`, `--metatable-internal-link-color-hover`).
 - **0.7.1**:
   - Fix numeric values.
   - Add evernote autolinking.
@@ -48,8 +50,12 @@ Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metat
 #### Palette
 
 - `--metatable-background`
+- `--metatable-link-color-hover`
+- `--metatable-link-color`
 - `--metatable-external-link-color-hover`
 - `--metatable-external-link-color`
+- `--metatable-internal-link-color`
+- `--metatable-internal-link-color-hover`
 - `--metatable-font-family`
 - `--metatable-font-size`
 - `--metatable-foreground`
@@ -69,6 +75,8 @@ You might want to customise these if you prefer having tags with `#` or you don'
 - `--metatable-expanded-symbol`
 - `--metatable-mark-symbol`
 - `--metatable-tag-symbol`
+- `--metatable-internal-link-icon`
+- `--metatable-external-link-icon`
 
 #### Layout
 
