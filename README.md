@@ -6,6 +6,10 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **0.7.1**:
+  - Fix numeric values.
+  - Add evernote autolinking.
+  - Add custom property `--metatable-tag-symbol`.
 - **0.7.0**:
   - Add autolinking (under a feature flag).
 - **0.6.1**:
@@ -41,9 +45,9 @@ By enabling the plugin in the “Community plugins” section you'll be all set.
 
 Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metatable` [Web Component] shadow DOM.
 
+#### Palette
+
 - `--metatable-background`
-- `--metatable-collapsed-symbol`
-- `--metatable-expanded-symbol`
 - `--metatable-external-link-color-hover`
 - `--metatable-external-link-color`
 - `--metatable-font-family`
@@ -54,10 +58,22 @@ Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metat
 - `--metatable-key-border-color`
 - `--metatable-key-border-width`
 - `--metatable-key-focus`
-- `--metatable-key-min-width`
-- `--metatable-mark-symbol`
 - `--metatable-tag-background`
 - `--metatable-value-background`
+
+#### Symbols
+
+You might want to customise these if you prefer having tags with `#` or you don't like the fold arrows.
+
+- `--metatable-collapsed-symbol`
+- `--metatable-expanded-symbol`
+- `--metatable-mark-symbol`
+- `--metatable-tag-symbol`
+
+#### Layout
+
+- `--metatable-key-min-width`
+
 
 ### Example
 
@@ -78,6 +94,7 @@ Finally, add your custom CSS inside the file you just created:
   --metatable-value-background: snow;
   --metatable-collapsed-symbol: "😶";
   --metatable-expanded-symbol: "😎";
+  --metatable-tag-symbol: "#";
 }
 ```
 
@@ -88,6 +105,8 @@ For more details, either use the Inspector tool in Obsidian or check out the [`m
 #### URL
 
 Any value that is a valid HTTP or HTTPS [URL] such as `https://www.seachess.net`.
+
+It also autolinks [Evernote] links using the `evernote:` protocol.
 
 #### Tags
 
@@ -184,3 +203,4 @@ Arnau Siches under the [MIT License](./LICENCE)
 [source repository]: https://github.com/arnau/obsidian-metatable
 [latest release]: https://github.com/arnau/obsidian-metatable/releases/latest
 [URL]: https://developer.mozilla.org/en-US/docs/Web/API/URL
+[Evernote]: https://evernote.com/

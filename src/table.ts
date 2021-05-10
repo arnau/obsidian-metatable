@@ -190,7 +190,7 @@ function isObsidianUrl(url: URL | string): boolean {
 }
 
 function isUrl(url: URL | string): boolean {
-  const allowedProtocols = ['http:', 'https:']
+  const allowedProtocols = ['http:', 'https:', 'evernote:']
 
   return (url instanceof URL && allowedProtocols.some(protocol => url.protocol == protocol))
 }
@@ -215,7 +215,9 @@ function isFrontmatterLink(value: string): boolean {
   return (value.startsWith('%') && value.endsWith('%'))
 }
 
-function enrichValue(value: string, settings: Settings): string | HTMLElement {
+function enrichValue(value: string | number, settings: Settings): string | HTMLElement {
+  if (typeof value == 'number') return value
+
   const cleanValue = value.trim()
   const { autolinks } = settings
 
