@@ -31,6 +31,7 @@
   --metatable-value-background: transparent;
   --metatable-background: transparent;
   --metatable-external-link-icon: url(/public/images/874d8b8e340f75575caacd8d766a9659.svg);
+  --metatable-tag-symbol: "";
 }
 
 
@@ -153,6 +154,10 @@ summary:focus-visible {
   display: inline-block;
   padding: 0.1rem 0.6rem;
   text-decoration: none;
+}
+
+.tag::before {
+  content: var(--metatable-tag-symbol);
 }
 
 .tag:hover {
