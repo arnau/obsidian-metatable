@@ -6,28 +6,12 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
-- **0.7.2**:
-  - Fix internal link styles (`--metatable-internal-link-icon`, `--metatable-internal-link-color`, `--metatable-internal-link-color-hover`).
-- **0.7.1**:
-  - Fix numeric values.
-  - Add evernote autolinking.
-  - Add custom property `--metatable-tag-symbol`.
-- **0.7.0**:
-  - Add autolinking (under a feature flag).
-- **0.6.1**:
-  - Fix opening external links.
-- **0.6.0**:
-  - Make tags non-foldable.
-  - Add toggle to ignore members with null values.
-- **0.5.3**:
-  - Add skip key to avoid displaying the metatable for a document.
-  - Add ignored key list to not display any of these keys in the metatable.
-- **0.5.2**:
-  - Handle null values.
-  - Add null value setting.
-  - Autolink external links (http, https).
-- **0.5.1**:
-  - Link comma-separated tags.
+- **0.8.0**:
+  - Add `::part` to enable full tag customisation.
+
+See the [changelog](./CHANGELOG.md) for the full list of version. Or check the
+[decision log](./decision_log/) for the main design choices.
+
 
 ## Configuration
 
@@ -81,6 +65,32 @@ You might want to customise these if you prefer having tags with `#` or you don'
 #### Layout
 
 - `--metatable-key-min-width`
+
+### Tags
+
+Tags use the [::part pseudo-element] to allow for full customisation. What in
+the default Obsidian setup you would do to style [Tag Pills] with this plugin
+you would do instead:
+
+```css
+.obsidian-metatable::part(tag) {
+  background-color: pink;
+}
+
+.obsidian-metatable::part(tag):hover {
+  background-color: var(--text-accent-hover);
+}
+
+.obsidian-metatable::part(tag important) {
+  color: white;
+  background-color: tomato;
+}
+
+.obsidian-metatable::part(tag example) {
+  color: black;
+  background-color: deepskyblue;
+}
+```
 
 
 ### Example
@@ -212,3 +222,5 @@ Arnau Siches under the [MIT License](./LICENCE)
 [latest release]: https://github.com/arnau/obsidian-metatable/releases/latest
 [URL]: https://developer.mozilla.org/en-US/docs/Web/API/URL
 [Evernote]: https://evernote.com/
+[::part pseudo-element]: https://developer.mozilla.org/en-US/docs/Web/CSS/::part
+[Tag Pills]: https://forum.obsidian.md/t/meta-post-common-css-hacks/1978/13

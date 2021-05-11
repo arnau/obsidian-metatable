@@ -23,6 +23,12 @@ function createMetatable(el: HTMLElement, data: object, settings: MetatableSetti
   const wrapper = el.createEl('div')
   const { expansionMode } = settings
   wrapper.addClass('obsidian-metatable')
+
+  const template = document.createElement('template')
+  template.setAttribute('id', 'metatable-tag')
+  template.innerHTML = '<slot name="metatable-tag"><a href=""></a></slot>'
+  wrapper.append(template)
+
   wrapper.attachShadow({ mode: 'open' })
 
   const fragment = new DocumentFragment()

@@ -1,14 +1,6 @@
 import { MetatableSettings } from './settings'
 import { MarkdownRenderer, getLinkpath, Vault } from 'obsidian'
 
-// A map between known keys and their mapping function.
-interface Keymap {
-  [key: string]: string;
-}
-
-interface Mappers {
-  [key: string]: (value: string) => HTMLElement;
-}
 
 /**
  * A function to map from a frontmatter node into an HTML element.
@@ -16,10 +8,25 @@ interface Mappers {
 type Mapper = (value: any, member: Member, settings: Settings) => HTMLElement;
 
 interface Member {
-  key: string;
+  key: Key;
   mapper: Mapper;
   foldable: boolean;
 }
+
+/**
+ * A member key.
+ */
+type Key = string
+
+/**
+ * A store of members where the key is a set key from frontmatter.
+ */
+class MemberStore extends Map<Key, Member> {
+  public add(value: Member) {
+    this.set(value.key, value)
+  }
+}
+
 
 interface Settings {
   mode: string; // expansionMode
@@ -27,7 +34,7 @@ interface Settings {
   nullValue: string;
   depth: number;
   ignoredKeys: string[];
-  members: Member[];
+  members: MemberStore;
   autolinks: boolean;
   vault: Vault;
 }
@@ -68,10 +75,33 @@ function keyHandler(event: KeyboardEvent) {
   }
 }
 
+/**
+ * Normalises a list of tags as an array of strings.
+ */
+function normaliseTags(data: null | string | string[]): string[] {
+  let normal = data
+
+  if (data == null) {
+    normal = []
+  }
+
+  if (typeof data == 'string') {
+    normal = data.split(',').map(x => x.trim())
+  }
+
+
+  return (normal as string[]).filter(x => x && x.length != 0)
+}
 
 function tag(value: string): HTMLElement {
   const a = document.createElement('a')
   a.addClass('tag')
+
+  // @ts-ignore
+  a.part.add('tag')
+  // @ts-ignore
+  a.part.add(value)
+
   a.setAttribute('target', '_blank')
   a.setAttribute('rel', 'noopener')
   a.setAttribute('href', `#${value}`)
@@ -83,14 +113,15 @@ function tag(value: string): HTMLElement {
 /**
  * A list of tags.
  */
-function taglist(data: string[], member: Member, settings: Settings): HTMLElement {
+function taglist(data: string[] | null, member: Member, settings: Settings): HTMLElement {
   const root = document.createElement('ul')
   const { depth } = settings
   const { mapper } = member
+  const list = normaliseTags(data)
 
   root.addClass('tag-list')
 
-  data.forEach((item: string) => {
+  list.forEach((item: string) => {
     const li = document.createElement('li')
     const value = tag(item)
 
@@ -216,9 +247,7 @@ function isFrontmatterLink(value: string): boolean {
 }
 
 function enrichValue(value: string | number, settings: Settings): string | HTMLElement {
-  if (typeof value == 'number') return value
-
-  const cleanValue = value.trim()
+  const cleanValue = value.toString().trim()
   const { autolinks } = settings
 
   if (autolinks) {
@@ -230,7 +259,7 @@ function enrichValue(value: string | number, settings: Settings): string | HTMLE
       return frontmatterLink(cleanValue, settings.vault)
     }
 
-    if (isLocalLink(value)) {
+    if (isLocalLink(cleanValue)) {
       return localLink(cleanValue, settings.vault)
     }
   }
@@ -245,7 +274,15 @@ function enrichValue(value: string | number, settings: Settings): string | HTMLE
     return externalLink(cleanValue)
   }
 
-  return value
+  return value.toString()
+}
+
+function isNully(value: any): boolean {
+  if (typeof value == 'string') {
+    return value.length == 0
+  }
+
+  return value == null
 }
 
 
@@ -257,8 +294,10 @@ function leafMember(label: string, data: string | null, settings: Settings): HTM
   const root = document.createElement('tr')
   const key = document.createElement('th')
   const value = document.createElement('td')
-  const special = members.find(m => m.key == label)
-  const datum = special ? special.mapper(data, special, settings) : enrichValue(data, settings)
+  const special = members.get(label)
+  const datum = (members.has(label) && !isNully(data))
+    ? special.mapper(data, special, settings)
+    : enrichValue(data, settings)
 
   key.addClass('key')
   key.append(label)
@@ -359,10 +398,10 @@ function details(label: string, data: any, settings: Settings): HTMLElement {
   const value = document.createElement('td')
 
   const { depth, mode, members } = settings
-  const special = members.find(m => m.key == label)
+  const special = members.get(label)
   const valueSettings = { ...settings, depth: depth + 1 }
   const valueId = `${label}-${depth}`
-  const datum = special
+  const datum = (members.has(label) && !isNully(data))
     ? special.mapper(data, special, settings)
     : ordinaryValue(data, valueSettings)
 
@@ -391,24 +430,11 @@ function details(label: string, data: any, settings: Settings): HTMLElement {
   return root
 }
 
-/**
- * Normalises a list of tags as an array of strings.
- */
-function normaliseTags(data: null | string | string[]): string[] {
-  if (typeof data == 'string') {
-    return data.split(',').map(x => x.trim())
-  }
-
-  return data
-}
 
 function sheath(data: object, settings: Settings): HTMLElement {
   const root = document.createElement('details')
   const summary = document.createElement('summary')
-  // @ts-ignore
-  const { tags } = data
-  const ndata = tags ? { ...data, tags: normaliseTags(tags) } : data
-  const value = set(ndata, settings)
+  const value = set(data, settings)
 
   if (isOpen(settings.mode, 0)) {
     root.setAttribute('open', '')
@@ -434,6 +460,14 @@ export default function metatable(data: object, pluginSettings: MetatableSetting
     autolinks,
     vault,
   } = pluginSettings
+
+  const members = new MemberStore()
+  members.add({
+    key: 'tags',
+    mapper: taglist,
+    foldable: false,
+  })
+
   const settings = {
     mode,
     ignoreNulls,
@@ -441,11 +475,7 @@ export default function metatable(data: object, pluginSettings: MetatableSetting
     ignoredKeys,
     autolinks,
     depth: 0,
-    members: [{
-      key: 'tags',
-      mapper: taglist,
-      foldable: false,
-    }],
+    members,
     vault,
   }
 

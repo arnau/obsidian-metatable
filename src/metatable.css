@@ -26,12 +26,12 @@
   --metatable-font-family: var(--text, sans-serif);
   --metatable-font-size: var(--font-small, 13px);
   --metatable-key-border-width: 2px;
-  --metatable-key-min-width: 130px;
+  --metatable-key-min-width: 150px;
   --metatable-mark-symbol: "…";
   --metatable-value-background: transparent;
   --metatable-background: transparent;
   --metatable-tag-symbol: "";
-  --metatable-external-link-icon: url(/public/images/874d8b8e340f75575caacd8d766a9659.svg);
+  --metatable-external-link-icon: url(app://obsidian.md/public/images/874d8b8e340f75575caa.svg);
   --metatable-external-link-color: var(--metatable-link-color);
   --metatable-external-link-color-hover: var(--metatable-link-color-hover);
   --metatable-internal-link-icon: none;
