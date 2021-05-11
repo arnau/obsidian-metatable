@@ -100,7 +100,7 @@ function tag(value: string): HTMLElement {
   // @ts-ignore
   a.part.add('tag')
   // @ts-ignore
-  a.part.add(value)
+  a.part.add(encodeURI(value))
 
   a.setAttribute('target', '_blank')
   a.setAttribute('rel', 'noopener')

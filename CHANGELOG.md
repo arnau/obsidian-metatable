@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.1
+
+- Fix tags with spaces.
+
 ## 0.8.0
 
 - Add `::part` to enable full tag customisation.
