@@ -6,9 +6,14 @@
     "module": "ESNext",
     "target": "es6",
     "allowJs": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "moduleResolution": "node",
     "importHelpers": true,
+    "esModuleInterop": true,
+    "types": [
+      "jest",
+      "node"
+    ],
     "lib": [
       "dom",
       "es5",
@@ -17,6 +22,10 @@
     ]
   },
   "include": [
-    "**/*.ts"
+    "src/*.ts",
+    "tests/*.ts"
+  ],
+  "exclude": [
+    "node_modules/*"
   ]
 }

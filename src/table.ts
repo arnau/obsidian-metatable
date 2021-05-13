@@ -1,43 +1,7 @@
-import { MetatableSettings } from './settings'
-import { MarkdownRenderer, getLinkpath, Vault } from 'obsidian'
-
-
-/**
- * A function to map from a frontmatter node into an HTML element.
- */
-type Mapper = (value: any, member: Member, settings: Settings) => HTMLElement;
-
-interface Member {
-  key: Key;
-  mapper: Mapper;
-  foldable: boolean;
-}
-
-/**
- * A member key.
- */
-type Key = string
-
-/**
- * A store of members where the key is a set key from frontmatter.
- */
-class MemberStore extends Map<Key, Member> {
-  public add(value: Member) {
-    this.set(value.key, value)
-  }
-}
-
-
-interface Settings {
-  mode: string; // expansionMode
-  ignoreNulls: boolean;
-  nullValue: string;
-  depth: number;
-  ignoredKeys: string[];
-  members: MemberStore;
-  autolinks: boolean;
-  vault: Vault;
-}
+import { getLinkpath } from 'obsidian'
+import { taglist } from './mappers'
+import { Rule, RuleStore } from './rule'
+import { Leaf, Context, Settings } from './core'
 
 function toggle(trigger: HTMLElement) {
   const isExpanded = trigger.getAttribute('aria-expanded') == 'true'
@@ -75,67 +39,9 @@ function keyHandler(event: KeyboardEvent) {
   }
 }
 
-/**
- * Normalises a list of tags as an array of strings.
- */
-function normaliseTags(data: null | string | string[]): string[] {
-  let normal = data
-
-  if (data == null) {
-    normal = []
-  }
-
-  if (typeof data == 'string') {
-    normal = data.split(',').map(x => x.trim())
-  }
-
-
-  return (normal as string[]).filter(x => x && x.length != 0)
-}
-
-function tag(value: string): HTMLElement {
-  const a = document.createElement('a')
-  a.addClass('tag')
-
-  // @ts-ignore
-  a.part.add('tag')
-  // @ts-ignore
-  a.part.add(encodeURI(value))
-
-  a.setAttribute('target', '_blank')
-  a.setAttribute('rel', 'noopener')
-  a.setAttribute('href', `#${value}`)
-  a.append(`${value}`)
-
-  return a
-}
-
-/**
- * A list of tags.
- */
-function taglist(data: string[] | null, member: Member, settings: Settings): HTMLElement {
-  const root = document.createElement('ul')
-  const { depth } = settings
-  const { mapper } = member
-  const list = normaliseTags(data)
-
-  root.addClass('tag-list')
-
-  list.forEach((item: string) => {
-    const li = document.createElement('li')
-    const value = tag(item)
-
-    li.append(value)
-    root.append(li)
-  })
-
-  return root
-}
-
-
 function externalLink(value: string): HTMLElement {
   const a = document.createElement('a')
-  a.addClass('external-link')
+  a.classList.add('external-link')
   a.setAttribute('target', '_blank')
   a.setAttribute('rel', 'noopener')
   a.setAttribute('href', value)
@@ -156,7 +62,7 @@ function internalLink(url: URL): HTMLElement {
 
   a.dataset.href = value
   a.setAttribute('href', value)
-  a.addClass('internal-link')
+  a.classList.add('internal-link')
   a.setAttribute('target', '_blank')
   a.setAttribute('rel', 'noopener')
   a.append(label)
@@ -167,10 +73,9 @@ function internalLink(url: URL): HTMLElement {
 /**
 /* Creates a link for internal links from a string of the form `[[text]]`.
  */
-function wikiLink(value: string, vault: Vault): HTMLElement {
-  const vaultName = vault.getName()
+function wikiLink(value: string, vaultName: string): HTMLElement {
   const cleanValue = value.slice(2, -2)
-  const url = new URL(`obsidian://open?vault=${vaultName}&file=${encodeURI(getLinkpath(cleanValue))}`)
+  const url = new URL(obsidianUrl(vaultName, cleanValue))
 
   return internalLink(url)
 }
@@ -178,10 +83,9 @@ function wikiLink(value: string, vault: Vault): HTMLElement {
 /**
 /* Creates a link for internal links from a string of the form `%text%`.
  */
-function frontmatterLink(value: string, vault: Vault): HTMLElement {
-  const vaultName = vault.getName()
+function frontmatterLink(value: string, vaultName: string): HTMLElement {
   const cleanValue = value.slice(1, -1)
-  const url = new URL(`obsidian://open?vault=${vaultName}&file=${encodeURI(getLinkpath(cleanValue))}`)
+  const url = new URL(obsidianUrl(vaultName, cleanValue))
 
   return internalLink(url)
 }
@@ -190,10 +94,8 @@ function frontmatterLink(value: string, vault: Vault): HTMLElement {
 /**
  * Creates a link for local paths.
  */
-function localLink(value: string, vault: Vault): HTMLElement {
-  const vaultName = vault.getName()
-  // const cleanValue = value.slice(2, -2)
-  const url = new URL(`obsidian://open?vault=${vaultName}&file=${encodeURI(getLinkpath(value))}`)
+function localLink(value: string, vaultName: string): HTMLElement {
+  const url = new URL(obsidianUrl(vaultName, value))
 
   return internalLink(url)
 }
@@ -246,21 +148,22 @@ function isFrontmatterLink(value: string): boolean {
   return (value.startsWith('%') && value.endsWith('%'))
 }
 
-function enrichValue(value: string | number, settings: Settings): string | HTMLElement {
-  const cleanValue = value.toString().trim()
+function enrichValue(value: Leaf, context: Context): string | HTMLElement {
+  const { settings, vaultName } = context
   const { autolinks } = settings
+  const cleanValue = value.toString().trim()
 
   if (autolinks) {
     if (isWikiLink(cleanValue)) {
-      return wikiLink(cleanValue, settings.vault)
+      return wikiLink(cleanValue, vaultName)
     }
 
     if (isFrontmatterLink(cleanValue)) {
-      return frontmatterLink(cleanValue, settings.vault)
+      return frontmatterLink(cleanValue, vaultName)
     }
 
     if (isLocalLink(cleanValue)) {
-      return localLink(cleanValue, settings.vault)
+      return localLink(cleanValue, vaultName)
     }
   }
 
@@ -277,7 +180,7 @@ function enrichValue(value: string | number, settings: Settings): string | HTMLE
   return value.toString()
 }
 
-function isNully(value: any): boolean {
+function isNully(value: unknown): boolean {
   if (typeof value == 'string') {
     return value.length == 0
   }
@@ -289,22 +192,22 @@ function isNully(value: any): boolean {
 /**
  * A set member with a scalar value.
  */
-function leafMember(label: string, data: string | null, settings: Settings): HTMLElement {
-  const { members } = settings
+function leafMember(label: string, data: string | null, context: Context): HTMLElement {
+  const { rules, settings } = context
   const root = document.createElement('tr')
   const key = document.createElement('th')
   const value = document.createElement('td')
-  const special = members.get(label)
-  const datum = (members.has(label) && !isNully(data))
-    ? special.mapper(data, special, settings)
-    : enrichValue(data, settings)
+  const rule = rules.get(label)
+  const datum = (rules.has(label) && !isNully(data))
+    ? rule.toHtml(data, rule)
+    : enrichValue(data, context)
 
-  key.addClass('key')
+  key.classList.add('key')
   key.append(label)
-  value.addClass('value')
+  value.classList.add('value')
   value.append(datum)
 
-  root.addClass('member')
+  root.classList.add('member')
   root.append(key)
   root.append(value)
 
@@ -314,9 +217,9 @@ function leafMember(label: string, data: string | null, settings: Settings): HTM
 /**
  * A set member with a complex value.
  */
-function nodeMember(label: string, value: any, settings: Settings): HTMLElement {
-  const root = details(label, value, { ...settings, depth: settings.depth + 1 })
-  root.addClass('member')
+function nodeMember(label: string, value: unknown, context: Context): HTMLElement {
+  const root = details(label, value, { ...context, depth: context.depth + 1 })
+  root.classList.add('member')
 
   return root
 }
@@ -324,30 +227,33 @@ function nodeMember(label: string, value: any, settings: Settings): HTMLElement 
 /**
  * A set member.
  */
-function member(label: string, value: any, settings: Settings): HTMLElement {
+function member(label: string, value: unknown, context: Context): HTMLElement {
+  const { settings } = context
   const patchedValue = value == null ? settings.nullValue : value
 
   if (typeof patchedValue == 'object') {
-    return nodeMember(label, value, settings)
+    return nodeMember(label, value, context)
   }
 
-  return leafMember(label, patchedValue, settings)
+  return leafMember(label, patchedValue as string, context)
 }
 
 /**
  * A set of members.
  */
-function set(data: object, settings: Settings): HTMLElement {
-  const root = document.createElement('table')
-  const { depth, ignoredKeys, ignoreNulls } = settings
-  const valueSettings = { ...settings, depth: depth + 1 }
+function set(data: object, context: Context): HTMLElement {
+  const { settings, depth } = context
+  const { ignoredKeys, ignoreNulls } = settings
+  const valueContext = { ...context, depth: depth + 1 }
 
-  root.addClass('set')
+  const root = document.createElement('table')
+  root.classList.add('set')
+
   Object.entries(data).forEach(([label, value]: [string, unknown]) => {
     if (ignoreNulls && value == null) return;
     if (ignoredKeys.some(key => key == label)) return;
 
-    root.append(member(label, value, valueSettings))
+    root.append(member(label, value, valueContext))
   })
 
   return root
@@ -357,21 +263,22 @@ function set(data: object, settings: Settings): HTMLElement {
 /**
  * A list of members.
  */
-function list(data: any[], settings: Settings): HTMLElement {
-  const root = document.createElement('ul')
-  const { depth } = settings
-  const valueSettings = { ...settings, depth: depth + 1 }
+function list(data: unknown[], context: Context): HTMLElement {
+  const { settings, depth } = context
+  const valueContext = { ...context, depth: depth + 1 }
 
-  data.forEach((item: any) => {
+  const root = document.createElement('ul')
+
+  data.forEach((item: unknown) => {
     let value
     const li = document.createElement('li')
 
     if (Array.isArray(item)) {
-      value = list(item, valueSettings)
+      value = list(item, valueContext)
     } else if (typeof item == 'object') {
-      value = set(item , valueSettings)
+      value = set(item , valueContext)
     } else {
-      value = enrichValue(item, valueSettings)
+      value = enrichValue(item as Leaf, valueContext)
     }
 
     li.append(value)
@@ -383,47 +290,48 @@ function list(data: any[], settings: Settings): HTMLElement {
 }
 
 
-function ordinaryValue(data: any, settings: Settings): HTMLElement {
+function ordinaryValue(data: unknown, context: Context): HTMLElement {
   return Array.isArray(data)
-    ? list(data, settings)
-    : set(data, settings)
+    ? list(data, context)
+    : set(data as object, context)
 }
 
 /**
  * A collapsible group.
  */
-function details(label: string, data: any, settings: Settings): HTMLElement {
+function details(label: string, data: any, context: Context): HTMLElement {
+  const { settings, rules, depth } = context
+  const { mode } = settings
+
   const root = document.createElement('tr')
   const key = document.createElement('th')
   const value = document.createElement('td')
 
-  const { depth, mode, members } = settings
-  const special = members.get(label)
-  const valueSettings = { ...settings, depth: depth + 1 }
+  const rule = rules.get(label)
   const valueId = `${label}-${depth}`
-  const datum = (members.has(label) && !isNully(data))
-    ? special.mapper(data, special, settings)
-    : ordinaryValue(data, valueSettings)
+  const datum = (rules.has(label) && !isNully(data))
+    ? rule.toHtml(data, rule)
+    : ordinaryValue(data, { ...context, depth: depth + 1 })
 
-  key.addClass('key')
+  key.classList.add('key')
   key.append(label)
   root.append(key)
 
-  value.addClass('value')
+  value.classList.add('value')
   value.setAttribute('id', valueId)
   value.append(datum)
   root.append(value)
 
-  if (special == undefined || special.foldable) {
+  if (rule == undefined || rule.foldable) {
     const marker = document.createElement('div')
 
-    key.addClass('toggle')
+    key.classList.add('toggle')
     key.setAttribute('role', 'button')
     key.setAttribute('aria-expanded', String(isOpen(mode, depth)))
     key.setAttribute('aria-controls', valueId)
     key.setAttribute('tabindex', '0')
 
-    marker.addClass('marker')
+    marker.classList.add('marker')
     value.append(marker)
   }
 
@@ -431,62 +339,29 @@ function details(label: string, data: any, settings: Settings): HTMLElement {
 }
 
 
-function sheath(data: object, settings: Settings): HTMLElement {
+function sheath(data: object, context: Context): HTMLElement {
+  const { settings } = context
   const root = document.createElement('details')
   const summary = document.createElement('summary')
-  const value = set(data, settings)
+  const value = set(data, context)
 
   if (isOpen(settings.mode, 0)) {
     root.setAttribute('open', '')
   }
 
   summary.append('Metadata')
-  root.addClass('metatable')
+  root.classList.add('metatable')
   root.append(summary)
   root.append(value)
 
   return root
 }
 
-export default function metatable(data: object, pluginSettings: MetatableSettings): DocumentFragment {
+export default function metatable(data: object, context: Context): DocumentFragment {
+  const { searchFn, settings } = context
   const fragment = new DocumentFragment()
-  const {
-    expansionMode: mode,
-    searchFn,
-    nullValue,
-    skipKey,
-    ignoredKeys,
-    ignoreNulls,
-    autolinks,
-    vault,
-  } = pluginSettings
 
-  const members = new MemberStore()
-  members.add({
-    key: 'tags',
-    mapper: taglist,
-    foldable: false,
-  })
-
-  const settings = {
-    mode,
-    ignoreNulls,
-    nullValue,
-    ignoredKeys,
-    autolinks,
-    depth: 0,
-    members,
-    vault,
-  }
-
-  // @ts-ignore
-  const skip = data[skipKey]
-
-  if (skip) {
-    return fragment
-  }
-
-  const root = sheath(data, settings)
+  const root = sheath(data, context)
   root.addEventListener('click', (e) => clickHandler(e, searchFn))
   root.addEventListener('keydown', keyHandler)
   fragment.append(root)

@@ -1,6 +1,9 @@
 import { MarkdownPostProcessorContext, Plugin, fuzzySearch, prepareQuery } from 'obsidian'
-import { MetatableSettings, MetatableSettingTab } from './settings'
+import { DEFAULT_SETTINGS, MetatableSettings, MetatableSettingTab } from './settings'
+import { Context } from './core'
+import { RuleStore } from './rule'
 import metatable from './table'
+import { taglist } from './mappers'
 // @ts-ignore
 import styles from './metatable.css'
 
@@ -8,32 +11,14 @@ function log(msg: string) {
   console.log(`metatable: ${msg}`)
 }
 
-const DEFAULT_SETTINGS: MetatableSettings = {
-  expansionMode: 'expanded',
-  ignoreNulls: false,
-  nullValue: '',
-  searchFn: null,
-  skipKey: 'metatable',
-  ignoredKeys: ['metatable', 'frontmatter'],
-  autolinks: false,
-  vault: null,
-}
-
-function createMetatable(el: HTMLElement, data: object, settings: MetatableSettings) {
+function createMetatable(el: HTMLElement, data: object, context: Context) {
   const wrapper = el.createEl('div')
-  const { expansionMode } = settings
-  wrapper.addClass('obsidian-metatable')
-
-  const template = document.createElement('template')
-  template.setAttribute('id', 'metatable-tag')
-  template.innerHTML = '<slot name="metatable-tag"><a href=""></a></slot>'
-  wrapper.append(template)
-
+  wrapper.classList.add('obsidian-metatable')
   wrapper.attachShadow({ mode: 'open' })
 
   const fragment = new DocumentFragment()
-  fragment.createEl('style', {text: styles})
-  fragment.append(metatable(data, settings))
+  fragment.createEl('style', { text: styles })
+  fragment.append(metatable(data, context))
   wrapper.shadowRoot.append(fragment)
 }
 
@@ -49,15 +34,34 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     target.empty()
     // @ts-ignore
     const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)
-    const settings = { ...plugin.settings, searchFn, vault: this.app.vault }
-    const { ignoreNulls } = settings
+    const { ignoreNulls, skipKey } = plugin.settings
+    const rules = new RuleStore()
+    rules.set('tags', {
+      toHtml: taglist,
+      foldable: false,
+    })
+
+    const context: Context = {
+      vaultName: plugin.app.vault.getName(),
+      rules,
+      searchFn,
+      settings: {
+        mode: plugin.settings.expansionMode,
+        ignoreNulls: plugin.settings.ignoreNulls,
+        nullValue: plugin.settings.nullValue,
+        ignoredKeys: plugin.settings.ignoredKeys,
+        autolinks: plugin.settings.autolinks,
+      },
+      depth: 0,
+    }
 
     if (ctx.frontmatter) {
+      if (ctx.frontmatter[skipKey]) { return }
       // Nothing to render if all top-level are null and nulls should be
       // ignored.
       if (ignoreNulls && Object.values(ctx.frontmatter).every(x => x == null)) { return }
 
-      createMetatable(target, ctx.frontmatter, settings)
+      createMetatable(target, ctx.frontmatter, context)
     }
   }
 }

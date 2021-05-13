@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "rollup --config rollup.config.js -w",
     "build": "rollup --config rollup.config.js --environment BUILD:production",
-    "dist": "mkdir -p dist && cp main.js versions.json manifest.json dist/"
+    "dist": "mkdir -p dist && cp main.js versions.json manifest.json dist/",
+    "test": "jest"
   },
   "keywords": [
     "obsidian"
@@ -17,10 +18,13 @@
     "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@rollup/plugin-typescript": "^6.0.0",
+    "@types/jest": "^26.0.23",
     "@types/node": "^14.14.2",
+    "jest": "^26.6.3",
     "obsidian": "https://github.com/obsidianmd/obsidian-api/tarball/master",
     "rollup": "^2.32.1",
     "rollup-plugin-import-css": "^2.0.1",
+    "ts-jest": "^26.5.6",
     "tslib": "^2.0.3",
     "typescript": "^4.0.3"
   }

@@ -6,11 +6,12 @@ import {
   Vault,
 } from 'obsidian'
 import MetatablePlugin from './plugin'
+import { Mode } from './core'
 
 
 export interface MetatableSettings {
   // The level of expansion of the metatable tree
-  expansionMode: string;
+  expansionMode: Mode;
   // Whether to ignore null values
   ignoreNulls: boolean;
   // The value to display for null values
@@ -25,6 +26,19 @@ export interface MetatableSettings {
   // A reference to the current vault.
   vault: Vault;
 }
+
+export const DEFAULT_SETTINGS: MetatableSettings = {
+  expansionMode: 'expanded',
+  ignoreNulls: false,
+  nullValue: '',
+  searchFn: null,
+  skipKey: 'metatable',
+  ignoredKeys: ['metatable', 'frontmatter'],
+  autolinks: false,
+  vault: null,
+}
+
+
 
 export class MetatableSettingTab extends PluginSettingTab {
   plugin: MetatablePlugin;
@@ -50,7 +64,7 @@ export class MetatableSettingTab extends PluginSettingTab {
                    .addOption('all-collapsed', 'Collapse all')
                    .setValue(plugin.settings.expansionMode)
                    .onChange(async (value) => {
-                     plugin.settings.expansionMode = value
+                     plugin.settings.expansionMode = value as Mode
                      await plugin.saveSettings()
                    }))
 
