@@ -22,6 +22,12 @@ function createMetatable(el: HTMLElement, data: object, context: Context) {
   wrapper.shadowRoot.append(fragment)
 }
 
+function isEmpty(data: object, ignoredKeys: string[]): boolean {
+  return Object.entries(data)
+    .filter(([key, value]) => !(ignoredKeys.some(x => x == key)))
+    .every(([_, value]) => value == null)
+}
+
 async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx: MarkdownPostProcessorContext): Promise<void> {
   const plugin = this
   const frontmatter = await el.querySelector('.frontmatter')
@@ -34,7 +40,7 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     target.empty()
     // @ts-ignore
     const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)
-    const { ignoreNulls, skipKey } = plugin.settings
+    const { ignoreNulls, ignoredKeys, skipKey } = plugin.settings
     const rules = new RuleStore()
     rules.set('tags', {
       toHtml: taglist,
@@ -47,9 +53,9 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
       searchFn,
       settings: {
         mode: plugin.settings.expansionMode,
-        ignoreNulls: plugin.settings.ignoreNulls,
+        ignoreNulls,
         nullValue: plugin.settings.nullValue,
-        ignoredKeys: plugin.settings.ignoredKeys,
+        ignoredKeys,
         autolinks: plugin.settings.autolinks,
       },
       depth: 0,
@@ -59,7 +65,7 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
       if (ctx.frontmatter[skipKey]) { return }
       // Nothing to render if all top-level are null and nulls should be
       // ignored.
-      if (ignoreNulls && Object.values(ctx.frontmatter).every(x => x == null)) { return }
+      if (ignoreNulls && isEmpty(ctx.frontmatter, ignoredKeys)) { return }
 
       createMetatable(target, ctx.frontmatter, context)
     }
