@@ -50,8 +50,13 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     // @ts-ignore
     const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)
     const settings = { ...plugin.settings, searchFn, vault: this.app.vault }
+    const { ignoreNulls } = settings
 
     if (ctx.frontmatter) {
+      // Nothing to render if all top-level are null and nulls should be
+      // ignored.
+      if (ignoreNulls && Object.values(ctx.frontmatter).every(x => x == null)) { return }
+
       createMetatable(target, ctx.frontmatter, settings)
     }
   }

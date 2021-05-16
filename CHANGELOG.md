@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.2
+
+- Avoid rendering anything if all top-level keys are null and nulls are to be ignored.
+
 ## 0.8.1
 
 - Fix tags with spaces.
