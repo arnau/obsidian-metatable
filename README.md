@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **0.8.3**:
+  - Ignore ignored keys when checking top-level keys.
 - **0.8.2**:
   - Avoid rendering anything if all top-level keys are null and nulls are to be ignored.
 - **0.8.1**:
