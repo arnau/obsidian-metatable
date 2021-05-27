@@ -1,4 +1,4 @@
-export default function isEmptyArray(value: unknown): boolean {
+export function isEmptyArray(value: unknown): boolean {
   if (typeof value === 'string' {
     return value === '[]'
   }
