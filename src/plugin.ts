@@ -3,7 +3,7 @@ import { DEFAULT_SETTINGS, MetatableSettings, MetatableSettingTab } from './sett
 import { Context } from './core'
 import { RuleStore } from './rule'
 import metatable from './table'
-import isEmptyArray from './utils'
+import { isEmptyArray } from './utils'
 import { taglist } from './mappers'
 // @ts-ignore
 import styles from './metatable.css'
