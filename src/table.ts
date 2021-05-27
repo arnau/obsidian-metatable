@@ -3,6 +3,8 @@ import { taglist } from './mappers'
 import { Rule, RuleStore } from './rule'
 import { Leaf, Context, Settings } from './core'
 
+import { isEmptyArray } from './utils'
+
 function toggle(trigger: HTMLElement) {
   const isExpanded = trigger.getAttribute('aria-expanded') == 'true'
   trigger.setAttribute('aria-expanded', String(!isExpanded))
@@ -250,7 +252,7 @@ function set(data: object, context: Context): HTMLElement {
   root.classList.add('set')
 
   Object.entries(data).forEach(([label, value]: [string, unknown]) => {
-    if (ignoreNulls && value == null) return;
+    if (ignoreNulls && (value == null || isEmptyArray(value))) return;
     if (ignoredKeys.some(key => key == label)) return;
 
     root.append(member(label, value, valueContext))
