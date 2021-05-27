@@ -3,7 +3,7 @@ import { taglist } from './mappers'
 import { Rule, RuleStore } from './rule'
 import { Leaf, Context, Settings } from './core'
 
-import isEmptyArray from './utils'
+import { isEmptyArray } from './utils'
 
 function toggle(trigger: HTMLElement) {
   const isExpanded = trigger.getAttribute('aria-expanded') == 'true'
