@@ -3,6 +3,7 @@ import { DEFAULT_SETTINGS, MetatableSettings, MetatableSettingTab } from './sett
 import { Context } from './core'
 import { RuleStore } from './rule'
 import metatable from './table'
+import isEmptyArray from './utils'
 import { taglist } from './mappers'
 // @ts-ignore
 import styles from './metatable.css'
@@ -25,7 +26,7 @@ function createMetatable(el: HTMLElement, data: object, context: Context) {
 function isEmpty(data: object, ignoredKeys: string[]): boolean {
   return Object.entries(data)
     .filter(([key, value]) => !(ignoredKeys.some(x => x == key)))
-    .every(([_, value]) => value == null)
+    .every(([_, value]) => value == null || isEmptyArray(value))
 }
 
 async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx: MarkdownPostProcessorContext): Promise<void> {
