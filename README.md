@@ -26,7 +26,9 @@ By enabling the plugin in the “Community plugins” section you'll be all set.
 - **Ignore null values** lets you toggle whether members with null values are displayed.
 - **Null value** lets you define a string to display when a value is `null`.
 - **Skip key** lets you define a key that when `true` will not display the metatable for that document.
-- **Ignored keys** lets you define the list of keys that should not be displayed in the metatable.
+- **Filter mode** lets you define whether to ignore or keep the filter keys.
+- **Filter keys** lets you define the list of keys that should be either kept or ignored.
+- **Autolinks** Attempts to create links for internal links.
 
 
 ### CSS Custom properties
