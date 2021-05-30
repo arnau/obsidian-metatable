@@ -1,8 +1,8 @@
 {
 	"id": "obsidian-metatable",
 	"name": "Metatable",
-	"version": "0.9.0",
-	"minAppVersion": "0.11.13",
+	"version": "0.9.1",
+	"minAppVersion": "0.12.3",
 	"description": "Displays the full frontmatter as a table.",
 	"author": "Arnau Siches",
 	"authorUrl": "https://www.seachess.net/",
