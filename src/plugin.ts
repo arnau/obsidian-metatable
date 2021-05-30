@@ -1,6 +1,6 @@
 import { MarkdownPostProcessorContext, Plugin, fuzzySearch, prepareQuery } from 'obsidian'
 import { DEFAULT_SETTINGS, MetatableSettings, MetatableSettingTab } from './settings'
-import { Context } from './core'
+import { Context, FilterMode } from './core'
 import { RuleStore } from './rule'
 import metatable from './table'
 import { isEmptyArray } from './utils'
@@ -23,10 +23,19 @@ function createMetatable(el: HTMLElement, data: object, context: Context) {
   wrapper.shadowRoot.append(fragment)
 }
 
-function isEmpty(data: object, ignoredKeys: string[]): boolean {
+function isEmpty(data: object): boolean {
   return Object.entries(data)
-    .filter(([key, value]) => !(ignoredKeys.some(x => x == key)))
     .every(([_, value]) => value == null || isEmptyArray(value))
+}
+
+function filterSet(data: object, filterKeys: string[], filterMode: FilterMode): object {
+  const filterFn = filterMode == 'ignore'
+  ? (x => !x)
+  : (x => x)
+  const newData = Object.entries(data)
+    .filter(([key, _value]) => filterFn(filterKeys.some(x => x == key)))
+
+  return Object.fromEntries(newData)
 }
 
 async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx: MarkdownPostProcessorContext): Promise<void> {
@@ -43,7 +52,7 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     // @ts-ignore
     const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)
     const openLinkFn = plugin.app.workspace.openLinkText.bind(plugin.app.workspace)
-    const { ignoreNulls, ignoredKeys, skipKey } = plugin.settings
+    const { ignoreNulls, filterMode, filterKeys, skipKey } = plugin.settings
     const rules = new RuleStore()
     rules.set('tags', {
       toHtml: taglist,
@@ -59,19 +68,23 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
         mode: plugin.settings.expansionMode,
         ignoreNulls,
         nullValue: plugin.settings.nullValue,
-        ignoredKeys,
+        filterKeys,
+        filterMode,
         autolinks: plugin.settings.autolinks,
       },
       depth: 0,
     }
 
     if (ctx.frontmatter) {
+      const data = filterSet(ctx.frontmatter, filterKeys, filterMode)
+
       if (ctx.frontmatter[skipKey]) { return }
       // Nothing to render if all top-level are null and nulls should be
       // ignored.
-      if (ignoreNulls && isEmpty(ctx.frontmatter, ignoredKeys)) { return }
+      if (ignoreNulls && isEmpty(data)) { return }
+      if (Object.isEmpty(data)) { return }
 
-      createMetatable(target, ctx.frontmatter, context)
+      createMetatable(target, data, context)
     }
   }
 }

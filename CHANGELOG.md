@@ -1,5 +1,9 @@
 # Changelog
 
+## Next
+
+- Add filter mode to either ignore or keep the listed keys.
+
 ## 0.9.1
 
 - Fix complex structures in small-screens.

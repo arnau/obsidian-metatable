@@ -6,7 +6,7 @@ import {
   Vault,
 } from 'obsidian'
 import MetatablePlugin from './plugin'
-import { Mode } from './core'
+import { Mode, FilterMode } from './core'
 
 
 export interface MetatableSettings {
@@ -16,12 +16,12 @@ export interface MetatableSettings {
   ignoreNulls: boolean;
   // The value to display for null values
   nullValue: string;
-  // The function to use to search. Used right now to mimic the default
-  // behaviour when clicking a tag link.
-  searchFn: (query: string) => void;
   // The key to look for to not render the metatable.
   skipKey: string;
+  // XXX: Deprecated
   ignoredKeys: string[];
+  filterKeys: string[];
+  filterMode: FilterMode;
   autolinks: boolean;
   // A reference to the current vault.
   vault: Vault;
@@ -31,9 +31,10 @@ export const DEFAULT_SETTINGS: MetatableSettings = {
   expansionMode: 'expanded',
   ignoreNulls: false,
   nullValue: '',
-  searchFn: null,
   skipKey: 'metatable',
-  ignoredKeys: ['metatable', 'frontmatter'],
+  ignoredKeys: [],
+  filterKeys: ['metatable', 'frontmatter'],
+  filterMode: 'ignore',
   autolinks: false,
   vault: null,
 }
@@ -48,7 +49,7 @@ export class MetatableSettingTab extends PluginSettingTab {
     this.plugin = plugin;
   }
 
-  display(): void {
+  async display(): Promise<void> {
     const {containerEl, plugin} = this
 
     containerEl.empty()
@@ -67,6 +68,18 @@ export class MetatableSettingTab extends PluginSettingTab {
                      plugin.settings.expansionMode = value as Mode
                      await plugin.saveSettings()
                    }))
+
+    new Setting(containerEl)
+      .setName('Skip key')
+      .setDesc('When this key is found and `true`, the metatable will not be displayed')
+      .addText(text => text
+               .setValue(plugin.settings.skipKey)
+               .onChange(async (value) => {
+                 plugin.settings.skipKey = value
+                 await plugin.saveSettings()
+               }))
+
+    containerEl.createEl('h3', {text: 'Nulls'})
 
     new Setting(containerEl)
       .setName('Ignore null values')
@@ -91,23 +104,34 @@ export class MetatableSettingTab extends PluginSettingTab {
                  }))
     }
 
-    new Setting(containerEl)
-      .setName('Skip key')
-      .setDesc('When this key is found and `true`, the metatable will not be displayed')
-      .addText(text => text
-               .setValue(plugin.settings.skipKey)
-               .onChange(async (value) => {
-                 plugin.settings.skipKey = value
-                 await plugin.saveSettings()
-               }))
+
+    containerEl.createEl('h3', {text: 'Filter'})
 
     new Setting(containerEl)
-      .setName('Ignored keys')
-      .setDesc('Any key found in this comma-separated list will be ignored whilst displaying the metatable')
+      .setName('Filter mode')
+      .setDesc('Either ignore or keep the filter keys')
+      .addDropdown(drop => drop
+                   .addOption('ignore', 'Ignore')
+                   .addOption('keep', 'Keep')
+                   .setValue(plugin.settings.filterMode)
+                   .onChange(async (value) => {
+                     plugin.settings.filterMode = value as FilterMode
+                     await plugin.saveSettings()
+                   }))
+
+    // XXX: Remove in 0.11.0
+    if (plugin.settings.ignoredKeys.length > 0) {
+      plugin.settings.filterKeys = plugin.settings.ignoredKeys
+      await plugin.saveSettings()
+    }
+
+    new Setting(containerEl)
+      .setName('Filter keys')
+      .setDesc('Any key found in this comma-separated list will be either ignored or kept according to the filter mode')
       .addText(text => text
-               .setValue(plugin.settings.ignoredKeys.join(', '))
+               .setValue(plugin.settings.filterKeys.join(', '))
                .onChange(async (value) => {
-                 plugin.settings.ignoredKeys = value.split(',').map(v => v.trim())
+                 plugin.settings.filterKeys = value.split(',').map(v => v.trim())
                  await plugin.saveSettings()
                }))
 

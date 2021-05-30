@@ -10,6 +10,8 @@ export type Leaf = string | number
 
 export type Mode = 'expanded' | 'leaf-collapsed' | 'all-collapsed'
 
+export type FilterMode = 'keep' | 'ignore'
+
 /**
  * A bag of information from the context of execution.
  */
@@ -27,7 +29,8 @@ export interface Settings {
   mode: Mode;
   ignoreNulls: boolean;
   nullValue: string;
-  ignoredKeys: string[];
+  filterKeys: string[];
+  filterMode: FilterMode;
   autolinks: boolean;
 }
 
@@ -35,7 +38,8 @@ export interface Patch {
   mode?: Mode;
   ignoreNulls?: boolean;
   nullValue?: string;
-  ignoredKeys?: string[];
+  filterKeys?: string[];
+  filterMode?: FilterMode;
   autolinks?: boolean;
 }
 
@@ -56,7 +60,8 @@ export function defaultContext(vaultName: string): Context {
       mode: 'expanded',
       ignoreNulls: false,
       nullValue: '',
-      ignoredKeys: ['metatable', 'forntmatter'],
+      filterKeys: ['metatable', 'forntmatter'],
+      filterMode: 'ignore',
       autolinks: false,
     },
     depth: 0,

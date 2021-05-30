@@ -249,7 +249,7 @@ function member(label: string, value: unknown, context: Context): HTMLElement {
  */
 function set(data: object, context: Context): HTMLElement {
   const { settings, depth } = context
-  const { ignoredKeys, ignoreNulls } = settings
+  const { filterMode, filterKeys, ignoreNulls } = settings
   const valueContext = { ...context, depth: depth + 1 }
 
   const root = document.createElement('table')
@@ -257,7 +257,14 @@ function set(data: object, context: Context): HTMLElement {
 
   Object.entries(data).forEach(([label, value]: [string, unknown]) => {
     if (ignoreNulls && (value == null || isEmptyArray(value))) return;
-    if (ignoredKeys.some(key => key == label)) return;
+
+    if (filterMode == 'ignore') {
+      if (filterKeys.some(key => key == label)) return;
+    }
+
+    if (filterMode == 'keep') {
+      if (!filterKeys.some(key => key == label)) return;
+    }
 
     root.append(member(label, value, valueContext))
   })

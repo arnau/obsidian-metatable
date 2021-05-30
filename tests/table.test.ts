@@ -68,13 +68,24 @@ describe('metatable', () => {
     })
   })
 
-  describe('ignoredKeys', () => {
-    test('custom', () => {
+  describe('filterKeys', () => {
+    test('ignore custom', () => {
       const frontmatter = {
         notme: 'boo',
         butme: 'hey',
       }
-      const fragment = metatable(frontmatter, patchSettings(context, { ignoredKeys: ['notme'] }))
+      const fragment = metatable(frontmatter, patchSettings(context, { filterMode: 'ignore', filterKeys: ['notme'] }))
+      const members = fragment.querySelectorAll('details > .set > .member')
+
+      expect(members.length).toBe(1)
+    })
+
+    test('keep custom', () => {
+      const frontmatter = {
+        notme: 'boo',
+        butme: 'hey',
+      }
+      const fragment = metatable(frontmatter, patchSettings(context, { filterMode: 'keep', filterKeys: ['butme'] }))
       const members = fragment.querySelectorAll('details > .set > .member')
 
       expect(members.length).toBe(1)
