@@ -99,7 +99,7 @@ summary:focus-visible {
   grid-area: value;
   margin: 0;
   padding: 0.4rem;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .member .key:focus {
@@ -206,9 +206,6 @@ summary:focus-visible {
 .external-link {
   color: var(--metatable-external-link-color);
   display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 450px;
   white-space: nowrap;
 }
 
