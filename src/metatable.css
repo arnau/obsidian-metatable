@@ -144,7 +144,22 @@ summary:focus-visible {
   padding: 0.4rem;
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (min-width: 400px) and (max-width: 550px) {
+  .member {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 3fr);
+  }
+  .member .member {
+    grid-template-areas: "key key" "value value";
+  }
+
+  .member .member .key {
+    border-right: none;
+    border-bottom: var(--metatable-key-border-width) solid var(--metatable-key-border-color);
+  }
+
+}
+
+@media screen and (max-width: 400px) {
   .member {
     grid-template-areas: "key key" "value value";
   }

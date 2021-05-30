@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **0.9.1**:
+  - Fix complex structures in small-screens.
 - **0.9.0**;
   - Fix internal links. Now they use the Obsidian default behaviour.
   - Remove `--metatable-key-min-width`.
