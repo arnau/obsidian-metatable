@@ -1,8 +1,10 @@
 # Changelog
 
-## Next
+## 0.9.0
 
 - Fix internal links. Now they use the Obsidian default behaviour.
+- Remove `--metatable-key-min-width`.
+- Add small-screen layout.
 
 ## 0.8.4
 

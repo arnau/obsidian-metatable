@@ -39,6 +39,13 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     // Prevents an undesired `display: none` if `tags` is not present.
     target.removeAttribute('style')
     target.empty()
+
+    let cache = plugin.app.metadataCache
+    console.log(cache)
+    let fcache = cache.getCache(ctx.sourcePath)
+    console.log(fcache)
+    // console.log(ctx)
+
     // @ts-ignore
     const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)
     const openLinkFn = plugin.app.workspace.openLinkText.bind(plugin.app.workspace)

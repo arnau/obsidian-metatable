@@ -26,7 +26,6 @@
   --metatable-font-family: var(--text, sans-serif);
   --metatable-font-size: var(--font-small, 13px);
   --metatable-key-border-width: 2px;
-  --metatable-key-min-width: 150px;
   --metatable-mark-symbol: "…";
   --metatable-value-background: transparent;
   --metatable-background: transparent;
@@ -93,7 +92,6 @@ summary:focus-visible {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: var(--metatable-key-min-width);
 }
 
 .member .value {
@@ -101,6 +99,7 @@ summary:focus-visible {
   grid-area: value;
   margin: 0;
   padding: 0.4rem;
+  overflow: scroll;
 }
 
 .member .key:focus {
@@ -145,11 +144,22 @@ summary:focus-visible {
   padding: 0.4rem;
 }
 
+@media screen and (max-width: 375px) {
+  .member {
+    grid-template-areas: "key key" "value value";
+  }
+
+  .member .key {
+    border-right: none;
+    border-bottom: var(--metatable-key-border-width) solid var(--metatable-key-border-color);
+  }
+}
+
 /* Mappers */
 
 .tag-list li {
   display: inline-block;
-  margin: 0 0.4rem 0 0;
+  margin: 0 0.4rem 0 2px;
 }
 
 .tag {

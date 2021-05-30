@@ -6,16 +6,10 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
-- **0.8.4**:
-  - Ignore empty arrays when null values are to be ignored.
-- **0.8.3**:
-  - Ignore ignored keys when checking top-level keys.
-- **0.8.2**:
-  - Avoid rendering anything if all top-level keys are null and nulls are to be ignored.
-- **0.8.1**:
-  - Fix tags with spaces.
-- **0.8.0**:
-  - Add `::part` to enable full tag customisation.
+- **0.9.0**;
+  - Fix internal links. Now they use the Obsidian default behaviour.
+  - Remove `--metatable-key-min-width`.
+  - Add small-screen layout.
 
 See the [changelog](./CHANGELOG.md) for the full list of version. Or check the
 [decision log](./decision_log/) for the main design choices.
@@ -69,10 +63,6 @@ You might want to customise these if you prefer having tags with `#` or you don'
 - `--metatable-tag-symbol`
 - `--metatable-internal-link-icon`
 - `--metatable-external-link-icon`
-
-#### Layout
-
-- `--metatable-key-min-width`
 
 ### Tags
 
