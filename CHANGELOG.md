@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 0.10.0
 
 - Add filter mode to either ignore or keep the listed keys.
 
