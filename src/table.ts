@@ -10,7 +10,7 @@ function toggle(trigger: HTMLElement) {
   trigger.setAttribute('aria-expanded', String(!isExpanded))
 }
 
-function clickHandler(event: Event, searchFn: (query: string) => void) {
+function clickHandler(event: Event, searchFn: (query: string) => void, openLinkFn: (linktext: string, sourcePath: string) => Promise<void> | void) {
   const trigger: HTMLElement = event.target as HTMLElement
 
   if (trigger?.hasAttribute('aria-expanded')) {
@@ -23,6 +23,11 @@ function clickHandler(event: Event, searchFn: (query: string) => void) {
   if (trigger?.hasAttribute('href')) {
     event.stopPropagation();
     const href = trigger.getAttribute('href')
+
+    if (trigger.hasClass('internal-link')) {
+      event.preventDefault();
+      openLinkFn(trigger.dataset.href, '')
+    }
 
     if (trigger.hasClass('tag')) {
       event.preventDefault();
@@ -59,11 +64,10 @@ function obsidianUrl(vaultName: string, fileName: string): string {
 
 function internalLink(url: URL): HTMLElement {
   const a = document.createElement('a')
-  const value = url.toString()
   const label = url.searchParams.get('file')
 
-  a.dataset.href = value
-  a.setAttribute('href', value)
+  a.dataset.href = label
+  a.setAttribute('href', label)
   a.classList.add('internal-link')
   a.setAttribute('target', '_blank')
   a.setAttribute('rel', 'noopener')
@@ -360,11 +364,11 @@ function sheath(data: object, context: Context): HTMLElement {
 }
 
 export default function metatable(data: object, context: Context): DocumentFragment {
-  const { searchFn, settings } = context
+  const { searchFn, openLinkFn, settings } = context
   const fragment = new DocumentFragment()
 
   const root = sheath(data, context)
-  root.addEventListener('click', (e) => clickHandler(e, searchFn))
+  root.addEventListener('click', (e) => clickHandler(e, searchFn, openLinkFn))
   root.addEventListener('keydown', keyHandler)
   fragment.append(root)
 

@@ -41,6 +41,7 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
     target.empty()
     // @ts-ignore
     const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)
+    const openLinkFn = plugin.app.workspace.openLinkText.bind(plugin.app.workspace)
     const { ignoreNulls, ignoredKeys, skipKey } = plugin.settings
     const rules = new RuleStore()
     rules.set('tags', {
@@ -52,6 +53,7 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
       vaultName: plugin.app.vault.getName(),
       rules,
       searchFn,
+      openLinkFn,
       settings: {
         mode: plugin.settings.expansionMode,
         ignoreNulls,

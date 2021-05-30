@@ -17,6 +17,8 @@ export interface Context {
   vaultName: string;
   rules: RuleStore;
   searchFn: (query: string) => void;
+  // openLinkFn: (linktext: string, sourcePath: string, newLeaf?: boolean, openViewState?: OpenViewState): Promise<void>;
+  openLinkFn: (linktext: string, sourcePath: string) => Promise<void> | void;
   settings: Settings;
   depth: number;
 }
@@ -48,7 +50,8 @@ export function defaultContext(vaultName: string): Context {
   const context: Context = {
     vaultName,
     rules,
-    searchFn: (query: string) => { },
+    searchFn: (query: string) => { console.error("unimplemented") },
+    openLinkFn: (linktext: string, sourcePath: string) => { console.error("unimplemented") },
     settings: {
       mode: 'expanded',
       ignoreNulls: false,

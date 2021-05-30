@@ -1,5 +1,9 @@
 # Changelog
 
+## Next
+
+- Fix internal links. Now they use the Obsidian default behaviour.
+
 ## 0.8.4
 
 - Ignore empty arrays when null values are to be ignored.
