@@ -48,6 +48,10 @@ function keyHandler(event: KeyboardEvent) {
 
 function externalLink(value: string): HTMLElement {
   const a = document.createElement('a')
+  // @ts-ignore
+  a.part?.add('link')
+  // @ts-ignore
+  a.part?.add('external-link')
   a.classList.add('external-link')
   a.setAttribute('target', '_blank')
   a.setAttribute('rel', 'noopener')
@@ -68,6 +72,11 @@ function internalLink(url: URL): HTMLElement {
 
   a.dataset.href = label
   a.setAttribute('href', label)
+
+  // @ts-ignore
+  a.part?.add('link')
+  // @ts-ignore
+  a.part?.add('internal-link')
   a.classList.add('internal-link')
   a.setAttribute('target', '_blank')
   a.setAttribute('rel', 'noopener')
@@ -333,10 +342,14 @@ function details(label: string, data: any, context: Context): HTMLElement {
     ? rule.toHtml(data, rule)
     : ordinaryValue(data, { ...context, depth: depth + 1 })
 
+  // @ts-ignore
+  key.part?.add('key')
   key.classList.add('key')
   key.append(label)
   root.append(key)
 
+  // @ts-ignore
+  value.part?.add('value')
   value.classList.add('value')
   value.setAttribute('id', valueId)
   value.append(datum)

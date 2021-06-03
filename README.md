@@ -6,6 +6,10 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **0.10.3**:
+  - Add parts for `link`, `external-link` and `internal-link`.
+  - Fix parts `key` and `value`.
+  - Fix vertical alignment for keys.
 - **0.10.2**:
   - Add parts for `key` and `value`.
 - **0.10.1**:
@@ -119,6 +123,21 @@ And, as a more contrived example, you could give a rounded look to the keys:
 Notice that parts are limited by design so you won't be able to influence
 children such as links or deep structures in values.
 
+## Links
+
+Links use the [::part pseudo-element] to allow for full
+customisation. Say you don't like the underlining and want external links to be
+in bold:
+
+```css
+.obsidian-metatable::part(link) {
+  text-decoration: none;
+}
+
+.obsidian-metatable::part(external-link) {
+  font-weight: 700;
+}
+```
 
 ### Example
 

@@ -84,22 +84,24 @@ summary:focus-visible {
 .member .key {
   background-color: var(--metatable-key-background);
   border-right: var(--metatable-key-border-width) solid var(--metatable-key-border-color);
-  display: block;
+  display: grid;
+  grid-template-columns: 10px auto;
+  grid-gap: 0.4rem;
   font-weight: bold;
   grid-area: key;
+  overflow: hidden;
   padding: 0.4rem;
   text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .member .value {
   background-color: var(--metatable-value-background);
   grid-area: value;
   margin: 0;
-  padding: 0.4rem;
   overflow: auto;
+  padding: 0.4rem;
 }
 
 .member .key:focus {
@@ -122,8 +124,8 @@ summary:focus-visible {
 }
 
 .key[aria-expanded]::before {
-  margin-right: 0.3rem;
   font-size: 0.6rem;
+  padding-top: 0.3rem;
 }
 
 .key[aria-expanded=true]::before {
@@ -141,7 +143,6 @@ summary:focus-visible {
 .key[aria-expanded=false] + .value > .marker::after {
   content: var(--metatable-mark-symbol);
   display: block;
-  padding: 0.4rem;
 }
 
 @media screen and (min-width: 400px) and (max-width: 550px) {

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.3
+
+  - Add parts for `link`, `external-link` and `internal-link`.
+  - Fix parts `key` and `value`.
+  - Fix vertical alignment for keys.
+
 ## 0.10.2
 
   - Add parts for `key` and `value`.
