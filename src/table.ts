@@ -208,8 +208,15 @@ function leafMember(label: string, data: string | null, context: Context): HTMLE
     ? rule.toHtml(data, rule)
     : enrichValue(data, context)
 
+  // XXX: Note that `part` is an `Element` extension in draft. Checking for
+  // undefined lets us get away with plain jest dom testing.
+  // @ts-ignore
+  key.part?.add('key')
   key.classList.add('key')
   key.append(label)
+
+  // @ts-ignore
+  value.part?.add('value')
   value.classList.add('value')
   value.append(datum)
 

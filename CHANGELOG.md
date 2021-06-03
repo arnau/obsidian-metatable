@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.2
+
+  - Add parts for `key` and `value`.
+
 ## 0.10.1
 
 - Fix scrolls always showing in Windows.

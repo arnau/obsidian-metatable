@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **0.10.2**:
+  - Add parts for `key` and `value`.
 - **0.10.1**:
   - Fix scrolls always showing in Windows.
 - **0.10.0**
@@ -91,6 +93,31 @@ you would do instead:
   background-color: deepskyblue;
 }
 ```
+
+## Keys and values
+
+Both keys and values use the [::part pseudo-element] to allow for full
+customisation. Say you don't like the scroll that appears when values overflow
+the space available (e.g. URLs), you could:
+
+```css
+.obsidian-metatable::part(value) {
+  overflow: hidden;
+}
+```
+
+And, as a more contrived example, you could give a rounded look to the keys:
+
+```css
+.obsidian-metatable::part(key) {
+  border-radius: 0.8rem;
+  border-right: none;
+  padding-left: 0.8rem;
+}
+```
+
+Notice that parts are limited by design so you won't be able to influence
+children such as links or deep structures in values.
 
 
 ### Example
