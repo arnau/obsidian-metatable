@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **0.10.4**:
+  - Fix metatable duplication in embedded notes [bug #12](https://github.com/arnau/obsidian-metatable/issues/12)
 - **0.10.3**:
   - Add parts for `link`, `external-link` and `internal-link`.
   - Fix parts `key` and `value`.

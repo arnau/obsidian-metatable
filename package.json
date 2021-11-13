@@ -1,6 +1,6 @@
 {
   "name": "obsidian-metatable",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "An Obsidian plugin to render the full frontmatter as a table.",
   "main": "main.js",
   "scripts": {
@@ -15,16 +15,16 @@
   "author": "Arnau Siches",
   "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-typescript": "^8.2.1",
-    "@types/jest": "^26.0.23",
-    "@types/node": "^15.6.0",
-    "jest": "^26.6.3",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.11.7",
+    "jest": "^27.3.1",
     "obsidian": "https://github.com/obsidianmd/obsidian-api/tarball/master",
     "rollup": "^2.48.0",
-    "rollup-plugin-import-css": "^2.0.1",
-    "ts-jest": "^26.5.6",
+    "rollup-plugin-import-css": "^3.0.2",
+    "ts-jest": "^27.0.7",
     "tslib": "^2.0.3",
     "typescript": "^4.0.3"
   }
