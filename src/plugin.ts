@@ -43,7 +43,18 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
   const frontmatter = await el.querySelector('.frontmatter')
 
   if (frontmatter !== null) {
-    const target = el.querySelector('.frontmatter-container') as HTMLElement
+    const embed = await el.querySelector('.internal-embed') as HTMLElement
+
+    // If an embed has already been loaded, writing after the embed expression
+    // triggers a re-render for the embedded markdown wrongly injecting the
+    // parent metatable for every keystroke.
+    //
+    // See https://github.com/arnau/obsidian-metatable/issues/12
+    if (embed !== null) {
+      return
+    }
+
+    const target = await el.querySelector('.frontmatter-container') as HTMLElement
     target.removeAttribute('class')
     // Prevents an undesired `display: none` if `tags` is not present.
     target.removeAttribute('style')
