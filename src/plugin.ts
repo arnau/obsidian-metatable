@@ -14,13 +14,23 @@ function log(msg: string) {
 
 function createMetatable(el: HTMLElement, data: object, context: Context) {
   const wrapper = el.createEl('div')
-  wrapper.classList.add('obsidian-metatable')
-  wrapper.attachShadow({ mode: 'open' })
-
   const fragment = new DocumentFragment()
-  fragment.createEl('style', { text: styles })
+
+  wrapper.classList.add('obsidian-metatable')
+
+  if (!context.settings.naked) {
+    wrapper.attachShadow({ mode: 'open' })
+    fragment.createEl('style', { text: styles })
+  }
+
   fragment.append(metatable(data, context))
-  wrapper.shadowRoot.append(fragment)
+
+  if (context.settings.naked) {
+    wrapper.append(fragment)
+  } else {
+    wrapper.shadowRoot.append(fragment)
+  }
+
 }
 
 function isEmpty(data: object): boolean {
@@ -82,6 +92,7 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
         filterKeys,
         filterMode,
         autolinks: plugin.settings.autolinks,
+        naked: plugin.settings.naked,
       },
       depth: 0,
     }
