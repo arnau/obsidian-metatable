@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **next**:
+  - Add `root-collapsed` expansion level.
 - **0.10.4**:
   - Fix metatable duplication in embedded notes [bug #12](https://github.com/arnau/obsidian-metatable/issues/12)
 - **0.10.3**:
@@ -30,7 +32,7 @@ By enabling the plugin in the “Community plugins” section you'll be all set.
 
 ### Settings
 
-- **Expansion level** lets you choose whether you want the metatable fully collapsed, collapse only leafs or fully expanded.
+- **Expansion level** lets you choose whether you want the metatable fully collapsed, collapse only leafs, collapse only the root or fully expanded.
 - **Ignore null values** lets you toggle whether members with null values are displayed.
 - **Null value** lets you define a string to display when a value is `null`.
 - **Skip key** lets you define a key that when `true` will not display the metatable for that document.

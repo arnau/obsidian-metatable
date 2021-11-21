@@ -8,7 +8,7 @@ export { RuleStore, Rule } from './rule'
  */
 export type Leaf = string | number
 
-export type Mode = 'expanded' | 'leaf-collapsed' | 'all-collapsed'
+export type Mode = 'expanded' | 'leaf-collapsed' | 'all-collapsed' | 'root-collapsed'
 
 export type FilterMode = 'keep' | 'ignore'
 

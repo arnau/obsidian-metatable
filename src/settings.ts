@@ -63,6 +63,7 @@ export class MetatableSettingTab extends PluginSettingTab {
                    .addOption('expanded', 'Fully expanded')
                    .addOption('leaf-collapsed', 'Collapse leafs')
                    .addOption('all-collapsed', 'Collapse all')
+                   .addOption('root-collapsed', 'Collapse root')
                    .setValue(plugin.settings.expansionMode)
                    .onChange(async (value) => {
                      plugin.settings.expansionMode = value as Mode

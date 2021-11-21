@@ -5,4 +5,5 @@ module.exports = {
         '^.+\\.ts$': 'ts-jest',
     },
     moduleFileExtensions: ['js', 'ts'],
+    testEnvironment: 'jsdom',
 };

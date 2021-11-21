@@ -129,6 +129,11 @@ function isOpen(mode: string, depth: number): boolean {
     return true
   }
 
+  // Keep the root close when leafs are opened
+  if (mode == 'root-collapsed' && depth != 0) {
+    return true
+  }
+
   // all-collapsed
   return false
 }
