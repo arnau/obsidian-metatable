@@ -7,6 +7,7 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 ## Changelog
 
 - **next**:
+  - Improve filter key settings UX.
   - Add zotero links. Thanks @MaroLIACS
   - Add `naked` experimental setting.
   - Add `root-collapsed` expansion level.

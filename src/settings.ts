@@ -129,13 +129,24 @@ export class MetatableSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName('Filter keys')
-      .setDesc('Any key found in this comma-separated list will be either ignored or kept according to the filter mode')
-      .addText(text => text
-               .setValue(plugin.settings.filterKeys.join(', '))
-               .onChange(async (value) => {
-                 plugin.settings.filterKeys = value.split(',').map(v => v.trim())
-                 await plugin.saveSettings()
-               }))
+      .setDesc('Any empty field will be ignored.')
+
+    let keyset = new Set(plugin.settings.filterKeys)
+    keyset.delete('')
+
+    let filterKeys = containerEl.createEl('ol')
+
+    for (const originalValue of keyset) {
+      addFilterInput(originalValue, filterKeys, keyset, plugin)
+    }
+
+    new Setting(containerEl)
+      .addButton(x => x
+                 .setButtonText("Add key")
+                .onClick(async () => {
+                  addFilterInput('', filterKeys, keyset, plugin)
+                }))
+
 
     containerEl.createEl('h3', {text: 'Experimental'})
 
@@ -159,4 +170,26 @@ export class MetatableSettingTab extends PluginSettingTab {
                    await plugin.saveSettings()
                  }))
   }
+}
+
+function addFilterInput(originalValue: string, el: HTMLElement, keyset: Set<string>, plugin: MetatablePlugin) {
+  const item = el.createEl('li')
+  const input = item.createEl('input')
+
+  input.setAttribute('type', 'text')
+  input.setAttribute('value', originalValue)
+  input.setAttribute('data-prev', originalValue)
+
+  input.addEventListener('input', async (e) => {
+    let target = e.target as HTMLInputElement
+
+    keyset.delete(target.dataset.prev)
+    keyset.add(target.value)
+    input.setAttribute('data-prev', target.value)
+
+    keyset.delete('')
+
+    plugin.settings.filterKeys = [...keyset]
+    await plugin.saveSettings()
+  })
 }
