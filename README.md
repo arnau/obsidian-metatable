@@ -188,7 +188,12 @@ Any value that is a valid Obsidian URL such as `obsidian://open?vault=my_vault&f
 
 #### Zotero
 
-Any Zotero URI such as `zotero://select/items/@citekey`. Link becomes click-able and selects the item in Zotero (also allows for opening PDF attachments of items via `zotero://open-pdf/...` ). Requires [Zotero](https://www.zotero.org/) to be installed. If used with [obsidian-citation-plugin](https://github.com/hans/obsidian-citation-plugin), the variable `{{zoteroSelectURI}}` can be used in the frontmatter to create a click-able link to open the linked citation in Zotero directly from the metatable.
+Any Zotero URI such as `zotero://select/items/@citekey`.
+
+The link becomes clickable and selects the item in Zotero (also allows for opening PDF attachments of items via `zotero://open-pdf/...` ).
+It requires [Zotero](https://www.zotero.org/) to be installed.
+
+When used with [obsidian-citation-plugin](https://github.com/hans/obsidian-citation-plugin), the variable `{{zoteroSelectURI}}` can be used in the frontmatter to create a clickable link to open the linked citation in Zotero directly from the metatable.
 
 #### Local
 
