@@ -8,7 +8,7 @@ export { RuleStore, Rule } from './rule'
  */
 export type Leaf = string | number
 
-export type Mode = 'expanded' | 'leaf-collapsed' | 'all-collapsed'
+export type Mode = 'expanded' | 'leaf-collapsed' | 'all-collapsed' | 'root-collapsed'
 
 export type FilterMode = 'keep' | 'ignore'
 
@@ -32,6 +32,7 @@ export interface Settings {
   filterKeys: string[];
   filterMode: FilterMode;
   autolinks: boolean;
+  naked: boolean;
 }
 
 export interface Patch {
@@ -41,6 +42,7 @@ export interface Patch {
   filterKeys?: string[];
   filterMode?: FilterMode;
   autolinks?: boolean;
+  naked?: boolean;
 }
 
 
@@ -63,6 +65,7 @@ export function defaultContext(vaultName: string): Context {
       filterKeys: ['metatable', 'forntmatter'],
       filterMode: 'ignore',
       autolinks: false,
+      naked: false,
     },
     depth: 0,
   }

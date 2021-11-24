@@ -23,6 +23,7 @@ export interface MetatableSettings {
   filterKeys: string[];
   filterMode: FilterMode;
   autolinks: boolean;
+  naked: boolean;
   // A reference to the current vault.
   vault: Vault;
 }
@@ -36,9 +37,9 @@ export const DEFAULT_SETTINGS: MetatableSettings = {
   filterKeys: ['metatable', 'frontmatter'],
   filterMode: 'ignore',
   autolinks: false,
+  naked: false,
   vault: null,
 }
-
 
 
 export class MetatableSettingTab extends PluginSettingTab {
@@ -63,6 +64,7 @@ export class MetatableSettingTab extends PluginSettingTab {
                    .addOption('expanded', 'Fully expanded')
                    .addOption('leaf-collapsed', 'Collapse leafs')
                    .addOption('all-collapsed', 'Collapse all')
+                   .addOption('root-collapsed', 'Collapse root')
                    .setValue(plugin.settings.expansionMode)
                    .onChange(async (value) => {
                      plugin.settings.expansionMode = value as Mode
@@ -144,6 +146,16 @@ export class MetatableSettingTab extends PluginSettingTab {
                  .setValue(plugin.settings.autolinks)
                  .onChange(async (value) => {
                    plugin.settings.autolinks = value
+                   await plugin.saveSettings()
+                 }))
+
+    new Setting(containerEl)
+      .setName('Naked')
+      .setDesc('Removes the Shadow DOM and the default CSS so you can bring your own via CSS snippets.')
+      .addToggle(setting => setting
+                 .setValue(plugin.settings.naked)
+                 .onChange(async (value) => {
+                   plugin.settings.naked = value
                    await plugin.saveSettings()
                  }))
   }

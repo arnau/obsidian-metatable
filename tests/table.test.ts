@@ -141,6 +141,19 @@ describe('metatable', () => {
       expect(root.getAttribute('open')).toBe(null)
       expect(memberKey.getAttribute('aria-expanded')).toBe('false')
     })
+
+    test('root-collapsed', () => {
+      const frontmatter = {
+        foldable: ['one', 'two'],
+      }
+      const fragment = metatable(frontmatter, patchSettings(context, { mode: 'root-collapsed'}))
+      const root = fragment.querySelector('details')
+      const memberKey = fragment.querySelector('.member > .key')
+
+      expect(root.getAttribute('open')).toBe(null)
+      expect(memberKey.getAttribute('aria-expanded')).toBe('true')
+    })
+
   })
 
 })
