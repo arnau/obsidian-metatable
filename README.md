@@ -6,23 +6,11 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
-- **next**:
+- **0.11.0**:
   - Improve filter key settings UX.
   - Add zotero links. Thanks @MaroLIACS
   - Add `naked` experimental setting.
   - Add `root-collapsed` expansion level.
-- **0.10.4**:
-  - Fix metatable duplication in embedded notes [bug #12](https://github.com/arnau/obsidian-metatable/issues/12)
-- **0.10.3**:
-  - Add parts for `link`, `external-link` and `internal-link`.
-  - Fix parts `key` and `value`.
-  - Fix vertical alignment for keys.
-- **0.10.2**:
-  - Add parts for `key` and `value`.
-- **0.10.1**:
-  - Fix scrolls always showing in Windows.
-- **0.10.0**
-  - Add filter mode to either ignore or keep the listed keys.
 
 See the [changelog](./CHANGELOG.md) for the full list of version. Or check the
 [decision log](./decision_log/) for the main design choices.

@@ -1,6 +1,6 @@
 {
   "name": "obsidian-metatable",
-  "version": "0.10.4",
+  "version": "0.11.0",
   "description": "An Obsidian plugin to render the full frontmatter as a table.",
   "main": "main.js",
   "scripts": {
