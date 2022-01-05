@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- **Next**:
+  - Add warning when the frontmatter is not valid YAML.
 - **0.11.0**:
   - Improve filter key settings UX.
   - Add zotero links. Thanks @MaroLIACS
@@ -56,6 +58,10 @@ Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metat
 - `--metatable-key-focus`
 - `--metatable-tag-background`
 - `--metatable-value-background`
+- `-metatable-warning-background`
+- `-metatable-warning-foreground`
+- `-metatable-warning-border`
+
 
 #### Symbols
 

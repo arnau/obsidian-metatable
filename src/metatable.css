@@ -7,6 +7,9 @@
   --metatable-tag-background: var(--background-primary-alt, #f3f3f3);
   --metatable-link-color: var(--text-accent, #705dcf);
   --metatable-link-color-hover: var(--text-accent-hover, #8875ff);
+  --metatable-warning-background: lightgoldenrodyellow;
+  --metatable-warning-foreground: brown;
+  --metatable-warning-border: 2px solid palegoldenrod;
 }
 
 :host-context(.theme-dark) {
@@ -18,6 +21,9 @@
   --metatable-tag-background: var(--background-primary-alt, #111);
   --metatable-link-color: var(--text-accent, #705dcf);
   --metatable-link-color-hover: var(--text-accent-hover, #8875ff);
+  --metatable-warning-background: inherit;
+  --metatable-warning-foreground: gold;
+  --metatable-warning-border: 2px solid palegoldenrod;
 }
 
 :host {
@@ -239,4 +245,12 @@ summary:focus-visible {
 
 .internal-link:hover {
   color: var(--metatable-internal-link-color-hover);
+}
+
+.warning {
+  background-color: var(--metatable-warning-background);
+  padding: 1rem;
+  margin: 0;
+  border: var(--metatable-warning-border);
+  color: var(--metatable-warning-foreground);
 }

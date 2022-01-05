@@ -33,6 +33,32 @@ function createMetatable(el: HTMLElement, data: object, context: Context) {
 
 }
 
+function createWarning(el: HTMLElement, message: string, context: Context) {
+  const wrapper = el.createEl('div')
+  const fragment = new DocumentFragment()
+
+  wrapper.classList.add('obsidian-metatable')
+
+  if (!context.settings.naked) {
+    wrapper.attachShadow({ mode: 'open' })
+    fragment.createEl('style', { text: styles })
+  }
+
+  const warning = el.createEl('p')
+  warning.classList.add('warning')
+  warning.append(message)
+
+  fragment.append(warning)
+
+  if (context.settings.naked) {
+    wrapper.append(fragment)
+  } else {
+    wrapper.shadowRoot.append(fragment)
+  }
+
+}
+
+
 function isEmpty(data: object): boolean {
   return Object.entries(data)
     .every(([_, value]) => value == null || isEmptyArray(value))
@@ -97,6 +123,7 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
       depth: 0,
     }
 
+
     if (ctx.frontmatter) {
       const data = filterSet(ctx.frontmatter, filterKeys, filterMode)
 
@@ -107,6 +134,11 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
       if (Object.isEmpty(data)) { return }
 
       createMetatable(target, data, context)
+    } else {
+      // When null, the frontmatter YAML is invalid. There is no insight to tap
+      // on to give a meaningful error message though.
+      const label = await frontmatter.querySelector('.mod-error')
+      createWarning(target, label.textContent, context)
     }
   }
 }
