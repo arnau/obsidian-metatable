@@ -16,16 +16,17 @@
   "author": "Arnau Siches",
   "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-typescript": "^8.2.1",
-    "@types/jest": "^27.0.2",
-    "@types/node": "^16.11.7",
-    "jest": "^27.3.1",
+    "@types/jest": "^28.1.7",
+    "@types/node": "^18.7.6",
+    "jest": "^28.1.3",
+    "jest-environment-jsdom": "^28.1.3",
     "obsidian": "https://github.com/obsidianmd/obsidian-api/tarball/master",
     "rollup": "^2.48.0",
     "rollup-plugin-import-css": "^3.0.2",
-    "ts-jest": "^27.0.7",
+    "ts-jest": "^28.0.8",
     "tslib": "^2.0.3",
     "typescript": "^4.0.3"
   }
