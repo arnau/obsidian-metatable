@@ -215,8 +215,8 @@ function leafMember(label: string, data: string | null, context: Context): HTMLE
   const root = document.createElement('tr')
   const key = document.createElement('th')
   const value = document.createElement('td')
-  const rule = rules.get(label)
-  const datum = (rules.has(label) && !isNully(data))
+  const rule = rules.get(label.toLocaleLowerCase())
+  const datum = (rules.has(label.toLocaleLowerCase()) && !isNully(data))
     ? rule.toHtml(data, rule)
     : enrichValue(data, context)
 
@@ -345,9 +345,9 @@ function details(label: string, data: any, context: Context): HTMLElement {
   const key = document.createElement('th')
   const value = document.createElement('td')
 
-  const rule = rules.get(label)
+  const rule = rules.get(label.toLocaleLowerCase())
   const valueId = `${label}-${depth}`
-  const datum = (rules.has(label) && !isNully(data))
+  const datum = (rules.has(label.toLocaleLowerCase()) && !isNully(data))
     ? rule.toHtml(data, rule)
     : ordinaryValue(data, { ...context, depth: depth + 1 })
 

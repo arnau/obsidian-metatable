@@ -10,6 +10,7 @@ A plugin to display the full frontmatter block instead of just the list of tags.
   - Add `--metatable-member-gap`.
   - Add parts for `summary`, `member`, `set` and `marker`.
   - Fix preserving filter keys with the same starting substring.
+  - Fix processing tags when the YAML key is capitalised.
 - **O.12.0**:
   - Add warning when the frontmatter is not valid YAML.
   - Fix preserving the folded frontmatter when in edit mode.
