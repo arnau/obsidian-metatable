@@ -6,7 +6,7 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
-- Next:
+- 0.13.0:
   - Add `--metatable-member-gap`.
   - Add parts for `summary`, `member`, `set` and `marker`.
   - Fix preserving filter keys with the same starting substring.

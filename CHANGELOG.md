@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.0
+
+  - Add `--metatable-member-gap`.
+  - Add parts for `summary`, `member`, `set` and `marker`.
+  - Fix preserving filter keys with the same starting substring.
+  - Fix processing tags when the YAML key is capitalised.
+  - Add custom text for wikilinks.
+
 ## 0.12.0
 
   - Add warning when the frontmatter is not valid YAML.
