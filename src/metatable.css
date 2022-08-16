@@ -27,21 +27,22 @@
 }
 
 :host {
+  --metatable-background: transparent;
   --metatable-collapsed-symbol: "▶︎";
   --metatable-expanded-symbol: "▼";
+  --metatable-external-link-color-hover: var(--metatable-link-color-hover);
+  --metatable-external-link-color: var(--metatable-link-color);
+  --metatable-external-link-icon: url(app://obsidian.md/public/images/874d8b8e340f75575caa.svg);
   --metatable-font-family: var(--text, sans-serif);
   --metatable-font-size: var(--font-small, 13px);
+  --metatable-internal-link-color-hover: var(--metatable-link-color-hover);
+  --metatable-internal-link-color: var(--metatable-link-color);
+  --metatable-internal-link-icon: none;
   --metatable-key-border-width: 2px;
   --metatable-mark-symbol: "…";
-  --metatable-value-background: transparent;
-  --metatable-background: transparent;
+  --metatable-member-gap: 2px;
   --metatable-tag-symbol: "";
-  --metatable-external-link-icon: url(app://obsidian.md/public/images/874d8b8e340f75575caa.svg);
-  --metatable-external-link-color: var(--metatable-link-color);
-  --metatable-external-link-color-hover: var(--metatable-link-color-hover);
-  --metatable-internal-link-icon: none;
-  --metatable-internal-link-color: var(--metatable-link-color);
-  --metatable-internal-link-color-hover: var(--metatable-link-color-hover);
+  --metatable-value-background: transparent;
 }
 
 
@@ -78,7 +79,7 @@ summary:focus-visible {
 
 .member {
   display: grid;
-  grid-gap: 2px;
+  grid-gap: var(--metatable-member-gap);
   grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
   grid-template-areas: "key value";
 }

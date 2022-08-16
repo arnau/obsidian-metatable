@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- Next:
+  - Add `--metatable-member-gap`.
 - **O.12.0**:
   - Add warning when the frontmatter is not valid YAML.
   - Fix preserving the folded frontmatter when in edit mode.
