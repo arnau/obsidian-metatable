@@ -6,13 +6,9 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
-- **Next**:
+- **O.12.0**:
   - Add warning when the frontmatter is not valid YAML.
-- **0.11.0**:
-  - Improve filter key settings UX.
-  - Add zotero links. Thanks @MaroLIACS
-  - Add `naked` experimental setting.
-  - Add `root-collapsed` expansion level.
+  - Fix preserving the folded frontmatter when in edit mode.
 
 See the [changelog](./CHANGELOG.md) for the full list of version. Or check the
 [decision log](./decision_log/) for the main design choices.

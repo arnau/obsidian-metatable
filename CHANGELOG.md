@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.12.0
+
+  - Add warning when the frontmatter is not valid YAML.
+  - Fix preserving the folded frontmatter when in edit mode.
+
 ## 0.11.0
 
 - Improve filter key settings UX.
