@@ -1,6 +1,5 @@
 import {
   App,
-  Plugin,
   PluginSettingTab,
   Setting,
   Vault,
@@ -121,30 +120,24 @@ export class MetatableSettingTab extends PluginSettingTab {
                      await plugin.saveSettings()
                    }))
 
-    // XXX: Remove in 0.11.0
-    if (plugin.settings.ignoredKeys.length > 0) {
-      plugin.settings.filterKeys = plugin.settings.ignoredKeys
-      await plugin.saveSettings()
-    }
-
     new Setting(containerEl)
       .setName('Filter keys')
       .setDesc('Any empty field will be ignored.')
 
-    let keyset = new Set(plugin.settings.filterKeys)
-    keyset.delete('')
+    let keyset = plugin.settings.filterKeys
 
     let filterKeys = containerEl.createEl('ol')
 
-    for (const originalValue of keyset) {
-      addFilterInput(originalValue, filterKeys, keyset, plugin)
+    for (const [idx, originalValue] of [...keyset].entries()) {
+      if (originalValue === '') { continue }
+      addFilterInput(originalValue, filterKeys, keyset, plugin, idx)
     }
 
     new Setting(containerEl)
       .addButton(x => x
                  .setButtonText("Add key")
                 .onClick(async () => {
-                  addFilterInput('', filterKeys, keyset, plugin)
+                  addFilterInput('', filterKeys, keyset, plugin, keyset.length)
                 }))
 
 
@@ -172,10 +165,11 @@ export class MetatableSettingTab extends PluginSettingTab {
   }
 }
 
-function addFilterInput(originalValue: string, el: HTMLElement, keyset: Set<string>, plugin: MetatablePlugin) {
+function addFilterInput(originalValue: string, el: HTMLElement, keyset: Array<string>, plugin: MetatablePlugin, idx: number) {
   const item = el.createEl('li')
   const input = item.createEl('input')
 
+  item.setAttribute('id', `filter-${idx}`)
   input.setAttribute('type', 'text')
   input.setAttribute('value', originalValue)
   input.setAttribute('data-prev', originalValue)
@@ -183,13 +177,12 @@ function addFilterInput(originalValue: string, el: HTMLElement, keyset: Set<stri
   input.addEventListener('input', async (e) => {
     let target = e.target as HTMLInputElement
 
-    keyset.delete(target.dataset.prev)
-    keyset.add(target.value)
+    keyset[idx] = target.value
+
     input.setAttribute('data-prev', target.value)
 
-    keyset.delete('')
+    plugin.settings.filterKeys = keyset
 
-    plugin.settings.filterKeys = [...keyset]
     await plugin.saveSettings()
   })
 }
