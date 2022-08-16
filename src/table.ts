@@ -64,12 +64,13 @@ function obsidianUrl(vaultName: string, fileName: string): string {
 }
 
 
-function internalLink(url: URL): HTMLElement {
+function internalLink(url: URL, label?: string | undefined): HTMLElement {
   const a = document.createElement('a')
-  const label = url.searchParams.get('file')
+  const localUrl = url.searchParams.get('file')
+  // const label = url.searchParams.get('file')
 
-  a.dataset.href = label
-  a.setAttribute('href', label)
+  a.dataset.href = localUrl
+  a.setAttribute('href', localUrl)
 
   // @ts-ignore
   a.part?.add('link')
@@ -78,7 +79,7 @@ function internalLink(url: URL): HTMLElement {
   a.classList.add('internal-link')
   a.setAttribute('target', '_blank')
   a.setAttribute('rel', 'noopener')
-  a.append(label)
+  a.append(label ? label : localUrl)
 
   return a
 }
@@ -88,9 +89,18 @@ function internalLink(url: URL): HTMLElement {
  */
 function wikiLink(value: string, vaultName: string): HTMLElement {
   const cleanValue = value.slice(2, -2)
-  const url = new URL(obsidianUrl(vaultName, cleanValue))
+  let url: URL
+  let label: string
 
-  return internalLink(url)
+  if (cleanValue.includes('|')) {
+    const [urlValue, labelValue] = cleanValue.split('|')
+    url = new URL(obsidianUrl(vaultName, urlValue.trim()))
+    label = labelValue.trim()
+  } else {
+    url = new URL(obsidianUrl(vaultName, cleanValue))
+  }
+
+  return internalLink(url, label)
 }
 
 /**
@@ -153,7 +163,7 @@ function isLocalLink(value: string): boolean {
 function tryUrl(value: string): URL | string {
   try {
     return new URL(value)
-  } catch(_) {
+  } catch (_) {
     value
   }
 }
@@ -314,7 +324,7 @@ function list(data: unknown[], context: Context): HTMLElement {
     if (Array.isArray(item)) {
       value = list(item, valueContext)
     } else if (typeof item == 'object') {
-      value = set(item , valueContext)
+      value = set(item, valueContext)
     } else {
       value = enrichValue(item as Leaf, valueContext)
     }

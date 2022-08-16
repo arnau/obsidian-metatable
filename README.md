@@ -11,6 +11,7 @@ A plugin to display the full frontmatter block instead of just the list of tags.
   - Add parts for `summary`, `member`, `set` and `marker`.
   - Fix preserving filter keys with the same starting substring.
   - Fix processing tags when the YAML key is capitalised.
+  - Add custom text for wikilinks.
 - **O.12.0**:
   - Add warning when the frontmatter is not valid YAML.
   - Fix preserving the folded frontmatter when in edit mode.
@@ -230,6 +231,12 @@ For example,
 quoted: "[[basic-alt]]"
 long-string: >-
   [[target]]
+```
+
+You can also customise the text displayed by using the following form:
+
+```
+[[target|Text to display]]
 ```
 
 #### Frontmatter
