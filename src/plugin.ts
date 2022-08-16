@@ -76,10 +76,10 @@ function filterSet(data: object, filterKeys: string[], filterMode: FilterMode): 
 
 async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx: MarkdownPostProcessorContext): Promise<void> {
   const plugin = this
-  const frontmatter = await el.querySelector('.frontmatter')
+  const frontmatter = el.querySelector('.frontmatter')
 
   if (frontmatter !== null) {
-    const embed = await el.querySelector('.internal-embed') as HTMLElement
+    const embed = el.querySelector('.internal-embed') as HTMLElement
 
     // If an embed has already been loaded, writing after the embed expression
     // triggers a re-render for the embedded markdown wrongly injecting the
@@ -90,11 +90,8 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
       return
     }
 
-    const target = await el.querySelector('.frontmatter-container') as HTMLElement
-    target.removeAttribute('class')
-    // Prevents an undesired `display: none` if `tags` is not present.
-    target.removeAttribute('style')
-    target.empty()
+    const target = el.querySelector('.frontmatter-container') as HTMLElement
+    target.style.display = 'none'
 
     // @ts-ignore
     const searchFn = plugin.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch.bind(plugin)
@@ -133,12 +130,12 @@ async function frontmatterProcessor(this: MetatablePlugin, el: HTMLElement, ctx:
       if (ignoreNulls && isEmpty(data)) { return }
       if (Object.isEmpty(data)) { return }
 
-      createMetatable(target, data, context)
+      createMetatable(target.parentNode as HTMLElement, data, context)
     } else {
       // When null, the frontmatter YAML is invalid. There is no insight to tap
       // on to give a meaningful error message though.
-      const label = await frontmatter.querySelector('.mod-error')
-      createWarning(target, label.textContent, context)
+      const label = frontmatter.querySelector('.mod-error')
+      createWarning(target.parentNode as HTMLElement, label.textContent, context)
     }
   }
 }
