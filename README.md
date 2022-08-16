@@ -8,6 +8,7 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 - Next:
   - Add `--metatable-member-gap`.
+  - Add parts for `summary`, `member`, `set` and `marker`.
 - **O.12.0**:
   - Add warning when the frontmatter is not valid YAML.
   - Fix preserving the folded frontmatter when in edit mode.
@@ -71,6 +72,24 @@ You might want to customise these if you prefer having tags with `#` or you don'
 - `--metatable-tag-symbol`
 - `--metatable-internal-link-icon`
 - `--metatable-external-link-icon`
+
+### Parts
+
+An alternative method for customising styles is via the [::part pseudo-element].
+
+Notice that parts are limited by design so you won't be able to influence
+children such as links or deep structures in values.
+
+The available parts are:
+
+- [`key` and `value`](#keys-and-values)
+- [links](#links)
+- [tags](#tags)
+- `marker`
+- `member`
+- `set`
+- `summary`
+
 
 ### Tags
 

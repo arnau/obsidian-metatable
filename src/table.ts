@@ -1,7 +1,5 @@
 import { getLinkpath } from 'obsidian'
-import { taglist } from './mappers'
-import { Rule, RuleStore } from './rule'
-import { Leaf, Context, Settings } from './core'
+import { Leaf, Context } from './core'
 
 import { isEmptyArray } from './utils'
 
@@ -213,7 +211,7 @@ function isNully(value: unknown): boolean {
  * A set member with a scalar value.
  */
 function leafMember(label: string, data: string | null, context: Context): HTMLElement {
-  const { rules, settings } = context
+  const { rules } = context
   const root = document.createElement('tr')
   const key = document.createElement('th')
   const value = document.createElement('td')
@@ -234,6 +232,8 @@ function leafMember(label: string, data: string | null, context: Context): HTMLE
   value.classList.add('value')
   value.append(datum)
 
+  // @ts-ignore
+  root.part?.add('member')
   root.classList.add('member')
   root.append(key)
   root.append(value)
@@ -246,6 +246,8 @@ function leafMember(label: string, data: string | null, context: Context): HTMLE
  */
 function nodeMember(label: string, value: unknown, context: Context): HTMLElement {
   const root = details(label, value, { ...context, depth: context.depth + 1 })
+  // @ts-ignore
+  root.part?.add('member')
   root.classList.add('member')
 
   return root
@@ -274,6 +276,8 @@ function set(data: object, context: Context): HTMLElement {
   const valueContext = { ...context, depth: depth + 1 }
 
   const root = document.createElement('table')
+  // @ts-ignore
+  root.part?.add('set')
   root.classList.add('set')
 
   Object.entries(data).forEach(([label, value]: [string, unknown]) => {
@@ -369,6 +373,7 @@ function details(label: string, data: any, context: Context): HTMLElement {
     key.setAttribute('aria-controls', valueId)
     key.setAttribute('tabindex', '0')
 
+    marker.part?.add('marker')
     marker.classList.add('marker')
     value.append(marker)
   }
@@ -388,6 +393,8 @@ function sheath(data: object, context: Context): HTMLElement {
   }
 
   summary.append('Metadata')
+  // @ts-ignore
+  summary.part?.add('summary')
   root.classList.add('metatable')
   root.append(summary)
   root.append(value)
@@ -396,7 +403,7 @@ function sheath(data: object, context: Context): HTMLElement {
 }
 
 export default function metatable(data: object, context: Context): DocumentFragment {
-  const { searchFn, openLinkFn, settings } = context
+  const { searchFn, openLinkFn } = context
   const fragment = new DocumentFragment()
 
   const root = sheath(data, context)
