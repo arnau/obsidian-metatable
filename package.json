@@ -4,8 +4,13 @@
   "description": "An Obsidian plugin to render the full frontmatter as a table.",
   "main": "main.js",
   "scripts": {
-    "dev": "rollup --config rollup.config.js -w",
-    "build": "rollup --config rollup.config.js --environment BUILD:production",
+    "vite": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+
+    "rollup:dev": "rollup --config rollup.config.js -w",
+    "rollup:build": "rollup --config rollup.config.js --environment BUILD:production",
     "dist": "mkdir -p dist && cp main.js versions.json manifest.json dist/",
     "test_vault": "cp main.js versions.json manifest.json test_vault/.obsidian/plugins/obsidian-metatable",
     "test": "jest"
@@ -28,6 +33,11 @@
     "rollup-plugin-import-css": "^3.0.2",
     "ts-jest": "^28.0.8",
     "tslib": "^2.0.3",
-    "typescript": "^4.0.3"
+    "typescript": "^4.7.4",
+    "vite": "^3.0.0",
+    "vite-plugin-solid": "^2.3.0"
+  },
+  "dependencies": {
+    "solid-js": "^1.4.7"
   }
 }
