@@ -1,8 +1,8 @@
 ## Obsidian Metatable
 
-A plugin to display the full frontmatter block instead of just the list of tags.
+An [Obsidian] plugin to display the full frontmatter block instead of just the list of tags.
 
-![](screenshot.png)
+![screenshot](screenshot.png)
 
 ## Changelog
 
@@ -35,7 +35,7 @@ By enabling the plugin in the “Community plugins” section you'll be all set.
 - **Skip key** lets you define a key that when `true` will not display the metatable for that document.
 - **Filter mode** lets you define whether to ignore or keep the filter keys.
 - **Filter keys** lets you define the list of keys that should be either kept or ignored.
-- **Autolinks** Attempts to create links for internal links.
+- [**Autolinks**](#autolinks) Attempts to create links for internal links.
 - **Naked** Does not sandbox the widget with a ShadowDOM. It also doesn't bring any CSS.
 
 
@@ -96,7 +96,7 @@ The available parts are:
 - `summary`
 
 
-### Tags
+#### Tags
 
 Tags use the [::part pseudo-element] to allow for full customisation. What in
 the default Obsidian setup you would do to style [Tag Pills] with this plugin
@@ -122,7 +122,7 @@ you would do instead:
 }
 ```
 
-## Keys and values
+#### Keys and values
 
 Both keys and values use the [::part pseudo-element] to allow for full
 customisation. Say you don't like the scroll that appears when values overflow
@@ -147,7 +147,7 @@ And, as a more contrived example, you could give a rounded look to the keys:
 Notice that parts are limited by design so you won't be able to influence
 children such as links or deep structures in values.
 
-## Links
+#### Links
 
 Links use the [::part pseudo-element] to allow for full
 customisation. Say you don't like the underlining and want external links to be
@@ -162,8 +162,7 @@ in bold:
   font-weight: 700;
 }
 ```
-
-### Example
+##### Example
 
 Say you want your metadata to have a custom palette of pinks and arrows is not your thing.
 
@@ -194,30 +193,23 @@ For more details, either use the Inspector tool in Obsidian or check out the [`m
 
 Any value that is a valid HTTP or HTTPS [URL] such as `https://www.seachess.net`.
 
-It also autolinks [Evernote] links using the `evernote:` protocol.
+It also autolinks:
 
-#### Tags
-
-Any value in the `tags` key is linked as a tag. Mimics the default Obsidian behaviour.
-
-#### Obsidian
-
-Any value that is a valid Obsidian URL such as `obsidian://open?vault=my_vault&file=my_file`.
-
-#### Zotero
-
-Any Zotero URI such as `zotero://select/items/@citekey`.
-
-The link becomes clickable and selects the item in Zotero (also allows for opening PDF attachments of items via `zotero://open-pdf/...` ).
-It requires [Zotero](https://www.zotero.org/) to be installed.
-
-When used with [obsidian-citation-plugin](https://github.com/hans/obsidian-citation-plugin), the variable `{{zoteroSelectURI}}` can be used in the frontmatter to create a clickable link to open the linked citation in Zotero directly from the metatable.
+- [Evernote] links using the `evernote:` protocol.
+- [Obsidian] links using the `obsidian:` protocol.
+- [Zotero] links using the `zotero:` protocol. Links are expected to follow a pattern such as `zotero://select/items/@citekey` or `zotero://open-pdf/...`. When used with the [obsidian-citation-plugin](https://github.com/hans/obsidian-citation-plugin), the variable `{{zoteroSelectURI}}` can be used to open the linked citation directly.
 
 #### Local
 
 **(requires "autolinks" enabled)**
 
-Any value starting with `./` is considered a local link. E.g. `./projects/obsidian-metatable` will link to the `obsidian-metatable.md` under the `projects` folder.
+Any value starting with `./` or `../` is considered a local link. E.g. `./projects/obsidian-metatable` will link to the `obsidian-metatable.md` under the `projects` folder.
+
+#### Markdown
+
+(requires "autolinks" enabled)
+
+Any value of the form `[label](url)` where the URL is a [valid URL](#url) or a [valid local URL](#local).
 
 #### Wiki
 
@@ -251,19 +243,6 @@ Any value starting and ending with `%` is considered a frontmatter link. The beh
 
 
 
-## Roadmap
-
-- [x] Basic takeover from the default plugin.
-- [x] Use a [Web Component] for better isolation.
-- [x] Add setting for expansion level.
-- [x] Cut releases with Github Actions.
-- [x] Adjust styles to work better with the default light theme.
-- [x] Adjust styles to work better with the default dark theme.
-- [x] Add setting for filtering top level keys.
-- [ ] Add setting for adding custom mapping functions.
-
-Check the [decision log](./decision_log) for the rationale behind the main design choices.
-
 
 ## Installation
 
@@ -287,9 +266,9 @@ From release:
 From source:
 
 - Clone the [source repository].
-- Run `yarn install`.
-- Run `yarn build`.
-- Create a `obsidian-metatable` under your vault's `.obsidian/plugins/` directory.
+- Run `npm install`.
+- Run `npm run build`.
+- Create an `obsidian-metatable` directory under your vault's `.obsidian/plugins/` directory.
 - Copy over `main.js`, `versions.json` and `manifest.json`.
 - Enable plugin in the “Community Plugins” Settings section.
 - Open a file (notice that previously opened files won't get the effects of the plugin until reopened or changed).
@@ -300,11 +279,13 @@ From source:
 Arnau Siches under the [MIT License](./LICENCE)
 
 
-[CSS custom properties]: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
-[Web Component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
-[source repository]: https://github.com/arnau/obsidian-metatable
-[latest release]: https://github.com/arnau/obsidian-metatable/releases/latest
-[URL]: https://developer.mozilla.org/en-US/docs/Web/API/URL
-[Evernote]: https://evernote.com/
 [::part pseudo-element]: https://developer.mozilla.org/en-US/docs/Web/CSS/::part
+[CSS custom properties]: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
+[Evernote]: https://evernote.com/
+[Obsidian]: https://www.obsidian.md/
 [Tag Pills]: https://forum.obsidian.md/t/meta-post-common-css-hacks/1978/13
+[URL]: https://developer.mozilla.org/en-US/docs/Web/API/URL
+[Web Component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
+[Zotero]: https://www.zotero.org/
+[latest release]: https://github.com/arnau/obsidian-metatable/releases/latest
+[source repository]: https://github.com/arnau/obsidian-metatable

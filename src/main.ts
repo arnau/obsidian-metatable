@@ -1,3 +1,3 @@
-import MetatablePlugin from './plugin'
+import MetatablePlugin from "./plugin"
 
 export default MetatablePlugin

@@ -14,9 +14,10 @@
     "moduleResolution": "node",
     "noImplicitAny": false,
     "strict": true,
+    "strictPropertyInitialization": false,
     "target": "ESNext",
-    "types": ["vite/client", "jest", "node"]
+    "types": ["jest", "node"]
   },
-  "include": ["src/*.ts", "tests/*.ts"],
+  "include": ["src/*.ts", "src/*.tsx", "tests/*.ts"],
   "exclude": ["node_modules/*"]
 }

@@ -1,5 +1,22 @@
 # Changelog
 
+## Next
+
+  - Add sidebar view
+  - Add experimental "tight" boundary to change styles when the container is smaller than 260px. If and when Obsidian has a web renderer with support for [CSS Container Queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries) this will be reverted.
+  - Use [Solid.js](https://www.solidjs.com/) instead of plain DOM.
+  - (**breaking**) Restructure markup.
+  - Add parts for leaf and leaf types (number, string, null, ISO date).
+  - Add Markdown links.
+  - Add custom properties targeting `background` and `color` for all main parts.
+  - (**breaking**) Normalise custom properties.
+    - Change `--metatable-foreground` to `--metatable-root-color`
+    - Change `--metatable-background` to `--metatable-root-background`
+    - Change `--metatable-key-focus` to `--metatable-key-background-focus`
+    - Remove `--metatable-member-gap`. Use `::part(member)` instead.
+    - Remove `--metatable-key-border-color`
+    - Remove `--metatable-key-border-color-focus`
+
 ## 0.13.1
 
 - Fix custom text for frontmatter links.
