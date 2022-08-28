@@ -6,6 +6,8 @@ A plugin to display the full frontmatter block instead of just the list of tags.
 
 ## Changelog
 
+- 0.13.1:
+  - Fix custom text for frontmatter links.
 - 0.13.0:
   - Add `--metatable-member-gap`.
   - Add parts for `summary`, `member`, `set` and `marker`.

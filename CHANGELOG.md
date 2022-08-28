@@ -1,17 +1,21 @@
 # Changelog
 
+## 0.13.1
+
+- Fix custom text for frontmatter links.
+
 ## 0.13.0
 
-  - Add `--metatable-member-gap`.
-  - Add parts for `summary`, `member`, `set` and `marker`.
-  - Fix preserving filter keys with the same starting substring.
-  - Fix processing tags when the YAML key is capitalised.
-  - Add custom text for wikilinks.
+- Add `--metatable-member-gap`.
+- Add parts for `summary`, `member`, `set` and `marker`.
+- Fix preserving filter keys with the same starting substring.
+- Fix processing tags when the YAML key is capitalised.
+- Add custom text for wikilinks.
 
 ## 0.12.0
 
-  - Add warning when the frontmatter is not valid YAML.
-  - Fix preserving the folded frontmatter when in edit mode.
+- Add warning when the frontmatter is not valid YAML.
+- Fix preserving the folded frontmatter when in edit mode.
 
 ## 0.11.0
 
