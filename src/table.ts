@@ -108,7 +108,16 @@ function wikiLink(value: string, vaultName: string): HTMLElement {
  */
 function frontmatterLink(value: string, vaultName: string): HTMLElement {
   const cleanValue = value.slice(1, -1)
-  const url = new URL(obsidianUrl(vaultName, cleanValue))
+  let url: URL
+  let label: string
+
+  if (cleanValue.includes('|')) {
+    const [urlValue, labelValue] = cleanValue.split('|')
+    url = new URL(obsidianUrl(vaultName, urlValue.trim()))
+    label = labelValue.trim()
+  } else {
+    url = new URL(obsidianUrl(vaultName, cleanValue))
+  }
 
   return internalLink(url)
 }
