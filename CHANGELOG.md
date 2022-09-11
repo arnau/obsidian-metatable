@@ -1,15 +1,14 @@
 # Changelog
 
-## Next
+## 0.14.0
 
-- (**breaking**) Restructure markup.
+- (**breaking**) Restructure markup and use [Solid.js](https://www.solidjs.com/) instead of plain DOM.
 - (**breaking**) Normalise custom properties. See [customising colours and symbols](./docs/customising_colours_and_symbols) for the full list.
 - Add parts for leaf types (number, boolean, null, ISO date).
 - Add new [documentation](./docs). **It works as an Obsidian vault**.
 - Add sidebar view.
 - Add experimental "tight" boundary to change styles when the container is smaller than 260px. If and when Obsidian has a web renderer with support for [CSS Container Queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries) this will be reverted.
-- Use [Solid.js](https://www.solidjs.com/) instead of plain DOM.
-- Add Markdown links.
+- Add Markdown autolinks.
 
 
 ## 0.13.1
