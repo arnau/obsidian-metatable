@@ -2,6 +2,7 @@
 creation_date: 2021-04-19
 decision_date: 2021-04-19
 decision_outcome: accepted
+tags: [decision]
 ---
 # Use Web Component for better isolation
 

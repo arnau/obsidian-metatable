@@ -1,0 +1,15 @@
+.theme-light .obsidian-metatable,
+.theme-light .obsidian-metatable-sidebar
+{
+  --metatable-text-primary: cornflowerblue;
+
+  --metatable-tag-color: deeppink;
+  --metatable-tag-symbol: "⁍ ";
+
+  --metatable-collapsed-symbol: "😶";
+  --metatable-expanded-symbol: "😎";
+
+  --metatable-leaf-nil-color: gainsboro;
+
+  --metatable-text-link: black;
+}

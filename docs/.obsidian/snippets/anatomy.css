@@ -1,0 +1,178 @@
+.obsidian-metatable-sidebar::part(root) {
+  position: relative;
+  background-color: gold;
+  margin: 20px;
+  padding: 20px;
+}
+
+.obsidian-metatable-sidebar::part(root)::before {
+  content: "root";
+
+  line-height: 1rem;
+  display: inline-block;
+  position: absolute;
+  top: 8px;
+  right: -20px;
+  transform: rotate(90deg);
+  background-color: gold;
+  color: brown;
+  padding: 0px 4px;
+}
+
+
+.obsidian-metatable-sidebar::part(member) {
+  grid-gap: 20px;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 4fr);
+
+  position: relative;
+  background-color: brown;
+  margin: 0 20px 20px 10px;
+  padding: 20px 10px;
+}
+
+.obsidian-metatable-sidebar::part(member)::before {
+  content: "member";
+
+  line-height: 1rem;
+  display: inline-block;
+  position: absolute;
+  top: 20px;
+  right: -30px;
+  transform: rotate(90deg);
+  background-color: brown;
+  color: gold;
+  padding: 0 4px;
+}
+
+
+.obsidian-metatable-sidebar::part(key) {
+  position: relative;
+  background-color: deepskyblue;
+  padding: 10px;
+  overflow: visible;
+}
+
+.obsidian-metatable-sidebar::part(key)::before {
+  content: "key";
+
+  line-height: 1rem;
+  display: inline-block;
+  position: absolute;
+  top: 7px;
+  right: -20px;
+  transform: rotate(90deg);
+  background-color: deepskyblue;
+  color: black;
+  padding: 0px 4px;
+}
+
+/* .obsidian-metatable-sidebar::part(key):hover::before { */
+/*   content: "key"; */
+/**/
+/*   line-height: 1rem; */
+/*   display: inline-block; */
+/*   position: absolute; */
+/*   top: 7px; */
+/*   right: -20px; */
+/*   transform: rotate(90deg); */
+/*   background-color: deepskyblue; */
+/*   color: black; */
+/*   padding: 0px 4px; */
+/* } */
+
+.obsidian-metatable-sidebar::part(value) {
+  position: relative;
+  background-color: lightblue;
+  color: black;
+  padding: 10px;
+  margin-right: 20px;
+  overflow: visible;
+}
+
+.obsidian-metatable-sidebar::part(value)::before {
+  content: "value";
+
+  line-height: 1rem;
+  display: inline-block;
+  position: absolute;
+  top: 12px;
+  right: -25px;
+  transform: rotate(90deg);
+  background-color: lightblue;
+  color: black;
+  padding: 0px 4px;
+}
+
+.obsidian-metatable-sidebar::part(list) {
+  position: relative;
+  background-color: lightpink;
+  color: black;
+  padding: 10px;
+  margin-right: 20px;
+}
+
+.obsidian-metatable-sidebar::part(list)::before {
+  content: "list";
+
+  line-height: 1rem;
+  display: inline-block;
+  position: absolute;
+  top: 5px;
+  right: -20px;
+  transform: rotate(90deg);
+  background-color: lightpink;
+  color: black;
+  padding: 0px 4px;
+}
+
+.obsidian-metatable-sidebar::part(list-item) {
+  position: relative;
+  background-color: deeppink;
+  color: lightpink;
+  padding: 18px;
+  margin: 20px 20px 0 0;
+}
+
+.obsidian-metatable-sidebar::part(list-item)::before {
+  content: "list-item";
+
+  line-height: 1rem;
+  display: inline-block;
+  position: absolute;
+  top: 18px;
+  right: -33px;
+  transform: rotate(90deg);
+  background-color: deeppink;
+  color: lightpink;
+  padding: 0px 4px;
+}
+
+
+.obsidian-metatable-sidebar::part(set) {
+  position: relative;
+  background-color: lightpink;
+  color: black;
+  padding: 10px;
+  margin-right: 20px;
+}
+
+.obsidian-metatable-sidebar::part(set)::before {
+  content: "set";
+
+  line-height: 1rem;
+  display: inline-block;
+  position: absolute;
+  top: 5px;
+  right: -20px;
+  transform: rotate(90deg);
+  background-color: lightpink;
+  color: black;
+  padding: 0px 4px;
+}
+
+.obsidian-metatable-sidebar::part(boolean),
+.obsidian-metatable-sidebar::part(isodate),
+.obsidian-metatable-sidebar::part(number)
+{
+  color: black;
+}

@@ -1,0 +1,10 @@
+{
+  "obsidian-metatable:toggle-metatable-sidebar": [
+    {
+      "modifiers": [
+        "Ctrl"
+      ],
+      "key": "M"
+    }
+  ]
+}

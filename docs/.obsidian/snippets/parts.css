@@ -1,0 +1,61 @@
+.obsidian-metatable-sidebar::part(root) {
+  margin-left: 20px;
+}
+
+.obsidian-metatable-sidebar::part(member) {
+  all: unset;
+  display: block;
+}
+
+.obsidian-metatable-sidebar::part(key) {
+  all: unset;
+  display: block;
+  font-weight: bold;
+}
+
+.obsidian-metatable-sidebar::part(key toggle) {
+  all: unset;
+  display: grid;
+  grid-template-columns: 10px auto;
+  grid-gap: 4px;
+  font-weight: bold;
+}
+
+
+.obsidian-metatable-sidebar::part(value) {
+  all: unset;
+  display: block;
+  padding-left: 20px;
+}
+
+
+.obsidian-metatable-sidebar::part(list-item-tags) {
+  margin: 0;
+}
+
+.obsidian-metatable-sidebar::part(tag) {
+  background-color: pink;
+}
+
+.obsidian-metatable-sidebar::part(tag):hover {
+  filter: none;
+  background-color: gold;
+  color: black;
+}
+
+.obsidian-metatable-sidebar::part(tag important) {
+  color: white;
+  background-color: tomato;
+}
+
+.obsidian-metatable-sidebar::part(tag example) {
+  color: black;
+  background-color: deepskyblue;
+}
+
+.obsidian-metatable-sidebar::part(tag avocado) {
+  --metatable-tag-symbol: "🥑 ";
+
+  color: black;
+  background-color: #83af2e;
+}

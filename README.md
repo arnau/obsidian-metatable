@@ -1,6 +1,6 @@
 ## Obsidian Metatable
 
-An [Obsidian] plugin to display the full frontmatter block instead of just the list of tags.
+A plugin for [Obsidian] to display the full frontmatter block instead of just the list of tags.
 
 ![screenshot](screenshot.png)
 
@@ -19,229 +19,16 @@ An [Obsidian] plugin to display the full frontmatter block instead of just the l
   - Fix preserving the folded frontmatter when in edit mode.
 
 See the [changelog](./CHANGELOG.md) for the full list of version. Or check the
-[decision log](./decision_log/) for the main design choices.
+[decision log](./docs/decision_log/) for the main design choices.
 
 
 ## Configuration
 
-By enabling the plugin in the “Community plugins” section you'll be all set. To see the effects you'll need to open a new document or restart the vault.
-
-
-### Settings
-
-- **Expansion level** lets you choose whether you want the metatable fully collapsed, collapse only leafs, collapse only the root or fully expanded.
-- **Ignore null values** lets you toggle whether members with null values are displayed.
-- **Null value** lets you define a string to display when a value is `null`.
-- **Skip key** lets you define a key that when `true` will not display the metatable for that document.
-- **Filter mode** lets you define whether to ignore or keep the filter keys.
-- **Filter keys** lets you define the list of keys that should be either kept or ignored.
-- [**Autolinks**](#autolinks) Attempts to create links for internal links.
-- **Naked** Does not sandbox the widget with a ShadowDOM. It also doesn't bring any CSS.
-
-
-### CSS Custom properties
-
-Use [CSS custom properties] to tweak the styles defined for the `.obsidian-metatable` [Web Component] shadow DOM.
-
-#### Palette
-
-- `--metatable-background`
-- `--metatable-link-color-hover`
-- `--metatable-link-color`
-- `--metatable-external-link-color-hover`
-- `--metatable-external-link-color`
-- `--metatable-internal-link-color`
-- `--metatable-internal-link-color-hover`
-- `--metatable-font-family`
-- `--metatable-font-size`
-- `--metatable-foreground`
-- `--metatable-key-background`
-- `--metatable-key-border-color-focus`
-- `--metatable-key-border-color`
-- `--metatable-key-border-width`
-- `--metatable-key-focus`
-- `--metatable-tag-background`
-- `--metatable-value-background`
-- `-metatable-warning-background`
-- `-metatable-warning-foreground`
-- `-metatable-warning-border`
-
-
-#### Symbols
-
-You might want to customise these if you prefer having tags with `#` or you don't like the fold arrows.
-
-- `--metatable-collapsed-symbol`
-- `--metatable-expanded-symbol`
-- `--metatable-mark-symbol`
-- `--metatable-tag-symbol`
-- `--metatable-internal-link-icon`
-- `--metatable-external-link-icon`
-
-### Parts
-
-An alternative method for customising styles is via the [::part pseudo-element].
-
-Notice that parts are limited by design so you won't be able to influence
-children such as links or deep structures in values.
-
-The available parts are:
-
-- [`key` and `value`](#keys-and-values)
-- [links](#links)
-- [tags](#tags)
-- `marker`
-- `member`
-- `set`
-- `summary`
-
-
-#### Tags
-
-Tags use the [::part pseudo-element] to allow for full customisation. What in
-the default Obsidian setup you would do to style [Tag Pills] with this plugin
-you would do instead:
-
-```css
-.obsidian-metatable::part(tag) {
-  background-color: pink;
-}
-
-.obsidian-metatable::part(tag):hover {
-  background-color: var(--text-accent-hover);
-}
-
-.obsidian-metatable::part(tag important) {
-  color: white;
-  background-color: tomato;
-}
-
-.obsidian-metatable::part(tag example) {
-  color: black;
-  background-color: deepskyblue;
-}
-```
-
-#### Keys and values
-
-Both keys and values use the [::part pseudo-element] to allow for full
-customisation. Say you don't like the scroll that appears when values overflow
-the space available (e.g. URLs), you could:
-
-```css
-.obsidian-metatable::part(value) {
-  overflow: hidden;
-}
-```
-
-And, as a more contrived example, you could give a rounded look to the keys:
-
-```css
-.obsidian-metatable::part(key) {
-  border-radius: 0.8rem;
-  border-right: none;
-  padding-left: 0.8rem;
-}
-```
-
-Notice that parts are limited by design so you won't be able to influence
-children such as links or deep structures in values.
-
-#### Links
-
-Links use the [::part pseudo-element] to allow for full
-customisation. Say you don't like the underlining and want external links to be
-in bold:
-
-```css
-.obsidian-metatable::part(link) {
-  text-decoration: none;
-}
-
-.obsidian-metatable::part(external-link) {
-  font-weight: 700;
-}
-```
-##### Example
-
-Say you want your metadata to have a custom palette of pinks and arrows is not your thing.
-
-First, create a directory `<vault>/.obsidian/snippets` and a file `metatable.css` inside.
-
-Then, in Obsidian, open `Settings`, go to `Appearance`, enable `CSS snippets` and enable the `metatable` snippet. Note that you might have to reload the snippets by hand using the button at the top-right hand side of the section.
-
-Finally, add your custom CSS inside the file you just created:
-
-```css
-/* .obsidian/snippets/metatable.css */
-.theme-light .obsidian-metatable {
-  --metatable-key-background: mistyrose;
-  --metatable-key-border-color: pink;
-  --metatable-foreground: dimgrey;
-  --metatable-value-background: snow;
-  --metatable-collapsed-symbol: "😶";
-  --metatable-expanded-symbol: "😎";
-  --metatable-tag-symbol: "#";
-}
-```
-
-For more details, either use the Inspector tool in Obsidian or check out the [`metatable.css`](src/metatable.css).
-
-### Autolinks
-
-#### URL
-
-Any value that is a valid HTTP or HTTPS [URL] such as `https://www.seachess.net`.
-
-It also autolinks:
-
-- [Evernote] links using the `evernote:` protocol.
-- [Obsidian] links using the `obsidian:` protocol.
-- [Zotero] links using the `zotero:` protocol. Links are expected to follow a pattern such as `zotero://select/items/@citekey` or `zotero://open-pdf/...`. When used with the [obsidian-citation-plugin](https://github.com/hans/obsidian-citation-plugin), the variable `{{zoteroSelectURI}}` can be used to open the linked citation directly.
-
-#### Local
-
-**(requires "autolinks" enabled)**
-
-Any value starting with `./` or `../` is considered a local link. E.g. `./projects/obsidian-metatable` will link to the `obsidian-metatable.md` under the `projects` folder.
-
-#### Markdown
-
-(requires "autolinks" enabled)
-
-Any value of the form `[label](url)` where the URL is a [valid URL](#url) or a [valid local URL](#local).
-
-#### Wiki
-
-**(requires "autolinks" enabled)**
-
-Any value starting with `[[` and ending with `]]` is considered a wiki link. The behaviour should be the same with any other wikilink you would write in Markdown.
-
-**Warning**: Square brackets `[]` in YAML are reserved for defining arrays so
-in order to actually use wikilinks you have to tell YAML that it's a string.
-For example,
-
-```yaml
-quoted: "[[basic-alt]]"
-long-string: >-
-  [[target]]
-```
-
-You can also customise the text displayed by using the following form:
-
-```
-[[target|Text to display]]
-```
-
-#### Frontmatter
-
-**(requires "autolinks" enabled)**
-
-Any value starting and ending with `%` is considered a frontmatter link. The behaviour is the same as per wiki links.
-
-**Warning**: This format is non-standard. But it's more convenient than wiki links.
-
-
+By enabling the plugin in the “Community plugins” section you'll be all set.
+To see the effects you'll need to open a new document or restart the vault.
+
+Check the [documentation](./docs/index.md) for a getting started, customisation
+strategies, examples and more.
 
 
 ## Installation
@@ -279,13 +66,6 @@ From source:
 Arnau Siches under the [MIT License](./LICENCE)
 
 
-[::part pseudo-element]: https://developer.mozilla.org/en-US/docs/Web/CSS/::part
-[CSS custom properties]: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
-[Evernote]: https://evernote.com/
 [Obsidian]: https://www.obsidian.md/
-[Tag Pills]: https://forum.obsidian.md/t/meta-post-common-css-hacks/1978/13
-[URL]: https://developer.mozilla.org/en-US/docs/Web/API/URL
-[Web Component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
-[Zotero]: https://www.zotero.org/
 [latest release]: https://github.com/arnau/obsidian-metatable/releases/latest
 [source repository]: https://github.com/arnau/obsidian-metatable

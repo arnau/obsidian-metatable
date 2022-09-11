@@ -11,7 +11,7 @@
     "dev": "node esbuild.config.mjs",
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "dist": "mkdir -p dist && cp main.js versions.json manifest.json dist/",
-    "test_vault": "cp main.js versions.json manifest.json test_vault/.obsidian/plugins/obsidian-metatable",
+    "docs": "npm run build && cp main.js versions.json manifest.json docs/.obsidian/plugins/obsidian-metatable",
     "bump": "node version-bump.mjs && git add manifest.json versions.json",
     "test": "jest"
   },

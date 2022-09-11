@@ -2,6 +2,7 @@
 creation_date: 2022-08-29
 decision_date: 2022-08-29
 decision_outcome: accepted
+tags: [decision]
 ---
 # Add a sidebar view
 

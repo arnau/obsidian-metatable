@@ -2,6 +2,7 @@
 creation_date: 2021-04-20
 decision_date: 2021-04-22
 decision_outcome: rejected
+tags: [decision]
 ---
 # Use `details` instead of `table`
 

@@ -2,6 +2,7 @@
 creation_date: 2021-05-10
 decision_date: 2021-04-11
 decision_outcome: accepted
+tags: [decision]
 ---
 # Customise tags
 
@@ -23,7 +24,7 @@ controlled way into the shadow DOM without exposing the implementation details.
 
 The research on using the [slot element] suggests that it only works in
 combination with custom elements ([rejected in favour of plain shadow
-DOM](./decision_log/2021-04-19_web_component.md)).
+DOM](2021-04-19_web_component.md)).
 
 The [::part pseudo-element] on the other hand gives good results with "just CSS".
 
