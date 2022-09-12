@@ -8,7 +8,7 @@ A plugin for [Obsidian] to display the full frontmatter block instead of just th
 
 - 0.14.0
   - (**breaking**) Restructure markup and use [Solid.js](https://www.solidjs.com/) instead of plain DOM.
-  - (**breaking**) Normalise custom properties. See [customising colours and symbols](./docs/customising_colours_and_symbols) for the full list.
+  - (**breaking**) Normalise custom properties. See [customising colours and symbols](https://github.com/arnau/obsidian-metatable/blob/main/docs/sections/customising_colours_and_symbols.md) for the full list.
   - Add parts for leaf types (number, boolean, null, ISO date).
   - Add new [documentation](./docs). **It works as an Obsidian vault**.
   - Add sidebar view.
