@@ -83,7 +83,7 @@ function normaliseTags(data: string[] | string | null): string[] {
   }
 
   const result: string[] = typeof data == "string"
-    ? data.split(',').map(x => x.trim())
+    ? data.split(",").flatMap(x => x.trim().split(" "))
     : data
 
   return result.filter(x => x && x.length != 0)
