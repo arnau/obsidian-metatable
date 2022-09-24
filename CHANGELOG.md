@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.14.1
+  - Fix (#36) tag normalisation when tags are separated by spaces.
+
 ## 0.14.0
 
 - (**breaking**) Restructure markup and use [Solid.js](https://www.solidjs.com/) instead of plain DOM.

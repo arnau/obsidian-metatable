@@ -6,6 +6,8 @@ A plugin for [Obsidian] to display the full frontmatter block instead of just th
 
 ## Changelog
 
+- 0.14.1
+  - Fix (#36) tag normalisation when tags are separated by spaces.
 - 0.14.0
   - (**breaking**) Restructure markup and use [Solid.js](https://www.solidjs.com/) instead of plain DOM.
   - (**breaking**) Normalise custom properties. See [customising colours and symbols](https://github.com/arnau/obsidian-metatable/blob/main/docs/sections/customising_colours_and_symbols.md) for the full list.
