@@ -3,8 +3,7 @@ import { useMixture } from "src/mixture"
 
 export function Tag(props: any) {
   const { openTag } = useMixture()
-  const safeValue = encodeURI(props.value)
-  const url = `#${safeValue}`
+  const url = `#${props.value}`
   const clickHandler = (event: any) => {
     const trigger: HTMLElement = event.target
 
