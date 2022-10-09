@@ -1,7 +1,12 @@
 # Changelog
 
+## 0.14.2
+
+- Fix (#38) tag URLs should not be encoded as URIs.
+
 ## 0.14.1
-  - Fix (#36) tag normalisation when tags are separated by spaces.
+
+- Fix (#36) tag normalisation when tags are separated by spaces.
 
 ## 0.14.0
 
