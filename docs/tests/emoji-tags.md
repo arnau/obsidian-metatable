@@ -1,0 +1,4 @@
+---
+tags: [🥑, 🥕]
+---
+# Tags with emojis
