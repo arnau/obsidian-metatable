@@ -4,5 +4,6 @@
     "metatable_colours"
   ],
   "baseFontSize": 16,
-  "cssTheme": ""
+  "cssTheme": "",
+  "accentColor": ""
 }
