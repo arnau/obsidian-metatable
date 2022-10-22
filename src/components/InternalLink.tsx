@@ -122,7 +122,7 @@ export function Link(props: LinkProps) {
   const { openNote } = useMixture()
   const label = props.label
   const url = props.url
-  const localUrl = encodeURI(getLinkpath(url))
+  const localUrl = getLinkpath(url)
   const clickHandler = (event: any) => {
     event.preventDefault()
     openNote(event.target.dataset.href!)
