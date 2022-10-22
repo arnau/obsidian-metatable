@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.14.3
+
+- Fix (#37) local URLs should not be encoded as URIs.
+- Fix tag parts should not be encoded as URIs.
+
 ## 0.14.2
 
 - Fix (#38) tag URLs should not be encoded as URIs.
