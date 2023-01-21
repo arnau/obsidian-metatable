@@ -6,6 +6,9 @@ A plugin for [Obsidian] to display the full frontmatter block instead of just th
 
 ## Changelog
 
+- 0.14.4
+  - Upgrade to Obsidian 1.1
+  - Upgrade dependencies due to CVE-2022-46175
 - 0.14.3
   - Fix (#37) local URLs should not be encoded as URIs.
   - Fix tag parts should not be encoded as URIs.
