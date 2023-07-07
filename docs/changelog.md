@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.14.5
+
+- Handle aliases as a special case (#49).
+
 ## 0.14.4
 
 - Upgrade to Obsidian 1.1
