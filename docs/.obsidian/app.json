@@ -3,5 +3,7 @@
   "alwaysUpdateLinks": true,
   "legacyEditor": false,
   "livePreview": true,
-  "promptDelete": false
+  "promptDelete": false,
+  "rightToLeft": false,
+  "showFrontmatter": true
 }
