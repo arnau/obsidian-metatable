@@ -67,15 +67,15 @@ type Entries = [string, any][]
 
 function normalise(entries: Entries): Entries {
   return entries.map(([key, value]) => {
-    if (key.toLocaleLowerCase() == "tags") {
-      return [key, normaliseTags(value)]
+    if (["tags", "aliases"].includes(key.toLocaleLowerCase())) {
+      return [key, normaliseSpuriousArray(value)]
     }
 
     return [key, value]
   })
 }
 
-function normaliseTags(data: string[] | string | null): string[] {
+function normaliseSpuriousArray(data: string[] | string | null): string[] {
   if (data == null) { return [] }
 
   if (!Array.isArray(data) && typeof data != "string") {
