@@ -105,6 +105,9 @@ Read the [[sections/anatomy]] section to understand how parts compose.
 ```
 
 ### Summary part
+
+**v0.14.6**: The following custom properties are no longer available:
+
 ```css
 --metatable-summary-background
 --metatable-summary-color

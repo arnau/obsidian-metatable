@@ -6,6 +6,9 @@ A plugin for [Obsidian] to display the full frontmatter block instead of just th
 
 ## Changelog
 
+- 0.14.6
+  - Fix mobile rendering (#45). This was due a webkit bug that forced the removal of customisations for the root `summary`.
+  - Fix relative links (#47).
 - 0.14.5
   - Handle aliases as a special case (#49).
 - 0.14.4
