@@ -53,4 +53,4 @@ The list item part (deep pink) behaves like the [[#Value]] part.
 
 ## Tag
 
-A tag part contains the text for the given tag. See [[tags]] for a more in depth explanation of the particularities of tags.
+A tag part contains the text for the given tag. See [[sections/tags]] for a more in depth explanation of the particularities of tags.

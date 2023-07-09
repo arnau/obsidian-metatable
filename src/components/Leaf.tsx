@@ -1,4 +1,4 @@
-import { Match, Switch } from "solid-js"
+import { Match, Switch, createEffect } from "solid-js"
 import type { LeafValue } from "../value"
 import { useMixture } from "../mixture"
 import { Tag } from "./Tag"
@@ -74,17 +74,16 @@ function String(props: any) {
 }
 
 function MarkdownLink(props: any) {
-  const result = props.value.match(MD_LINK_RE)
-  const { label, url } = result.groups
+  const groups = () => props.value.match(MD_LINK_RE).groups
 
   return (
     <Switch>
-      <Match when={isInternalLink(url)}>
-        <ILink label={label} url={url} />
+      <Match when={isExternalLink(groups().url)}>
+        <ELink label={groups().label} url={groups().url} />
       </Match>
 
-      <Match when={isExternalLink(url)}>
-        <ELink label={label} url={url} />
+      <Match when={true}>
+        <ILink label={groups().label} url={groups().url} />
       </Match>
     </Switch>
   )

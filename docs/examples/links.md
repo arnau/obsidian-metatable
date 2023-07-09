@@ -4,6 +4,7 @@ local:
   - ../examples/null_values
   - ./filtered_keys
   - ./tests/title with spaces
+  - ./tests/title%20with%20spaces
 wiki:
   - "[[autolinks]]"
   - "[[title with spaces]]"
@@ -13,10 +14,11 @@ frontmatter:
   - %title with spaces%
   - %autolinks|Autolinks%
 md:
-  - "[Basic configuration](../configuration)"
+  - "[Basic configuration](../sections/configuration)"
   - "[Missing page](../missing)"
   - "[A remote page](https://www.obsidian.md)"
   - "[test spaces](../tests/title with spaces)"
+  - "[changelog](changelog.md)"
 ---
 # Links
 

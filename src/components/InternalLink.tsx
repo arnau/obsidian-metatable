@@ -1,5 +1,5 @@
-import { getLinkpath } from "obsidian"
-import { Match, Switch } from "solid-js"
+import { MarkdownView, getLinkpath } from "obsidian"
+import { Match, Switch, createEffect, createSignal } from "solid-js"
 import { useMixture } from "../mixture"
 
 /**
@@ -115,29 +115,51 @@ function isObsidianUrl(url: URL | string): boolean {
   return (url instanceof URL && url.protocol == "obsidian:")
 }
 
+function expandUrl(url: string, parent: string | null | undefined) {
+  if (!url.startsWith(".") || !url.startsWith("..")) { return url }
+
+  const parentTrail = parent?.split("/").filter(step => step.length > 0) ?? []
+
+  const [relativeStep, ...trail] = url.split("/")
+
+  if (relativeStep === "..") {
+    parentTrail.pop()
+  }
+
+  return `/${parentTrail.concat(trail).join("/")}`
+}
+
 /**
  * Represents an internal link.
  */
 export function Link(props: LinkProps) {
+  const { workspace } = useMixture()
+  const [parent, setParent] = createSignal<string | null>()
+  const view = () => workspace.getActiveViewOfType(MarkdownView)
+  createEffect(() => {
+    setParent(view()?.file.parent?.path)
+  })
+
   const { openNote } = useMixture()
-  const label = props.label
-  const url = props.url
-  const localUrl = getLinkpath(url)
+  const label = () => props.label
+  const url = () => decodeURIComponent(props.url)
+  const localUrl = () => getLinkpath(url())
   const clickHandler = (event: any) => {
     event.preventDefault()
-    openNote(event.target.dataset.href!)
+    const href = event.target.dataset.href!
+    openNote(expandUrl(href, parent()))
   }
 
   return (
     <a
-      href={localUrl}
-      data-href={localUrl}
+      href={localUrl()}
+      data-href={localUrl()}
       onClick={clickHandler}
       class="leaf link internal-link"
       part="leaf link internal-link"
       target="_blank"
       rel="noopener"
-    >{label}</a>
+    >{label()}</a>
   )
 }
 
