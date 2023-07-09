@@ -32,12 +32,6 @@
   --metatable-root-background: var(--metatable-background-primary);
   --metatable-root-color: var(--metatable-text-primary);
 
-  /* summary */
-  --metatable-summary-background: transparent;
-  --metatable-summary-color: inherit;
-  --metatable-summary-background-focus: var(--metatable-background-focus);
-  --metatable-summary-color-focus: var(--metatable-text-focus);
-
   /* set */
   --metatable-set-background: transparent;
   --metatable-set-color: inherit;
@@ -153,38 +147,8 @@ details {
   margin-bottom: 20px;
 }
 
-summary {
-  background: var(--metatable-summary-background);
-  color: var(--metatable-summary-color);
-
-  cursor: pointer;
-
-  display: grid;
-  grid-gap: 4px;
-  grid-template-columns: 10px auto;
-}
-
-summary::before {
-  display: block;
-  font-size: 10px;
-  padding-top: 4px;
-  content: var(--metatable-collapsed-symbol);
-}
-
-details[open] summary::before {
-  padding-top: 4px;
-  content: var(--metatable-expanded-symbol);
-}
-
-summary:focus,
-summary:focus-visible {
-  background: var(--metatable-summary-background-focus);
-
-  outline: none;
-}
-
 summary+* {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .metatable-sidebar>.summary {
