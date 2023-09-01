@@ -2,10 +2,15 @@
 
 A plugin for [Obsidian] to display the full frontmatter block instead of just the list of tags.
 
+**WARNING:** Obsidian 1.4 has added a new way to handle frontmatter that is not backwards compatible so they have broken this plugin. I'm considering whether there is any value in evolving this plugin or just stop.
+
+
 ![screenshot](screenshot.png)
 
 ## Changelog
 
+- 0.14.7
+  - Warn users of this plugin that Obsidian 1.4 broke it.
 - 0.14.6
   - Fix mobile rendering (#45). This was due a webkit bug that forced the removal of customisations for the root `summary`.
   - Fix relative links (#47).

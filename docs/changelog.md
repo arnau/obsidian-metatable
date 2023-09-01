@@ -1,5 +1,10 @@
 # Changelog
 
+
+## 0.14.7
+
+- Warn users of this plugin that Obsidian 1.4 broke it.
+
 ## 0.14.6
 
 - Fix mobile rendering (#45). This was due a webkit bug that forced the removal of customisations for the root `summary`.
