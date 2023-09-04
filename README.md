@@ -1,8 +1,12 @@
 ## Obsidian Metatable
 
-A plugin for [Obsidian] to display the full frontmatter block instead of just the list of tags.
+***
+**DEPRECATION NOTICE**: This Obsidan plugin is no longer actively maintained.
+New developments in Obsidian itself have made clear I'm no longer interested in
+the tool nor maintaining a plugin for it.
+***
 
-**WARNING:** Obsidian 1.4 has added a new way to handle frontmatter that is not backwards compatible so they have broken this plugin. I'm considering whether there is any value in evolving this plugin or just stop.
+A plugin for [Obsidian] to display the full frontmatter block instead of just the list of tags.
 
 
 ![screenshot](screenshot.png)
